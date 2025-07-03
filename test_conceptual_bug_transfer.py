@@ -314,14 +314,18 @@ for further analysis and reporting.
         print("🧑‍🏫 Training on teacher project...")
         
         try:
-            # Run analysis on teacher project
+            # Run analysis on teacher project using venv python
+            venv_python = Path("venv/bin/python")
+            if not venv_python.exists():
+                venv_python = sys.executable
+            
             result = subprocess.run([
-                sys.executable, "-c", """
+                str(venv_python), "-c", """
 import sys
 sys.path.insert(0, '.')
 import mesopredator_cli
 mesopredator_cli.main()
-""", "analyze", str(teacher_dir)
+""", "analyze", str(teacher_dir), "--verbose"
             ],
             capture_output=True,
             text=True,
@@ -369,14 +373,18 @@ mesopredator_cli.main()
         print("🎓 Testing concept transfer on student project...")
         
         try:
-            # Run analysis on student project 
+            # Run analysis on student project using venv python
+            venv_python = Path("venv/bin/python")
+            if not venv_python.exists():
+                venv_python = sys.executable
+                
             result = subprocess.run([
-                sys.executable, "-c", """
+                str(venv_python), "-c", """
 import sys
 sys.path.insert(0, '.')
 import mesopredator_cli
 mesopredator_cli.main()
-""", "analyze", str(student_dir)
+""", "analyze", str(student_dir), "--verbose"
             ],
             capture_output=True,
             text=True,

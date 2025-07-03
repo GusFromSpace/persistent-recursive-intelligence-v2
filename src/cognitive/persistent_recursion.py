@@ -49,6 +49,23 @@ def run_analysis(project_path: str, max_depth: int = 3, batch_size: int = 50, ve
         if medium > 0:
             print(f"📋 MEDIUM PRIORITY: {medium}")
 
+        # Show detailed issue descriptions in verbose mode
+        if verbose and issues:
+            print(f"\n📝 Detailed Issue Analysis:")
+            for i, issue in enumerate(issues[:20], 1):  # Limit to first 20 for readability
+                severity = issue.get("severity", "unknown").upper()
+                issue_type = issue.get("type", "unknown")
+                description = issue.get("description", "No description")
+                line = issue.get("line", "?")
+                
+                print(f"   {i}. [{severity}] {issue_type} (Line {line})")
+                print(f"      {description}")
+                if i < len(issues) and i < 20:
+                    print()
+            
+            if len(issues) > 20:
+                print(f"   ... and {len(issues) - 20} more issues")
+
         if output_file:
             with open(output_file, 'w') as f:
                 json.dump(issues, f, indent=4)

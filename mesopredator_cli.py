@@ -811,6 +811,7 @@ def main():
     parser_analyze = subparsers.add_parser('analyze', help='Analyze a project and store insights.')
     parser_analyze.add_argument('project_path', type=str, help='The path to the project directory to analyze.')
     parser_analyze.add_argument('--output-file', type=str, help='Path to save the analysis results as a JSON file.')
+    parser_analyze.add_argument('--verbose', action='store_true', help='Show detailed issue descriptions in output.')
 
     # --- Fix Command ---
     parser_fix = subparsers.add_parser('fix', help='Interactively fix issues in a project.')
@@ -848,7 +849,7 @@ def main():
     args = parser.parse_args()
 
     if args.command == 'analyze':
-        issues = run_analysis(args.project_path)
+        issues = run_analysis(args.project_path, verbose=args.verbose)
         if args.output_file:
             with open(args.output_file, 'w') as f:
                 json.dump(issues, f, indent=4)
