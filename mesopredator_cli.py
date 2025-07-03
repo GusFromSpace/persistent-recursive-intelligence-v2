@@ -276,13 +276,13 @@ def run_interactive_training(issues: list, fp_detector):
 
     for i, issue in enumerate(issues, 1):
         print(f"📋 Issue {i}/{len(issues)}")
-        print(f"   Type: {issue.get('type', 'unknown")}")
-        print(f"   Severity: {issue.get('severity', 'unknown")}")
-        print(f"   Description: {issue.get('description', 'No description")}")
-        print(f"   Context: {issue.get('context', 'unknown")}")
+        print(f"   Type: {issue.get('type', 'unknown')}")
+        print(f"   Severity: {issue.get('severity', 'unknown')}")
+        print(f"   Description: {issue.get('description', 'No description')}")
+        print(f"   Context: {issue.get('context', 'unknown')}")
 
         if issue.get('suggestion'):
-            print(f"   Suggestion: {issue.get('suggestion")}')
+            print(f"   Suggestion: {issue.get('suggestion')}")
 
         print()
 
@@ -310,7 +310,7 @@ def run_interactive_training(issues: list, fp_detector):
                 # Store the training data
                 try:
                     # For training, we'll use a dummy file path based on context
-                    file_path = f"training_data/{issue.get('context', 'unknown")}_file.py"
+                    file_path = f"training_data/{issue.get('context', 'unknown')}_file.py"
 
                     # Use asyncio to run the async method
                     import asyncio
@@ -362,7 +362,7 @@ def run_batch_training(issues: list, batch_file: str, fp_detector):
                         break
 
                 if not matching_issue:
-                    print(f"⚠️  Could not find matching issue for: {label_data.get('description', 'unknown")}")
+                    print(f"⚠️  Could not find matching issue for: {label_data.get('description', 'unknown')}")
                     continue
 
                 # Apply the label
