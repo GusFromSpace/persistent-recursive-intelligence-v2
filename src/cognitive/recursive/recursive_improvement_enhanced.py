@@ -70,6 +70,15 @@ class MemoryEnhancedRecursiveImprovement:
                 self.logger.info("Enhanced pattern detection enabled")
             except Exception as e:
                 self.logger.warning(f"Could not initialize enhanced patterns: {e}")
+        
+        # Initialize performance pattern detector for multi-domain analysis
+        try:
+            from ..enhanced_patterns.performance_pattern_detector import PerformancePatternDetector
+            self.performance_detector = PerformancePatternDetector()
+            self.logger.info("Performance pattern detection enabled")
+        except Exception as e:
+            self.performance_detector = None
+            self.logger.warning(f"Could not initialize performance detector: {e}")
 
         # Remember initialization
         self.memory.store_memory("Recursive improvement engine initialized", {
@@ -117,6 +126,11 @@ class MemoryEnhancedRecursiveImprovement:
 
             # Perform analysis with enhanced patterns if available
             base_issues = self._detect_issues(content, file_path)
+            
+            # Store file path for later multi-domain analysis
+            if not hasattr(self, '_analyzed_files'):
+                self._analyzed_files = []
+            self._analyzed_files.append(file_path)
             enhanced_issues = []
 
             if self.enhanced_detector:
@@ -379,6 +393,39 @@ class MemoryEnhancedRecursiveImprovement:
                     "pattern_count": len(improvement_patterns)
                 })
                 self.cognitive_metrics["patterns_learned"] += 1
+
+            # Perform multi-domain performance analysis
+            if self.performance_detector and hasattr(self, '_analyzed_files'):
+                try:
+                    performance_issues = self.performance_detector.analyze_files(self._analyzed_files)
+                    performance_summary = self.performance_detector.get_analysis_summary(performance_issues)
+                    
+                    # Convert performance issues to standard format
+                    for perf_issue in performance_issues:
+                        all_issues.append({
+                            "type": perf_issue.issue_type,
+                            "line": perf_issue.evidence.get("line", 1),
+                            "severity": perf_issue.severity,
+                            "description": perf_issue.description,
+                            "learned_from_memory": False,
+                            "file_path": perf_issue.evidence.get("file", "multi-domain"),
+                            "domain": perf_issue.evidence.get("domain", "performance"),
+                            "correlation": perf_issue.correlation
+                        })
+                    
+                    # Store multi-domain analysis results
+                    self.memory.store_memory(f"Multi-domain analysis iteration {self.iteration_count}", {
+                        "domains_analyzed": performance_summary["domains_analyzed"],
+                        "correlations_found": performance_summary["correlations_found"],
+                        "multi_domain_synthesis": performance_summary["multi_domain_synthesis"],
+                        "performance_issues": len(performance_issues)
+                    })
+                    
+                    self.logger.info(f"Multi-domain analysis: {len(performance_issues)} performance issues, "
+                                   f"{performance_summary['correlations_found']} correlations found")
+                    
+                except Exception as e:
+                    self.logger.warning(f"Multi-domain analysis failed: {e}")
 
             self.cognitive_metrics["improvements_found"] = len(all_issues)
 

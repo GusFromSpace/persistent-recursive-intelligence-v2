@@ -37,17 +37,19 @@ class OrchestratorSynthesisTest:
         app_dir = scenario_dir / "project-ecommerce"
         app_dir.mkdir(exist_ok=True)
         
-        # Models with problematic relationships
+        # Models using GUS metrics framework with performance issues
         models_code = '''#!/usr/bin/env python3
 """
-E-commerce Models with Hidden N+1 Query Problem
+Metrics API Models with Performance Anti-patterns
 
-This models.py contains relationship definitions that enable N+1 queries
-when not properly handled by the view layer.
+This models.py follows the GUS metrics baseline but contains
+N+1 query patterns in the resonance collection logic.
 """
 
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
+from datetime import datetime
 from dataclasses import dataclass
+from .models import MetricsData, ResonanceIndicators, PerformanceMetrics
 from datetime import datetime
 
 @dataclass
