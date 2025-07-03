@@ -18,10 +18,8 @@ from datetime import datetime
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
-# Add memory intelligence
-sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent.parent / "projects" / "memory-intelligence-service-standalone" / "src"))
-from gus_memory import MemoryIntelligence
-from gus_memory.adapters import ProjectAdapter, remember_calls, remember_errors, remember_performance
+# Add memory intelligence - USE LOCAL MEMORY SYSTEM
+from ..memory.simple_memory import SimpleMemoryEngine
 
 # Add enhanced pattern detection
 try:
@@ -30,6 +28,25 @@ try:
 except ImportError as e:
     logging.debug(f"Enhanced patterns not available: {e}")
     ENHANCED_PATTERNS_AVAILABLE = False
+
+# Decorators for memory integration - stubbed out as SimpleMemoryEngine doesn't need them
+def remember_calls(namespace):
+    """Decorator stub - functionality integrated into SimpleMemoryEngine"""
+    def decorator(func):
+        return func
+    return decorator
+
+def remember_errors(namespace):
+    """Decorator stub - functionality integrated into SimpleMemoryEngine"""
+    def decorator(func):
+        return func
+    return decorator
+
+def remember_performance(namespace, operation):
+    """Decorator stub - functionality integrated into SimpleMemoryEngine"""
+    def decorator(func):
+        return func
+    return decorator
 
 class MemoryEnhancedRecursiveImprovement:
     """
@@ -42,9 +59,11 @@ class MemoryEnhancedRecursiveImprovement:
     def __init__(self, source_directory: Path):
         self.source_directory = Path(source_directory)
 
-        # Initialize memory intelligence
-        self.memory = MemoryIntelligence("recursive-improvement-engine")
-        self.project_adapter = ProjectAdapter("recursive-improvement")
+        # Initialize memory intelligence - LOCAL SYSTEM
+        self.memory = SimpleMemoryEngine(
+            db_path="memory_intelligence.db", 
+            namespace="recursive-improvement-engine"
+        )
         self.logger = logging.getLogger(self.__class__.__name__)
 
         # Initialize enhanced pattern detector if available
@@ -57,7 +76,7 @@ class MemoryEnhancedRecursiveImprovement:
                 self.logger.warning(f"Could not initialize enhanced patterns: {e}")
 
         # Remember initialization
-        self.memory.remember("Recursive improvement engine initialized", {
+        self.memory.store_memory("Recursive improvement engine initialized", {
             "source_directory": str(source_directory),
             "session_id": datetime.now().isoformat(),
             "enhanced_patterns": ENHANCED_PATTERNS_AVAILABLE and self.enhanced_detector is not None
@@ -73,8 +92,6 @@ class MemoryEnhancedRecursiveImprovement:
             "enhanced_issues_found": 0
         }
 
-    @remember_calls("recursive-improvement")
-    @remember_errors("recursive-improvement")
     def analyze_code_file(self, file_path: Path):
         """Analyze a code file with memory-enhanced pattern recognition"""
         try:
@@ -93,14 +110,14 @@ class MemoryEnhancedRecursiveImprovement:
                 return []
 
             # Remember analysis
-            self.memory.remember(f"Analyzing file: {file_path.name}", {
+            self.memory.store_memory(f"Analyzing file: {file_path.name}", {
                 "file_path": str(file_path),
                 "file_size": len(content),
                 "analysis_type": "code_analysis"
             })
 
             # Check for known patterns from memory
-            similar_analyses = self.memory.recall(f"analyzing {file_path.suffix}", limit=5)
+            similar_analyses = self.memory.search_memories(f"analyzing {file_path.suffix}", limit=5)
 
             # Perform analysis with enhanced patterns if available
             base_issues = self._detect_issues(content, file_path)
@@ -117,14 +134,17 @@ class MemoryEnhancedRecursiveImprovement:
             # Combine base and enhanced issues
             all_issues = base_issues + self._convert_enhanced_issues(enhanced_issues)
 
-            # Learn from new patterns
+            # Learn from new patterns - store pattern data
             if all_issues:
-                self.memory.learn_pattern(f"code_issues_{file_path.suffix}", [
-                    issue["description"] for issue in all_issues
-                ], {"file_type": file_path.suffix, "analysis_date": datetime.now().isoformat()})
+                pattern_data = {
+                    "file_type": file_path.suffix,
+                    "analysis_date": datetime.now().isoformat(),
+                    "patterns": [issue["description"] for issue in all_issues]
+                }
+                self.memory.store_memory(f"code_issues_{file_path.suffix}", pattern_data)
 
             # Remember analysis results
-            self.memory.remember(f"Analysis complete: {file_path.name}", {
+            self.memory.store_memory(f"Analysis complete: {file_path.name}", {
                 "issues_found": len(all_issues),
                 "base_issues": len(base_issues),
                 "enhanced_issues": len(enhanced_issues),
@@ -135,9 +155,11 @@ class MemoryEnhancedRecursiveImprovement:
             return all_issues
 
         except Exception as e:
-            self.project_adapter.remember_error(e, {
+            # Store error in memory
+            self.memory.store_memory(f"Error analyzing {file_path.name}", {
                 "file_path": str(file_path),
-                "operation": "analyze_code_file"
+                "operation": "analyze_code_file",
+                "error": str(e)
             })
             raise
 
@@ -170,7 +192,7 @@ class MemoryEnhancedRecursiveImprovement:
         issues = []
 
         # Get known issue patterns from memory
-        known_patterns = self.memory.recall("code issues", limit=20)
+        known_patterns = self.memory.search_memories("code issues", limit=20)
 
         # Enhanced issue detection with memory-guided patterns
         lines = content.split('\n')
@@ -282,12 +304,11 @@ class MemoryEnhancedRecursiveImprovement:
                 "tests/" in str(file_path) or
                 file_path.name.endswith("_test.py"))
 
-    @remember_performance("recursive-improvement", "improvement_iteration")
     def run_improvement_iteration(self, max_depth: int = 3, batch_size: int = 50):
         """Run improvement iteration with batching for full project analysis"""
         self.iteration_count += 1
 
-        self.memory.remember(f"Starting improvement iteration {self.iteration_count}", {
+        self.memory.store_memory(f"Starting improvement iteration {self.iteration_count}", {
             "iteration": self.iteration_count,
             "max_depth": max_depth,
             "batch_size": batch_size,
@@ -296,7 +317,7 @@ class MemoryEnhancedRecursiveImprovement:
 
         try:
             # Get insights from previous iterations
-            previous_iterations = self.memory.recall("improvement iteration", limit=10)
+            previous_iterations = self.memory.search_memories("improvement iteration", limit=10)
 
             if previous_iterations:
                 avg_improvements = sum(
@@ -304,7 +325,10 @@ class MemoryEnhancedRecursiveImprovement:
                     for iter_data in previous_iterations
                 ) / len(previous_iterations)
 
-                self.memory.remember(f"Historical context: avg {avg_improvements:.1f} improvements per iteration")
+                self.memory.store_memory(f"Historical context: avg {avg_improvements:.1f} improvements per iteration", {
+                    "average_improvements": avg_improvements,
+                    "iterations_analyzed": len(previous_iterations)
+                })
 
             # Find ALL files to analyze
             target_files = self._find_target_files()
@@ -343,7 +367,7 @@ class MemoryEnhancedRecursiveImprovement:
 
                 # Store batch results in memory
                 if batch_issues:
-                    self.memory.remember(f"Batch {batches_processed} analysis complete", {
+                    self.memory.store_memory(f"Batch {batches_processed} analysis complete", {
                         "batch_number": batches_processed,
                         "files_in_batch": len(batch_files),
                         "issues_found": len(batch_issues),
@@ -353,14 +377,17 @@ class MemoryEnhancedRecursiveImprovement:
             # Learn improvement patterns from all batches
             if all_issues:
                 improvement_patterns = [issue["description"] for issue in all_issues]
-                self.memory.learn_pattern(f"iteration_{self.iteration_count}_improvements",
-                                        improvement_patterns)
+                self.memory.store_memory(f"iteration_{self.iteration_count}_improvements", {
+                    "iteration": self.iteration_count,
+                    "patterns": improvement_patterns,
+                    "pattern_count": len(improvement_patterns)
+                })
                 self.cognitive_metrics["patterns_learned"] += 1
 
             self.cognitive_metrics["improvements_found"] = len(all_issues)
 
             # Remember complete iteration results
-            self.memory.remember(f"Full project iteration {self.iteration_count} complete", {
+            self.memory.store_memory(f"Full project iteration {self.iteration_count} complete", {
                 "improvements_found": len(all_issues),
                 "files_processed": total_files,
                 "batches_processed": batches_processed,
@@ -378,9 +405,11 @@ class MemoryEnhancedRecursiveImprovement:
             }
 
         except Exception as e:
-            self.project_adapter.remember_error(e, {
+            # Store error in memory
+            self.memory.store_memory(f"Error in iteration {self.iteration_count}", {
                 "iteration": self.iteration_count,
-                "operation": "run_improvement_iteration"
+                "operation": "run_improvement_iteration",
+                "error": str(e)
             })
             raise
 
@@ -420,17 +449,24 @@ class MemoryEnhancedRecursiveImprovement:
         insights = {
             "total_iterations": self.iteration_count,
             "cognitive_metrics": self.cognitive_metrics,
-            "recent_patterns": self.memory.recall("pattern", limit=10),
-            "improvement_history": self.memory.recall("improvement iteration", limit=5),
-            "error_patterns": self.memory.recall("error", limit=5),
-            "performance_data": self.memory.recall("performance", limit=5)
+            "recent_patterns": self.memory.search_memories("pattern", limit=10),
+            "improvement_history": self.memory.search_memories("improvement iteration", limit=5),
+            "error_patterns": self.memory.search_memories("error", limit=5),
+            "performance_data": self.memory.search_memories("performance", limit=5)
         }
 
         return insights
 
     def export_intelligence(self):
         """Export all accumulated intelligence"""
-        return self.memory.export_memories()
+        # Get all memories from this namespace
+        all_memories = self.memory.search_memories("", limit=10000)  # Large limit to get all
+        return {
+            "namespace": self.memory.namespace,
+            "total_memories": len(all_memories),
+            "memories": all_memories,
+            "health_status": self.memory.get_health_status()
+        }
 
 # Demonstration function
 def demonstrate_memory_enhanced_improvement():
