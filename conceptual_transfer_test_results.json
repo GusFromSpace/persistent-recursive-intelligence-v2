@@ -1,7 +1,7 @@
 {
   "test_id": "ADV-TEST-002",
   "test_name": "Conceptual Bug Transfer",
-  "timestamp": "2025-07-03T16:10:08.905590",
+  "timestamp": "2025-07-03T16:23:10.104633",
   "training_phase": {
     "successful": true,
     "concepts_detected": [
@@ -31,7 +31,7 @@
     "test_passed": true
   },
   "test_environment": {
-    "teacher_project": "/tmp/concept_transfer_test_qkluumnr/teacher_project",
-    "student_project": "/tmp/concept_transfer_test_qkluumnr/student_project"
+    "teacher_project": "/tmp/concept_transfer_test_j_q5tqhh/teacher_project",
+    "student_project": "/tmp/concept_transfer_test_j_q5tqhh/student_project"
   }
 }

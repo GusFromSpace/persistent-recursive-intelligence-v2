@@ -1,7 +1,7 @@
 {
   "test_id": "ADV-TEST-013",
   "test_name": "Survivorship Bias Vulnerability Test",
-  "timestamp": "2025-07-03T16:10:55.649891",
+  "timestamp": "2025-07-03T16:23:51.944929",
   "pathological_scenarios": {
     "total": 4,
     "survived": 4,
@@ -23,55 +23,55 @@
     {
       "scenario": "scenario_00_memory_exhaustion_bomb",
       "completed": true,
-      "execution_time": 4.751525402069092,
+      "execution_time": 4.696202516555786,
       "return_code": 0,
       "resource_issues": [
         "memory_error"
       ],
       "output_length": 2636,
-      "stdout": "\ud83c\udf00 PRI Analysis: scenario_00_memory_exhaustion_bomb\n\ud83d\udd0d Scanning /tmp/survivorship_test_2ofr1kdb/scenario_00_memory_exhaustion_bomb...\n\ud83e\udde0 Found 1 issues across 1 categories\n\ud83d\udcda Generated educational annotations\n\ud83c\udf00 Applied 3 levels of recursive improvement\n\ud83d\udcbe Stored 1 new patterns in memory\n\u2705 Analysis complete - 1% improvement potential identified\n\ud83d\udccb MEDIUM PRIORITY: 1\n",
-      "stderr": "/s]\nBatches: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 1/1 [00:00<00:00, 638.01it/s]\n\nBatches:   0%|          | 0/1 [00:00<?, ?it/s]\nBatches: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 1/1 [00:00<00:00, 736.10it/s]\nINFO: Full project analysis complete: 1 files, 1 issues found\nINFO: \ud83e\uddf9 Cleaning up SimpleMemoryEngine (namespace: recursive-improvement-engine)...\nINFO: \u2705 SentenceTransformer model cleared\nINFO: \u2705 FAISS vector index cleared\nINFO: \u2705 Vector ID mappings cleared\nINFO: \ud83e\uddf9 SimpleMemoryEngine cleanup completed for recursive-improvement-engine\n",
+      "stdout": "\ud83c\udf00 PRI Analysis: scenario_00_memory_exhaustion_bomb\n\ud83d\udd0d Scanning /tmp/survivorship_test_0xxdwpur/scenario_00_memory_exhaustion_bomb...\n\ud83e\udde0 Found 1 issues across 1 categories\n\ud83d\udcda Generated educational annotations\n\ud83c\udf00 Applied 3 levels of recursive improvement\n\ud83d\udcbe Stored 1 new patterns in memory\n\u2705 Analysis complete - 1% improvement potential identified\n\ud83d\udccb MEDIUM PRIORITY: 1\n",
+      "stderr": "/s]\nBatches: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 1/1 [00:00<00:00, 646.57it/s]\n\nBatches:   0%|          | 0/1 [00:00<?, ?it/s]\nBatches: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 1/1 [00:00<00:00, 661.46it/s]\nINFO: Full project analysis complete: 1 files, 1 issues found\nINFO: \ud83e\uddf9 Cleaning up SimpleMemoryEngine (namespace: recursive-improvement-engine)...\nINFO: \u2705 SentenceTransformer model cleared\nINFO: \u2705 FAISS vector index cleared\nINFO: \u2705 Vector ID mappings cleared\nINFO: \ud83e\uddf9 SimpleMemoryEngine cleanup completed for recursive-improvement-engine\n",
       "survival_status": "survived"
     },
     {
       "scenario": "scenario_01_infinite_loop_trigger",
       "completed": true,
-      "execution_time": 5.381041526794434,
+      "execution_time": 4.652160167694092,
       "return_code": 0,
       "resource_issues": [
         "memory_error"
       ],
       "output_length": 2634,
-      "stdout": "\ud83c\udf00 PRI Analysis: scenario_01_infinite_loop_trigger\n\ud83d\udd0d Scanning /tmp/survivorship_test_2ofr1kdb/scenario_01_infinite_loop_trigger...\n\ud83e\udde0 Found 5 issues across 5 categories\n\ud83d\udcda Generated educational annotations\n\ud83c\udf00 Applied 3 levels of recursive improvement\n\ud83d\udcbe Stored 1 new patterns in memory\n\u2705 Analysis complete - 5% improvement potential identified\n\ud83d\udccb MEDIUM PRIORITY: 5\n",
-      "stderr": "/s]\nBatches: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 1/1 [00:00<00:00, 683.22it/s]\n\nBatches:   0%|          | 0/1 [00:00<?, ?it/s]\nBatches: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 1/1 [00:00<00:00, 642.12it/s]\nINFO: Full project analysis complete: 1 files, 5 issues found\nINFO: \ud83e\uddf9 Cleaning up SimpleMemoryEngine (namespace: recursive-improvement-engine)...\nINFO: \u2705 SentenceTransformer model cleared\nINFO: \u2705 FAISS vector index cleared\nINFO: \u2705 Vector ID mappings cleared\nINFO: \ud83e\uddf9 SimpleMemoryEngine cleanup completed for recursive-improvement-engine\n",
+      "stdout": "\ud83c\udf00 PRI Analysis: scenario_01_infinite_loop_trigger\n\ud83d\udd0d Scanning /tmp/survivorship_test_0xxdwpur/scenario_01_infinite_loop_trigger...\n\ud83e\udde0 Found 5 issues across 5 categories\n\ud83d\udcda Generated educational annotations\n\ud83c\udf00 Applied 3 levels of recursive improvement\n\ud83d\udcbe Stored 1 new patterns in memory\n\u2705 Analysis complete - 5% improvement potential identified\n\ud83d\udccb MEDIUM PRIORITY: 5\n",
+      "stderr": "/s]\nBatches: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 1/1 [00:00<00:00, 644.09it/s]\n\nBatches:   0%|          | 0/1 [00:00<?, ?it/s]\nBatches: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 1/1 [00:00<00:00, 732.76it/s]\nINFO: Full project analysis complete: 1 files, 5 issues found\nINFO: \ud83e\uddf9 Cleaning up SimpleMemoryEngine (namespace: recursive-improvement-engine)...\nINFO: \u2705 SentenceTransformer model cleared\nINFO: \u2705 FAISS vector index cleared\nINFO: \u2705 Vector ID mappings cleared\nINFO: \ud83e\uddf9 SimpleMemoryEngine cleanup completed for recursive-improvement-engine\n",
       "survival_status": "survived"
     },
     {
       "scenario": "scenario_02_analysis_confusion_matrix",
       "completed": true,
-      "execution_time": 6.1907289028167725,
+      "execution_time": 4.6439197063446045,
       "return_code": 0,
       "resource_issues": [
         "memory_error"
       ],
       "output_length": 2668,
-      "stdout": "\ud83c\udf00 PRI Analysis: scenario_02_analysis_confusion_matrix\n\ud83d\udd0d Scanning /tmp/survivorship_test_2ofr1kdb/scenario_02_analysis_confusion_matrix...\n\ud83e\udde0 Found 15 issues across 12 categories\n\ud83d\udcda Generated educational annotations\n\ud83c\udf00 Applied 3 levels of recursive improvement\n\ud83d\udcbe Stored 1 new patterns in memory\n\u2705 Analysis complete - 15% improvement potential identified\n\u26a0\ufe0f  HIGH PRIORITY: 2\n\ud83d\udccb MEDIUM PRIORITY: 10\n",
-      "stderr": "s]\nBatches: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 1/1 [00:00<00:00, 698.12it/s]\n\nBatches:   0%|          | 0/1 [00:00<?, ?it/s]\nBatches: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 1/1 [00:00<00:00, 468.22it/s]\nINFO: Full project analysis complete: 1 files, 15 issues found\nINFO: \ud83e\uddf9 Cleaning up SimpleMemoryEngine (namespace: recursive-improvement-engine)...\nINFO: \u2705 SentenceTransformer model cleared\nINFO: \u2705 FAISS vector index cleared\nINFO: \u2705 Vector ID mappings cleared\nINFO: \ud83e\uddf9 SimpleMemoryEngine cleanup completed for recursive-improvement-engine\n",
+      "stdout": "\ud83c\udf00 PRI Analysis: scenario_02_analysis_confusion_matrix\n\ud83d\udd0d Scanning /tmp/survivorship_test_0xxdwpur/scenario_02_analysis_confusion_matrix...\n\ud83e\udde0 Found 15 issues across 12 categories\n\ud83d\udcda Generated educational annotations\n\ud83c\udf00 Applied 3 levels of recursive improvement\n\ud83d\udcbe Stored 1 new patterns in memory\n\u2705 Analysis complete - 15% improvement potential identified\n\u26a0\ufe0f  HIGH PRIORITY: 2\n\ud83d\udccb MEDIUM PRIORITY: 10\n",
+      "stderr": "s]\nBatches: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 1/1 [00:00<00:00, 710.18it/s]\n\nBatches:   0%|          | 0/1 [00:00<?, ?it/s]\nBatches: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 1/1 [00:00<00:00, 585.39it/s]\nINFO: Full project analysis complete: 1 files, 15 issues found\nINFO: \ud83e\uddf9 Cleaning up SimpleMemoryEngine (namespace: recursive-improvement-engine)...\nINFO: \u2705 SentenceTransformer model cleared\nINFO: \u2705 FAISS vector index cleared\nINFO: \u2705 Vector ID mappings cleared\nINFO: \ud83e\uddf9 SimpleMemoryEngine cleanup completed for recursive-improvement-engine\n",
       "survival_status": "survived"
     },
     {
       "scenario": "scenario_03_resource_race_conditions",
       "completed": true,
-      "execution_time": 5.789223909378052,
+      "execution_time": 4.565497159957886,
       "return_code": 0,
       "resource_issues": [
         "memory_error"
       ],
       "output_length": 2666,
-      "stdout": "\ud83c\udf00 PRI Analysis: scenario_03_resource_race_conditions\n\ud83d\udd0d Scanning /tmp/survivorship_test_2ofr1kdb/scenario_03_resource_race_conditions...\n\ud83e\udde0 Found 14 issues across 12 categories\n\ud83d\udcda Generated educational annotations\n\ud83c\udf00 Applied 3 levels of recursive improvement\n\ud83d\udcbe Stored 1 new patterns in memory\n\u2705 Analysis complete - 14% improvement potential identified\n\u26a0\ufe0f  HIGH PRIORITY: 1\n\ud83d\udccb MEDIUM PRIORITY: 11\n",
-      "stderr": "s]\nBatches: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 1/1 [00:00<00:00, 569.80it/s]\n\nBatches:   0%|          | 0/1 [00:00<?, ?it/s]\nBatches: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 1/1 [00:00<00:00, 617.08it/s]\nINFO: Full project analysis complete: 1 files, 14 issues found\nINFO: \ud83e\uddf9 Cleaning up SimpleMemoryEngine (namespace: recursive-improvement-engine)...\nINFO: \u2705 SentenceTransformer model cleared\nINFO: \u2705 FAISS vector index cleared\nINFO: \u2705 Vector ID mappings cleared\nINFO: \ud83e\uddf9 SimpleMemoryEngine cleanup completed for recursive-improvement-engine\n",
+      "stdout": "\ud83c\udf00 PRI Analysis: scenario_03_resource_race_conditions\n\ud83d\udd0d Scanning /tmp/survivorship_test_0xxdwpur/scenario_03_resource_race_conditions...\n\ud83e\udde0 Found 14 issues across 12 categories\n\ud83d\udcda Generated educational annotations\n\ud83c\udf00 Applied 3 levels of recursive improvement\n\ud83d\udcbe Stored 1 new patterns in memory\n\u2705 Analysis complete - 14% improvement potential identified\n\u26a0\ufe0f  HIGH PRIORITY: 1\n\ud83d\udccb MEDIUM PRIORITY: 11\n",
+      "stderr": "s]\nBatches: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 1/1 [00:00<00:00, 580.04it/s]\n\nBatches:   0%|          | 0/1 [00:00<?, ?it/s]\nBatches: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 1/1 [00:00<00:00, 760.80it/s]\nINFO: Full project analysis complete: 1 files, 14 issues found\nINFO: \ud83e\uddf9 Cleaning up SimpleMemoryEngine (namespace: recursive-improvement-engine)...\nINFO: \u2705 SentenceTransformer model cleared\nINFO: \u2705 FAISS vector index cleared\nINFO: \u2705 Vector ID mappings cleared\nINFO: \ud83e\uddf9 SimpleMemoryEngine cleanup completed for recursive-improvement-engine\n",
       "survival_status": "survived"
     }
   ],
-  "test_environment": "/tmp/survivorship_test_2ofr1kdb"
+  "test_environment": "/tmp/survivorship_test_0xxdwpur"
 }

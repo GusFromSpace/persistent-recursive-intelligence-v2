@@ -46,59 +46,89 @@ class OuroborosTest:
         return test_pri_dir
     
     def inject_subtle_memory_corruption_flaw(self, test_pri_dir: Path) -> Dict[str, Any]:
-        """Inject subtle flaw in memory system that occasionally corrupts data"""
+        """Inject subtle logic flaw in memory system - inefficient duplicate storage"""
         
-        memory_engine_file = test_pri_dir / "src" / "cognitive" / "memory" / "engine.py"
+        # Look for actual memory files that exist
+        memory_files = [
+            test_pri_dir / "src" / "cognitive" / "memory" / "simple_memory.py",
+            test_pri_dir / "src" / "cognitive" / "memory" / "engine.py", 
+            test_pri_dir / "src" / "cognitive" / "memory" / "memory" / "engine.py"
+        ]
         
-        if not memory_engine_file.exists():
-            # Try alternative path
-            memory_engine_file = test_pri_dir / "src" / "cognitive" / "memory" / "memory" / "engine.py"
+        memory_engine_file = None
+        for file_path in memory_files:
+            if file_path.exists():
+                memory_engine_file = file_path
+                break
         
-        if not memory_engine_file.exists():
+        if not memory_engine_file:
             return {
                 'injected': False,
-                'reason': 'Memory engine file not found',
+                'reason': 'No memory engine file found in expected locations',
                 'flaw_type': 'memory_corruption'
             }
         
         # Read original content
         original_content = memory_engine_file.read_text()
         
-        # Inject subtle flaw: occasionally corrupt metadata in memory operations
-        flaw_injection = '''
-    # INJECTED FLAW: Subtle memory corruption (1% chance)
-    import random
-    if hasattr(self, '_flaw_active') and self._flaw_active and random.random() < 0.01:
-        # Corrupt metadata occasionally
-        if hasattr(entry, 'metadata') and entry.metadata:
-            entry.metadata = {k: "corrupted" if random.random() < 0.3 else v 
-                            for k, v in entry.metadata.items()}
-'''
+        # Check for suitable injection points - look for memory storage methods
+        injection_patterns = [
+            'def store_memory(',
+            'def remember(',
+            'def store(',
+            'async def store_memory(',
+            'def add_memory(',
+            'def save('
+        ]
         
-        # Find a good injection point in a memory store method
-        if 'def remember(' in original_content or 'def store(' in original_content:
-            # Inject after the first method definition we find
-            lines = original_content.split('\n')
-            new_lines = []
-            injected = False
-            
-            for i, line in enumerate(lines):
-                new_lines.append(line)
-                if not injected and ('def remember(' in line or 'def store(' in line):
-                    # Add the flaw after the method signature
-                    if i + 1 < len(lines) and lines[i + 1].strip().startswith('"""'):
-                        # Skip docstring
-                        j = i + 1
-                        while j < len(lines) and not lines[j].strip().endswith('"""'):
-                            j += 1
-                        # Add flaw after docstring
-                        new_lines.extend(lines[i+1:j+1])
-                        new_lines.append(flaw_injection)
-                        i = j
-                        injected = True
-                    else:
-                        new_lines.append(flaw_injection)
-                        injected = True
+        suitable_injection_point = None
+        for pattern in injection_patterns:
+            if pattern in original_content:
+                suitable_injection_point = pattern
+                break
+        
+        if not suitable_injection_point:
+            return {
+                'injected': False,
+                'reason': f'No suitable injection point found. Looked for: {injection_patterns}',
+                'flaw_type': 'memory_corruption'
+            }
+        
+        # Inject a more realistic flaw: inefficient duplicate detection
+        flaw_injection = f'''        # INJECTED FLAW: Inefficient duplicate detection (will cause memory bloat)
+        # This flaw makes duplicate detection O(n²) instead of O(n) by using nested loops
+        stored_entries = getattr(self, '_stored_entries', [])
+        for existing in stored_entries:
+            for field in ['content', 'embedding', 'metadata']:
+                if hasattr(memory, field) and hasattr(existing, field):
+                    # Inefficient comparison - should use indexing
+                    if getattr(memory, field) == getattr(existing, field):
+                        pass  # Found duplicate but proceed anyway (memory leak)
+        stored_entries.append(memory)
+        self._stored_entries = stored_entries[-1000:]  # Inefficient truncation'''
+        
+        # Find injection point and inject flaw
+        lines = original_content.split('\n')
+        new_lines = []
+        injected = False
+        
+        for i, line in enumerate(lines):
+            new_lines.append(line)
+            if not injected and suitable_injection_point in line:
+                # Look for the start of the method body
+                j = i + 1
+                # Skip docstring if present
+                if j < len(lines) and lines[j].strip().startswith('"""'):
+                    while j < len(lines) and not lines[j].strip().endswith('"""'):
+                        new_lines.append(lines[j])
+                        j += 1
+                    if j < len(lines):
+                        new_lines.append(lines[j])  # Add closing """
+                        j += 1
+                
+                # Add the flaw at the beginning of the method body
+                new_lines.append(flaw_injection)
+                injected = True
             
             if injected:
                 # Add flag to enable flaw
@@ -133,35 +163,70 @@ class OuroborosTest:
         }
     
     def inject_learning_decay_flaw(self, test_pri_dir: Path) -> Dict[str, Any]:
-        """Inject learning decay flaw that reduces older memory weights"""
+        """Inject learning decay flaw that reduces system's ability to learn from failures"""
         
-        recursive_file = test_pri_dir / "src" / "cognitive" / "recursive" / "recursive_improvement_enhanced.py"
+        # Look for recursive improvement files
+        recursive_files = [
+            test_pri_dir / "src" / "cognitive" / "recursive" / "recursive_improvement_enhanced.py",
+            test_pri_dir / "src" / "cognitive" / "recursive" / "recursive_improvement.py", 
+            test_pri_dir / "src" / "cognitive" / "synthesis" / "persistent_recursive_engine.py"
+        ]
         
-        if not recursive_file.exists():
+        recursive_file = None
+        for file_path in recursive_files:
+            if file_path.exists():
+                recursive_file = file_path
+                break
+        
+        if not recursive_file:
             return {
                 'injected': False,
-                'reason': 'Recursive improvement file not found',
+                'reason': 'No recursive improvement file found in expected locations',
                 'flaw_type': 'learning_decay'
             }
         
         original_content = recursive_file.read_text()
         
-        # Inject learning decay flaw
-        flaw_injection = '''
-    # INJECTED FLAW: Learning decay - older memories lose weight
-    import time
-    if hasattr(memory_entry, 'timestamp'):
-        age_hours = (time.time() - memory_entry.timestamp) / 3600
-        if age_hours > 24:  # Memories older than 24 hours start decaying
-            decay_factor = max(0.1, 1.0 - (age_hours - 24) * 0.01)
-            if hasattr(memory_entry, 'weight'):
-                memory_entry.weight *= decay_factor
-            elif hasattr(memory_entry, 'confidence'):
-                memory_entry.confidence *= decay_factor
-'''
+        # Check for suitable injection points - look for actual methods that exist
+        injection_patterns = [
+            'def analyze_code_file(',
+            'def _detect_issues(',
+            'def _convert_enhanced_issues(',
+            'def analyze(',
+            'def learn_from_',
+            'def process_',
+            'def update_',
+            'def improve(',
+            'def evolve('
+        ]
         
-        # Find injection point in memory retrieval or analysis method
-        if 'def analyze(' in original_content or 'def get_memories(' in original_content:
+        suitable_injection_point = None
+        for pattern in injection_patterns:
+            if pattern in original_content:
+                suitable_injection_point = pattern
+                break
+        
+        if not suitable_injection_point:
+            return {
+                'injected': False,
+                'reason': f'No suitable injection point found. Looked for: {injection_patterns}',
+                'flaw_type': 'learning_decay'
+            }
+        
+        # Inject a more realistic flaw: biased learning that ignores failure patterns
+        flaw_injection = '''        # INJECTED FLAW: Learning bias - system ignores failure patterns over time
+        # This causes the system to become overconfident and stop learning from mistakes
+        if hasattr(self, '_learning_confidence'):
+            self._learning_confidence = min(0.95, self._learning_confidence + 0.01)
+        else:
+            self._learning_confidence = 0.5
+        
+        # Bias: Ignore patterns with low confidence (creates blind spots)
+        if hasattr(result, 'confidence') and result.confidence < self._learning_confidence:
+            return result  # Skip learning from this pattern'''
+        
+        # Find injection point in learning/analysis method
+        if suitable_injection_point in original_content:
             lines = original_content.split('\n')
             new_lines = []
             injected = False
