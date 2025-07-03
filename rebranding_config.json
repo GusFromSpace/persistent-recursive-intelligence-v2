@@ -1,0 +1,100 @@
+{
+  "rebranding_rules": [
+    {
+      "old_brand": "PRI",
+      "new_brand": "Mesopredator",
+      "patterns": [
+        {
+          "pattern": "print\\(f?\"🌀 Enhanced {old_brand}([^\"]*)\"",
+          "replacement": "print(f\"🌀 Enhanced {new_brand}\\1\"",
+          "risk_level": "safe",
+          "description": "Enhanced system print statements",
+          "file_types": ["*.py"]
+        },
+        {
+          "pattern": "print\\(f?\"🌀 {old_brand} Analysis([^\"]*)\"",
+          "replacement": "print(f\"🌀 {new_brand} Analysis\\1\"",
+          "risk_level": "safe",
+          "description": "Analysis output messages", 
+          "file_types": ["*.py"]
+        },
+        {
+          "pattern": "print\\(\"🧠 Memory-Enhanced {old_brand}([^\"]*)\"",
+          "replacement": "print(\"🧠 Memory-Enhanced {new_brand}\\1\"",
+          "risk_level": "safe",
+          "description": "Memory-enhanced system messages",
+          "file_types": ["*.py"]
+        },
+        {
+          "pattern": "title=\"Enhanced {old_brand} API\"",
+          "replacement": "title=\"Enhanced {new_brand} API\"",
+          "risk_level": "safe",
+          "description": "API titles",
+          "file_types": ["*.py"]
+        },
+        {
+          "pattern": "\"service\": \"Enhanced {old_brand} API\"",
+          "replacement": "\"service\": \"Enhanced {new_brand} API\"",
+          "risk_level": "safe",
+          "description": "API service names",
+          "file_types": ["*.py"]
+        },
+        {
+          "pattern": "logging\\.info\\(\"🧠 Memory-Enhanced {old_brand}([^\"]*)\"",
+          "replacement": "logging.info(\"🧠 Memory-Enhanced {new_brand}\\1\"",
+          "risk_level": "safe",
+          "description": "Logging messages",
+          "file_types": ["*.py"]
+        },
+        {
+          "pattern": "\"\"\"(\\s*)Enhanced {old_brand}([^\"]*?)\"\"\"",
+          "replacement": "\"\"\"\\1Enhanced {new_brand}\\2\"\"\"",
+          "risk_level": "safe",
+          "description": "Docstring titles",
+          "file_types": ["*.py"]
+        },
+        {
+          "pattern": "# Enhanced {old_brand}([^\n]*)",
+          "replacement": "# Enhanced {new_brand}\\1",
+          "risk_level": "safe",
+          "description": "Comment references",
+          "file_types": ["*.py", "*.md", "*.txt"]
+        },
+        {
+          "pattern": "# {old_brand} ([^\n]*)",
+          "replacement": "# {new_brand} \\1",
+          "risk_level": "medium",
+          "description": "General brand references in comments",
+          "file_types": ["*.py", "*.md", "*.txt"]
+        },
+        {
+          "pattern": "\\*\\*{old_brand}\\*\\*",
+          "replacement": "**{new_brand}**",
+          "risk_level": "safe",
+          "description": "Bold brand references in markdown",
+          "file_types": ["*.md"]
+        }
+      ]
+    }
+  ],
+  "safety_settings": {
+    "create_backups": true,
+    "max_risk_level": "medium",
+    "exclude_patterns": [
+      "**/venv/**",
+      "**/__pycache__/**",
+      "**/.git/**",
+      "**/node_modules/**",
+      "**/*.pyc",
+      "**/analysis_*",
+      "**/findings_*"
+    ],
+    "exclude_test_files": true,
+    "exclude_history_files": true
+  },
+  "analysis_settings": {
+    "analyze_context": true,
+    "check_syntax": true,
+    "validate_imports": true
+  }
+}

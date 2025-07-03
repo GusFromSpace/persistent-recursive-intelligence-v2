@@ -1,0 +1,13 @@
+{
+  "test_id": "ADV-TEST-002-FIXED",
+  "test_name": "Fixed Semantic Conceptual Transfer Test",
+  "timestamp": "2025-06-29T10:19:15.202913",
+  "semantic_capabilities_verified": true,
+  "faiss_enabled": true,
+  "success": false,
+  "teacher_issues": 20,
+  "student_issues": 25,
+  "semantic_score": 10,
+  "conceptual_evidence": [],
+  "semantic_transfer_detected": false
+}

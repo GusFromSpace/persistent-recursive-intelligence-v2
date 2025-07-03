@@ -1,0 +1,588 @@
+#!/usr/bin/env python3
+"""
+Aggressive Dead Code Cleaner for GusBot
+More aggressive cleaning while still maintaining safety
+"""
+
+import ast
+import os
+import re
+import shutil
+from pathlib import Path
+from typing import Dict, List, Set, Tuple
+import logging
+
+logger = logging.getLogger(__name__)
+
+class AggressiveDeadCodeCleaner:
+    """More aggressive but still safe dead code cleaning"""
+
+    def __init__(self, project_path: str, dry_run: bool = True):
+        self.project_path = Path(project_path)
+        self.dry_run = dry_run
+        self.removals = []
+
+    def is_project_file(self, file_path: Path) -> bool:
+        """Check if file is a project file (not vendored)"""
+        path_str = str(file_path)
+        excluded_patterns = [
+            "venv/", "gusbot-env/", "__pycache__/", ".git/",
+            "site-packages/", "node_modules/", "vendor/",
+            ".app/", ".framework/", ".bundle/"
+        ]
+        return not any(pattern in path_str for pattern in excluded_patterns)
+
+    def create_backup(self, file_path: Path) -> Path:
+        """Create a backup copy before making changes"""
+        backup_path = file_path.with_suffix(file_path.suffix + '.backup')
+        shutil.copy2(file_path, backup_path)
+        logger.info(f"Created backup: {backup_path}")
+        return backup_path
+
+    def validate_syntax(self, content: str, file_path: str) -> bool:
+        """Validate that content has valid Python syntax"""
+        try:
+            ast.parse(content)
+            return True
+        except SyntaxError as e:
+            logger.error(f"Syntax error in {file_path}: {e}")
+            return False
+
+    def fix_mixed_quotes_in_fstrings(self, content: str) -> Tuple[str, int]:
+        """Fix mixed quote issues in f-strings that cause syntax errors"""
+        fixes_applied = 0
+        lines = content.split('\n')
+
+        for i, line in enumerate(lines):
+            # Look for f-strings with mixed quotes
+            if 'f"' in line and '"{' in line and '}' in line:
+                # Replace mixed quotes in f-strings: f"text "{var}" more" -> f"text '{var}' more"
+                # This is a simple heuristic fix
+                original_line = line
+                # Find f-string patterns and fix them
+                # Pattern to find f"..."{var}"..."
+                pattern = r'f"([^"]*)"([^"]*)"([^"]*)"'
+                match = re.search(pattern, line)
+                if match:
+                    # Replace with single quotes for inner content
+                    line = re.sub(r'f"([^"]*)"([^"]*)"([^"]*)"', r"f\"\g<1>'\g<2>'\g<3>\"", line)
+                    lines[i] = line
+                    if line != original_line:
+                        fixes_applied += 1
+                        logger.info(f"Fixed mixed quotes in f-string at line {i+1}")
+
+        return '\n'.join(lines), fixes_applied
+
+    def fix_common_syntax_errors(self, content: str) -> Tuple[str, int]:
+        """Fix common syntax errors introduced by aggressive cleaning"""
+        fixes_applied = 0
+
+        # Fix mixed quotes in f-strings
+        content, fstring_fixes = self.fix_mixed_quotes_in_fstrings(content)
+        fixes_applied += fstring_fixes
+
+        lines = content.split('\n')
+
+        for i, line in enumerate(lines):
+            original_line = line
+
+            # Look for lines ending with unterminated quotes
+            stripped = line.rstrip()
+            if stripped.endswith('\'') and stripped.count('\'') % 2 == 1:
+                # Likely unterminated string
+                if not stripped.endswith('\\\''):  # Not an escaped quote
+                    line = stripped[:-1]  # Remove the orphaned quote
+                    lines[i] = line
+                    fixes_applied += 1
+                    logger.info(f"Fixed unterminated string at line {i+1}")
+
+            elif stripped.endswith('"') and stripped.count('"') % 2 == 1:
+                # Likely unterminated string
+                if not stripped.endswith('\\"'):  # Not an escaped quote
+                    line = stripped[:-1]  # Remove the orphaned quote
+                    lines[i] = line
+                    fixes_applied += 1
+                    logger.info(f"Fixed unterminated string at line {i+1}")
+
+        return '\n'.join(lines), fixes_applied
+
+    def remove_obvious_unused_imports(self, file_path: str, content: str) -> Tuple[str, int]:
+        """Remove obviously unused imports more aggressively"""
+        lines = content.split('\n')
+        new_lines = []
+        removed_count = 0
+
+        for line in lines:
+            stripped = line.strip()
+            should_remove = False
+
+            # Skip empty lines and comments
+            if not stripped or stripped.startswith("#"):
+                new_lines.append(line)
+                continue
+
+            # Check for import statements
+            if stripped.startswith(("import ", "from ")):
+                # Extract imported names
+                if stripped.startswith("import "):
+                    # Handle "import module" or "import module as alias"
+                    parts = stripped[7:].split(" as ")
+                    import_name = parts[-1].strip()  # Use alias if exists, otherwise module name
+                    if " as " not in stripped:
+                        import_name = import_name.split(".")[0]  # Get first part for dotted imports
+
+                elif stripped.startswith("from "):
+                    # Handle "from module import name" or "from module import name as alias"
+                    match = re.match(r"from\s+\S+\s+import\s+(.+)", stripped)
+                    if match:
+                        import_part = match.group(1)
+                        # Handle multiple imports or aliases
+                        if " as " in import_part:
+                            import_name = import_part.split(" as ")[-1].strip()
+                        else:
+                            import_name = import_part.split(",")[0].strip()
+
+                # Check if the imported name is used in the rest of the content
+                # Be more aggressive but still safe
+                rest_of_content = "\n".join(lines)
+
+                # Don"t remove if used in obvious ways
+                usage_patterns = [
+                    rf'\b{re.escape(import_name)}\.', # module.method()
+                    rf"\b{re.escape(import_name)}\(",  # function()
+                    rf"\b{re.escape(import_name)}\[",  # indexing
+                    rf"isinstance\([^,]+,\s*{re.escape(import_name)}\)",  # isinstance checks
+                    rf"['\"{import_name}['\"]",  # string references
+                ]
+
+                is_used = any(re.search(pattern, rest_of_content) for pattern in usage_patterns)
+
+                # Special cases to be more aggressive
+                if not is_used:
+                    # These are commonly safe to remove
+                    safe_to_remove_patterns = [
+                        "sys", "os", "json", "time", "datetime", "re", "logging",
+                        "pathlib", "typing", "collections", "itertools", "functools"
+                    ]
+
+                    # Only remove if it"s in the safe list or clearly unused
+                    base_import = import_name.split(".")[0]
+                    if (base_import in safe_to_remove_patterns or
+                        not any(import_name in line for line in lines[lines.index(line)+1:])):
+                        should_remove = True
+                        removed_count += 1
+                        self.removals.append({
+                            "type": "unused_import",
+                            "file": file_path,
+                            "line": line.strip(),
+                            "import": import_name
+                        })
+
+            if not should_remove:
+                new_lines.append(line)
+
+        return "\n".join(new_lines), removed_count
+
+    def remove_unused_variables(self, file_path: str, content: str) -> Tuple[str, int]:
+        """Remove unused variables (DISABLED - too aggressive, removes enum values)"""
+        # DISABLED: This method was removing enum values and other critical code
+        # The AST analysis doesn't properly distinguish between:
+        # - Unused local variables (safe to remove)  
+        # - Enum values like PRODUCTION = "production" (critical to keep)
+        # - Class attributes (critical to keep)
+        # - Module-level constants (critical to keep)
+        
+        logger.debug(f"Variable removal disabled for safety in {file_path}")
+        return content, 0
+        
+    def remove_unused_variables_OLD_BROKEN(self, file_path: str, content: str) -> Tuple[str, int]:
+        """Remove unused variables more aggressively - BROKEN VERSION"""
+        try:
+            tree = ast.parse(content)
+            lines = content.split("\n")
+
+            # Find all variable assignments and usage
+            assignments = {}
+            usages = set()
+
+            for node in ast.walk(tree):
+                if isinstance(node, ast.Assign):
+                    for target in node.targets:
+                        if isinstance(target, ast.Name):
+                            assignments[target.id] = node.lineno
+                elif isinstance(node, ast.Name) and isinstance(node.ctx, ast.Load):
+                    usages.add(node.id)
+
+            # Find unused variables
+            unused_vars = set(assignments.keys()) - usages
+
+            # Remove lines with unused variable assignments
+            new_lines = []
+            removed_count = 0
+
+            for i, line in enumerate(lines, 1):
+                should_remove = False
+
+                for var in unused_vars:
+                    # Check if this line assigns to the unused variable
+                    if (i in assignments.values() and
+                        re.match(rf"\s*{re.escape(var)}\s*=", line.strip())):
+                        should_remove = True
+                        removed_count += 1
+                        self.removals.append({
+                            "type": "unused_variable",
+                            "file": file_path,
+                            "line": line.strip(),
+                            "variable": var
+                        })
+                        break
+
+                if not should_remove:
+                    new_lines.append(line)
+
+            return "\n".join(new_lines), removed_count
+
+        except SyntaxError:
+            return content, 0
+
+    def remove_empty_functions(self, file_path: str, content: str) -> Tuple[str, int]:
+        """Remove functions that only contain pass or are clearly stubs"""
+        try:
+            tree = ast.parse(content)
+            lines = content.split("\n")
+            lines_to_remove = set()
+            removed_count = 0
+
+            for node in ast.walk(tree):
+                if isinstance(node, ast.FunctionDef):
+                    # Check if function is empty or just has pass
+                    if (len(node.body) == 1 and isinstance(node.body[0], ast.Pass)):
+                        # Don"t remove if it"s a special method or public API
+                        if not (node.name.startswith("__") and node.name.endswith("__")):
+                            # Mark function lines for removal
+                            start_line = node.lineno - 1
+                            end_line = node.end_lineno if hasattr(node, "end_lineno") else start_line + 1
+
+                            for line_num in range(start_line, min(end_line, len(lines))):
+                                lines_to_remove.add(line_num)
+
+                            removed_count += 1
+                            self.removals.append({
+                                "type": "empty_function",
+                                "file": file_path,
+                                "function": node.name,
+                                "lines": f"{start_line+1}-{end_line}"
+                            })
+
+            # Remove marked lines
+            new_lines = [line for i, line in enumerate(lines) if i not in lines_to_remove]
+            return "\n".join(new_lines), removed_count
+
+        except SyntaxError:
+            return content, 0
+
+    def remove_duplicate_imports(self, content: str) -> Tuple[str, int]:
+        """Remove duplicate import statements"""
+        lines = content.split("\n")
+        seen_imports = set()
+        new_lines = []
+        removed_count = 0
+
+        for line in lines:
+            stripped = line.strip()
+            if stripped.startswith(("import ", "from ")):
+                if stripped in seen_imports:
+                    removed_count += 1
+                    self.removals.append({
+                        "type": "duplicate_import",
+                        "line": stripped
+                    })
+                    continue
+                seen_imports.add(stripped)
+            new_lines.append(line)
+
+        return "\n".join(new_lines), removed_count
+
+    def remove_trailing_whitespace(self, content: str) -> Tuple[str, int]:
+        """Remove trailing whitespace and extra blank lines"""
+        lines = content.split("\n")
+        new_lines = []
+        removed_count = 0
+
+        # Remove trailing whitespace from each line
+        for line in lines:
+            stripped_line = line.rstrip()
+            if line != stripped_line:
+                removed_count += 1
+            new_lines.append(stripped_line)
+
+        final_lines = []
+        blank_count = 0
+
+        for line in new_lines:
+            if line.strip() == "":
+                blank_count += 1
+                if blank_count <= 2:  # Allow max 2 consecutive blank lines
+                    final_lines.append(line)
+                else:
+                    removed_count += 1
+            else:
+                blank_count = 0
+                final_lines.append(line)
+
+        return "\n".join(final_lines), removed_count
+
+    def fix_import_order(self, content: str) -> Tuple[str, int]:
+        """Fix import order following PEP 8"""
+        lines = content.split("\n")
+        imports = []
+        from_imports = []
+        other_lines = []
+
+        in_imports = True
+        for line in lines:
+            stripped = line.strip()
+
+            if stripped.startswith("import ") and in_imports:
+                imports.append(line)
+            elif stripped.startswith("from ") and in_imports:
+                from_imports.append(line)
+            elif stripped == "" and in_imports:
+                continue  # Skip blank lines in import section
+            else:
+                if in_imports and stripped:  # First non-import line
+                    in_imports = False
+                other_lines.append(line)
+
+        # Sort imports
+        imports.sort()
+        from_imports.sort()
+
+        # Rebuild content
+        new_lines = []
+        if imports:
+            new_lines.extend(imports)
+            new_lines.append("")  # Blank line after imports
+        if from_imports:
+            new_lines.extend(from_imports)
+            new_lines.append("")  # Blank line after from imports
+
+        new_lines.extend(other_lines)
+
+        new_content = "\n".join(new_lines)
+        changes = 1 if new_content != content else 0
+
+        return new_content, changes
+
+    def remove_commented_code(self, content: str) -> Tuple[str, int]:
+        """Remove obvious commented-out code"""
+        lines = content.split("\n")
+        new_lines = []
+        removed_count = 0
+
+        for line in lines:
+            stripped = line.strip()
+
+            # Skip if it"s a docstring or regular comment
+            if (stripped.startswith("#") and
+                not stripped.startswith("# TODO") and
+                not stripped.startswith("# NOTE") and
+                not stripped.startswith("# FIXME") and
+                not stripped.startswith("# WARNING")):
+
+                # Check if it looks like commented code
+                uncommented = stripped[1:].strip()
+                if (uncommented.startswith(("def ", "class ", "import ", "from ", "if ", "for ", "while ")) or
+                    "=" in uncommented or
+                    uncommented.endswith((":", ")", "]", "}"))):
+                    removed_count += 1
+                    self.removals.append({
+                        "type": "commented_code",
+                        "line": line.strip()
+                    })
+                    continue
+
+            new_lines.append(line)
+
+        return '\n'.join(new_lines), removed_count
+
+    def fix_string_quotes(self, content: str) -> Tuple[str, int]:
+        """Standardize string quotes (prefer double quotes) - DISABLED FOR SAFETY"""
+        # This method was causing syntax errors by corrupting regex patterns
+        # Disabling until proper AST-based quote fixing can be implemented
+        return content, 0
+
+    def clean_file(self, file_path: Path) -> int:
+        """Clean a single file aggressively but safely"""
+        try:
+            with open(file_path, "r", encoding="utf-8") as f:
+                original_content = f.read()
+
+            content = original_content
+            total_removed = 0
+
+            # Step 1: Remove unused imports
+            content, import_removals = self.remove_obvious_unused_imports(str(file_path), content)
+            total_removed += import_removals
+
+            # Step 2: Remove duplicate imports
+            content, dup_removals = self.remove_duplicate_imports(content)
+            total_removed += dup_removals
+
+            # Step 3: Fix import order
+            content, import_fixes = self.fix_import_order(content)
+            total_removed += import_fixes
+
+            # Step 4: Remove unused variables
+            content, var_removals = self.remove_unused_variables(str(file_path), content)
+            total_removed += var_removals
+
+            # Step 5: Remove empty functions
+            content, func_removals = self.remove_empty_functions(str(file_path), content)
+            total_removed += func_removals
+
+            # Step 6: Remove commented code
+            content, comment_removals = self.remove_commented_code(content)
+            total_removed += comment_removals
+
+            # Step 7: Clean whitespace
+            content, whitespace_removals = self.remove_trailing_whitespace(content)
+            total_removed += whitespace_removals
+
+            # Step 8: Standardize quotes
+            content, quote_fixes = self.fix_string_quotes(content)
+            total_removed += quote_fixes
+
+            # Write back if changes were made and not in dry run
+            if total_removed > 0 and not self.dry_run:
+                with open(file_path, "w", encoding="utf-8") as f:
+                    f.write(content)
+
+                logger.info(f"Cleaned {file_path}: {total_removed} items fixed")
+
+            return total_removed
+
+        except Exception as e:
+            logger.error(f"Error cleaning {file_path}: {e}")
+            return 0
+
+    def clean_project(self) -> Dict:
+        """Clean the entire project"""
+        logger.info(f"Starting aggressive cleaning of {self.project_path}")
+
+        python_files = [f for f in self.project_path.rglob("*.py") if self.is_project_file(f)]
+
+        total_removed = 0
+        files_cleaned = 0
+
+        for py_file in python_files:
+            removed = self.clean_file(py_file)
+            if removed > 0:
+                files_cleaned += 1
+                total_removed += removed
+
+        results = {
+            "total_items_removed": total_removed,
+            "files_cleaned": files_cleaned,
+            "total_files_scanned": len(python_files),
+            "removals": self.removals,
+            "dry_run": self.dry_run
+        }
+
+        logger.info(f"Aggressive cleaning complete: {total_removed} items removed from {files_cleaned} files")
+        return results
+
+def fix_pri_syntax_errors(project_path: str, dry_run: bool = True) -> Dict:
+    """Fix syntax errors introduced by aggressive cleaning in PRI system"""
+    cleaner = AggressiveDeadCodeCleaner(project_path, dry_run=dry_run)
+
+    # Target files known to have syntax errors
+    problem_files = [
+        "src/cognitive/enhanced_patterns/dependency_validator.py",
+        "src/cognitive/enhanced_patterns/__init__.py",
+        "src/cognitive/recursive/recursive_improvement_enhanced.py",
+        "src/cognitive/enhanced_patterns/aggressive_cleaner.py"
+    ]
+
+    fixes_applied = 0
+    files_fixed = 0
+
+    for file_rel_path in problem_files:
+        file_path = Path(project_path) / file_rel_path
+        if not file_path.exists():
+            continue
+
+        logger.info(f"Checking syntax in {file_path}")
+
+        try:
+            if not dry_run:
+                cleaner.create_backup(file_path)
+
+            # Read content
+            with open(file_path, 'r', encoding='utf-8') as f:
+                content = f.read()
+
+            # Check if syntax is already valid
+            if cleaner.validate_syntax(content, str(file_path)):
+                logger.info(f"✅ {file_path} syntax is already valid")
+                continue
+
+            # Apply syntax fixes
+            fixed_content, file_fixes = cleaner.fix_common_syntax_errors(content)
+
+            # Validate the fixed content
+            if cleaner.validate_syntax(fixed_content, str(file_path)):
+                if not dry_run:
+                    with open(file_path, 'w', encoding='utf-8') as f:
+                        f.write(fixed_content)
+                    logger.info(f"✅ Fixed {file_fixes} syntax errors in {file_path}")
+                else:
+                    logger.info(f"[DRY RUN] Would fix {file_fixes} syntax errors in {file_path}")
+
+                fixes_applied += file_fixes
+                files_fixed += 1
+            else:
+                logger.warning(f"❌ Could not automatically fix syntax errors in {file_path}")
+
+        except Exception as e:
+            logger.error(f"Error processing {file_path}: {e}")
+
+    return {
+        "fixes_applied": fixes_applied,
+        "files_fixed": files_fixed,
+        "dry_run": dry_run
+    }
+
+def aggressive_clean(project_path: str, dry_run: bool = True) -> Dict:
+    """Main function for aggressive cleaning"""
+    cleaner = AggressiveDeadCodeCleaner(project_path, dry_run=dry_run)
+    return cleaner.clean_project()
+
+if __name__ == "__main__":
+    import sys
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Aggressively clean dead code")
+    parser.add_argument("project_path", help="Path to the project to clean")
+    parser.add_argument("--apply", action="store_true", help="Actually apply changes")
+    parser.add_argument("--verbose", action="store_true", help="Verbose output")
+
+    args = parser.parse_args()
+
+    if args.verbose:
+        logging.basicConfig(level=logging.INFO)
+
+    dry_run = not args.apply
+    results = aggressive_clean(args.project_path, dry_run=dry_run)
+
+    print(f"\n🧹 Aggressive Dead Code Cleaning Results")
+    print("=" * 50)
+    print(f"🎯 Mode: {'DRY RUN' if dry_run else 'APPLYING CHANGES'}')
+    print(f'📊 Total Items Removed: {results['total_items_removed']}')
+    print(f'📁 Files Cleaned: {results['files_cleaned']}")
+    print(f"📄 Files Scanned: {results['total_files_scanned']}")
+
+    if results["removals"] and args.verbose:
+        print(f"\n📋 Removed Items:")
+        for removal in results["removals"][:20]:  # Show first 20
+            print(f"   {removal['type']}: {removal.get('import', removal.get('variable', removal.get('function', 'unknown')))}")

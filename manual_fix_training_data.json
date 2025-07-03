@@ -1,0 +1,62 @@
+[
+  {
+    "issue_id": "syntax_triple_quote_docstring",
+    "is_false_positive": false,
+    "reasoning": "Triple-quoted docstring syntax errors are critical issues that prevent code compilation",
+    "file_path": "src/cognitive/recursive/recursive_improvement.py",
+    "manual_fix_applied": {
+      "pattern": "docstring_syntax_error",
+      "original": "\"\"\"Generate comprehensive report of recursive improvements\"\"\"",
+      "fixed": "# Generate comprehensive report of recursive improvements",
+      "fix_type": "docstring_to_comment",
+      "lines_affected": [330, 306, 286, 272, 352, 356, 360],
+      "fix_effectiveness": "critical",
+      "automation_potential": "high"
+    }
+  },
+  {
+    "issue_id": "syntax_nested_quotes_fstring",
+    "is_false_positive": false,
+    "reasoning": "F-string with nested quotes causes syntax errors and prevents execution",
+    "file_path": "debug_memory_search.py",
+    "manual_fix_applied": {
+      "pattern": "fstring_nested_quotes",
+      "original": "print(f\"Query: \"{query}\" → {len(results)} results\")",
+      "fixed": "print(f\"Query: '{query}' → {len(results)} results\")",
+      "fix_type": "quote_replacement",
+      "lines_affected": [36, 55, 59, 68, 112, 145, 146, 147, 163, 167],
+      "fix_effectiveness": "critical",
+      "automation_potential": "very_high"
+    }
+  },
+  {
+    "issue_id": "syntax_string_literal_context",
+    "is_false_positive": false,
+    "reasoning": "String literals in conditional checks need proper quote escaping",
+    "file_path": "src/cognitive/recursive/recursive_improvement.py",
+    "manual_fix_applied": {
+      "pattern": "conditional_string_quotes",
+      "original": "if \"def \" in content and \"\"\" not in content[:200]:",
+      "fixed": "if \"def \" in content and '\"\"\"' not in content[:200]:",
+      "fix_type": "quote_escaping",
+      "lines_affected": [179],
+      "fix_effectiveness": "critical",
+      "automation_potential": "high"
+    }
+  },
+  {
+    "issue_id": "precision_enhancement_syntax_checking",
+    "is_false_positive": false,
+    "reasoning": "Enhanced PRI to provide surgical precision in syntax error detection",
+    "file_path": "precise_syntax_checker.py",
+    "manual_fix_applied": {
+      "pattern": "diagnostic_enhancement",
+      "original": "vague_syntax_errors",
+      "fixed": "precise_line_column_syntax_analysis",
+      "fix_type": "tool_creation",
+      "lines_affected": "entire_file",
+      "fix_effectiveness": "transformative",
+      "automation_potential": "framework_level"
+    }
+  }
+]

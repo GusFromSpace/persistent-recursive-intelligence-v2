@@ -1,0 +1,367 @@
+#!/usr/bin/env python3
+"""
+Automatic Dead Code Fixer for PRI System
+Automatically removes safe dead code and identifies duplicates
+"""
+
+import ast
+import os
+import re
+import hashlib
+from pathlib import Path
+from typing import Dict, List, Set, Tuple, Optional
+from collections import defaultdict
+import logging
+
+try:
+    from .dead_code_detector import detect_dead_code_in_file, scan_project_for_dead_code
+except ImportError:
+    # Handle when run as standalone script
+    import sys
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    sys.path.insert(0, current_dir)
+    from dead_code_detector import detect_dead_code_in_file, scan_project_for_dead_code
+
+logger = logging.getLogger(__name__)
+
+class AutoDeadCodeFixer:
+    """Automatically fix safe dead code issues"""
+
+    def __init__(self, project_path: str, dry_run: bool = True):
+        self.project_path = Path(project_path)
+        self.dry_run = dry_run
+        self.fixes_applied = []
+        self.duplicates_found = []
+        self.unsafe_removals = []
+
+    def is_safe_to_remove_import(self, import_name: str, file_content: str) -> bool:
+        """Check if an import is safe to remove automatically"""
+        # Don"t remove imports that might be used dynamically
+        unsafe_patterns = [
+            r"getattr\s*\(",
+            r"hasattr\s*\(",
+            r"setattr\s*\(",
+            r"__import__\s*\(",
+            r"importlib\.",
+            r"globals\s*\(\)",
+            r"locals\s*\(\)",
+            r"eval\s*\(",
+            r"exec\s*\(",
+            rf"['\"{import_name}['\"]",  # String references to the import
+        ]
+
+        for pattern in unsafe_patterns:
+            if re.search(pattern, file_content, re.IGNORECASE):
+                return False
+
+        # Check if it"s a common library that might be used in ways we can"t detect
+        dynamic_libraries = {
+            "logging", "os", "sys", "json", "time", "datetime",
+            "requests", "flask", "django", "numpy", "pandas"
+        }
+
+        if import_name.lower() in dynamic_libraries:
+            return False
+
+        return True
+
+    def find_duplicate_functions(self, python_files: List[Path]) -> Dict[str, List[Tuple[str, str]]]:
+        """Find duplicate functions across files"""
+        function_signatures = defaultdict(list)
+
+        for py_file in python_files:
+            try:
+                with open(py_file, "r", encoding="utf-8") as f:
+                    content = f.read()
+
+                tree = ast.parse(content, filename=str(py_file))
+
+                for node in ast.walk(tree):
+                    if isinstance(node, ast.FunctionDef):
+                        # Create a signature based on function name and parameters
+                        params = [arg.arg for arg in node.args.args]
+                        signature = f"{node.name}({', '.join(params)})"
+
+                        # Get function body hash for exact duplicate detection
+                        func_source = ast.get_source_segment(content, node)
+                        if func_source:
+                            body_hash = hashlib.md5(func_source.encode()).hexdigest()
+                            function_signatures[signature].append((str(py_file), body_hash, func_source))
+
+            except Exception as e:
+                logger.warning(f"Error analyzing {py_file}: {e}")
+
+        duplicates = {}
+        for signature, instances in function_signatures.items():
+            if len(instances) > 1:
+                # Group by body hash
+                by_hash = defaultdict(list)
+                for file_path, body_hash, source in instances:
+                    by_hash[body_hash].append((file_path, source))
+
+                # Report groups with multiple files
+                for body_hash, files in by_hash.items():
+                    if len(files) > 1:
+                        duplicates[f"{signature}_{body_hash[:8]}"] = files
+
+        return duplicates
+
+    def find_duplicate_classes(self, python_files: List[Path]) -> Dict[str, List[Tuple[str, str]]]:
+        """Find duplicate classes across files"""
+        class_signatures = defaultdict(list)
+
+        for py_file in python_files:
+            try:
+                with open(py_file, "r", encoding="utf-8") as f:
+                    content = f.read()
+
+                tree = ast.parse(content, filename=str(py_file))
+
+                for node in ast.walk(tree):
+                    if isinstance(node, ast.ClassDef):
+                        # Create a signature based on class name and methods
+                        methods = [n.name for n in node.body if isinstance(n, ast.FunctionDef)]
+                        signature = f"{node.name}({', '.join(sorted(methods))})"
+
+                        # Get class source for duplicate detection
+                        class_source = ast.get_source_segment(content, node)
+                        if class_source:
+                            body_hash = hashlib.md5(class_source.encode()).hexdigest()
+                            class_signatures[signature].append((str(py_file), body_hash, class_source))
+
+            except Exception as e:
+                logger.warning(f"Error analyzing {py_file}: {e}")
+
+        # Find actual duplicates
+        duplicates = {}
+        for signature, instances in class_signatures.items():
+            if len(instances) > 1:
+                by_hash = defaultdict(list)
+                for file_path, body_hash, source in instances:
+                    by_hash[body_hash].append((file_path, source))
+
+                for body_hash, files in by_hash.items():
+                    if len(files) > 1:
+                        duplicates[f"{signature}_{body_hash[:8]}"] = files
+
+        return duplicates
+
+    def remove_unused_imports(self, file_path: str, unused_imports: List[str]) -> int:
+        """Remove unused imports from a file"""
+        if not unused_imports:
+            return 0
+
+        try:
+            with open(file_path, "r", encoding="utf-8") as f:
+                lines = f.readlines()
+
+            new_lines = []
+            removed_count = 0
+
+            for line in lines:
+                should_remove = False
+
+                # Check for import statements
+                for unused_import in unused_imports:
+                    patterns = [
+                        rf'^import\s+{re.escape(unused_import)}$',
+                        rf"^import\s+{re.escape(unused_import)}\s*#",
+                        rf"^from\s+\S+\s+import\s+{re.escape(unused_import)}$",
+                        rf"^from\s+\S+\s+import\s+{re.escape(unused_import)}\s*#",
+                        rf"^from\s+\S+\s+import\s+.*\b{re.escape(unused_import)}\b.*$",
+                    ]
+
+                    for pattern in patterns:
+                        if re.match(pattern, line.strip()):
+                            # Double-check it"s safe to remove
+                            file_content = "".join(lines)
+                            if self.is_safe_to_remove_import(unused_import, file_content):
+                                should_remove = True
+                                removed_count += 1
+                                self.fixes_applied.append({
+                                    "file": file_path,
+                                    "type": "unused_import_removal",
+                                    "item": unused_import,
+                                    "line": line.strip()
+                                })
+                                break
+
+                if not should_remove:
+                    new_lines.append(line)
+
+            # Write back the file if we made changes and not in dry-run mode
+            if removed_count > 0 and not self.dry_run:
+                with open(file_path, "w", encoding="utf-8") as f:
+                    f.writelines(new_lines)
+
+                logger.info(f"Removed {removed_count} unused imports from {file_path}")
+
+            return removed_count
+
+        except Exception as e:
+            logger.error(f"Error removing imports from {file_path}: {e}")
+            return 0
+
+    def remove_unused_variables(self, file_path: str, unused_variables: List[str]) -> int:
+        """Remove unused variables (safe cases only)"""
+        if not unused_variables:
+            return 0
+
+        try:
+            with open(file_path, "r", encoding="utf-8") as f:
+                content = f.read()
+                lines = f.readlines()
+
+            # Parse AST to find variable assignments
+            tree = ast.parse(content, filename=file_path)
+            removed_count = 0
+            lines_to_remove = set()
+
+            for node in ast.walk(tree):
+                if isinstance(node, ast.Assign):
+                    # Only handle simple assignments
+                    if len(node.targets) == 1 and isinstance(node.targets[0], ast.Name):
+                        var_name = node.targets[0].id
+
+                        if var_name in unused_variables:
+                            # Check if it"s a simple, safe-to-remove assignment
+                            if self.is_safe_variable_removal(node, content):
+                                line_num = node.lineno - 1  # AST uses 1-based indexing
+                                if 0 <= line_num < len(lines):
+                                    lines_to_remove.add(line_num)
+                                    removed_count += 1
+                                    self.fixes_applied.append({
+                                        "file": file_path,
+                                        "type": "unused_variable_removal",
+                                        "item": var_name,
+                                        "line": lines[line_num].strip()
+                                    })
+
+            # Remove the lines and write back
+            if removed_count > 0 and not self.dry_run:
+                new_lines = [line for i, line in enumerate(lines) if i not in lines_to_remove]
+                with open(file_path, "w", encoding="utf-8") as f:
+                    f.writelines(new_lines)
+
+                logger.info(f"Removed {removed_count} unused variables from {file_path}")
+
+            return removed_count
+
+        except Exception as e:
+            logger.error(f"Error removing variables from {file_path}: {e}")
+            return 0
+
+    def is_safe_variable_removal(self, assign_node: ast.Assign, file_content: str) -> bool:
+        """Check if a variable assignment is safe to remove"""
+        # Don"t remove if the assignment has side effects
+        if isinstance(assign_node.value, (ast.Call, ast.ListComp, ast.DictComp, ast.SetComp)):
+            return False
+
+        # Don"t remove if it"s a constant that might be referenced elsewhere
+        if isinstance(assign_node.value, (ast.Constant, ast.Str, ast.Num)):
+            var_name = assign_node.targets[0].id
+            # Check for string references
+            if re.search(rf'["\'{var_name}["\']', file_content):
+                return False
+
+        return True
+
+    def auto_fix_project(self) -> Dict:
+        """Automatically fix safe dead code issues in the project"""
+        logger.info(f"Starting automatic dead code fixing for {self.project_path}")
+
+        # Get all Python files
+        python_files = [f for f in self.project_path.rglob("*.py")
+                       if not any(skip in str(f) for skip in ["venv", "__pycache__", ".git"])]
+
+        # Find duplicates first
+        logger.info("Scanning for duplicate functions...")
+        duplicate_functions = self.find_duplicate_functions(python_files)
+
+        logger.info("Scanning for duplicate classes...")
+        duplicate_classes = self.find_duplicate_classes(python_files)
+
+        # Process dead code for each file
+        logger.info("Processing dead code issues...")
+        total_fixes = 0
+        files_processed = 0
+
+        for py_file in python_files:
+            try:
+                # Skip test files and vendored code for safety
+                if any(skip in str(py_file).lower() for skip in ["test_", "_test.py", "tests/", "vendor/", "site-packages/"]):
+                    continue
+
+                result = detect_dead_code_in_file(str(py_file))
+                if result.get("dead_code_issues"):
+                    # Auto-fix unused imports
+                    import_fixes = self.remove_unused_imports(
+                        str(py_file),
+                        result.get("dead_imports", [])
+                    )
+
+                    var_fixes = self.remove_unused_variables(
+                        str(py_file),
+                        result.get("dead_variables", [])
+                    )
+
+                    total_fixes += import_fixes + var_fixes
+                    if import_fixes + var_fixes > 0:
+                        files_processed += 1
+
+            except Exception as e:
+                logger.error(f"Error processing {py_file}: {e}")
+
+        results = {
+            "total_fixes_applied": total_fixes,
+            "files_processed": files_processed,
+            "duplicate_functions": duplicate_functions,
+            "duplicate_classes": duplicate_classes,
+            "fixes_applied": self.fixes_applied,
+            "dry_run": self.dry_run
+        }
+
+        logger.info(f"Auto-fixing complete: {total_fixes} fixes applied to {files_processed} files")
+        return results
+
+def auto_fix_dead_code(project_path: str, dry_run: bool = True) -> Dict:
+    """Main function to automatically fix dead code"""
+    fixer = AutoDeadCodeFixer(project_path, dry_run=dry_run)
+    return fixer.auto_fix_project()
+
+if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Automatically fix dead code issues")
+    parser.add_argument("project_path", help="Path to the project to fix")
+    parser.add_argument("--apply", action="store_true", help="Actually apply fixes (default is dry-run)")
+    parser.add_argument("--verbose", action="store_true", help="Verbose output")
+
+    args = parser.parse_args()
+
+    if args.verbose:
+        logging.basicConfig(level=logging.INFO)
+
+    dry_run = not args.apply
+    results = auto_fix_dead_code(args.project_path, dry_run=dry_run)
+
+    print(f"\n🔧 Automatic Dead Code Fixing Results")
+    print("=" * 50)
+    print(f"🎯 Mode: {'DRY RUN' if dry_run else 'APPLYING FIXES'}')
+    print(f'📊 Total Fixes: {results['total_fixes_applied']}')
+    print(f'📁 Files Processed: {results['files_processed']}")
+
+    if results["duplicate_functions"]:
+        print(f"\n🔄 Duplicate Functions Found: {len(results['duplicate_functions'])}")
+        for sig, files in list(results["duplicate_functions"].items())[:5]:  # Show first 5
+            print(f"   - {sig}: {len(files)} instances")
+
+    if results["duplicate_classes"]:
+        print(f"\n🔄 Duplicate Classes Found: {len(results['duplicate_classes'])}")
+        for sig, files in list(results["duplicate_classes"].items())[:5]:  # Show first 5
+            print(f"   - {sig}: {len(files)} instances")
+
+    if results["fixes_applied"] and args.verbose:
+        print(f"\n📋 Applied Fixes:")
+        for fix in results["fixes_applied"][:10]:  # Show first 10
+            print(f"   {fix['type']}: {fix['item']} in {fix["file"]}")

@@ -1,0 +1,62 @@
+{
+  "standard_library_false_positives": [
+    {
+      "issue_id": 112,
+      "description": "[DEPENDENCY] Import 'traceback' not found in requirements.txt",
+      "file_path": "/home/gusfromspace/Development/projects/claude-wrapper/src/cli.py",
+      "is_false_positive": true,
+      "reasoning": "Standard library module traceback does not belong in requirements.txt",
+      "category": "dependency_stdlib_false_positive"
+    },
+    {
+      "issue_id": 280,
+      "description": "[DEPENDENCY] Import 'traceback' not found in requirements.txt",
+      "file_path": "/home/gusfromspace/Development/projects/claude-wrapper/src/main.py",
+      "is_false_positive": true,
+      "reasoning": "Standard library module traceback does not belong in requirements.txt",
+      "category": "dependency_stdlib_false_positive"
+    },
+    {
+      "issue_id": 341,
+      "description": "[DEPENDENCY] Import 'dataclasses' not found in requirements.txt",
+      "file_path": "/home/gusfromspace/Development/projects/claude-wrapper/src/main.py",
+      "is_false_positive": true,
+      "reasoning": "Standard library module dataclasses does not belong in requirements.txt",
+      "category": "dependency_stdlib_false_positive"
+    },
+    {
+      "issue_id": 14,
+      "description": "[DEPENDENCY] Import 'dataclasses' not found in requirements.txt",
+      "file_path": "/home/gusfromspace/Development/projects/claude-wrapper/src/services/pri_service.py",
+      "is_false_positive": true,
+      "reasoning": "Standard library module dataclasses does not belong in requirements.txt",
+      "category": "dependency_stdlib_false_positive"
+    },
+    {
+      "issue_id": 10,
+      "description": "[DEPENDENCY] Import 'dataclasses' not found in requirements.txt",
+      "file_path": "/home/gusfromspace/Development/projects/claude-wrapper/src/context/manager.py",
+      "is_false_positive": true,
+      "reasoning": "Standard library module dataclasses does not belong in requirements.txt",
+      "category": "dependency_stdlib_false_positive"
+    },
+    {
+      "issue_id": 10,
+      "description": "[DEPENDENCY] Import 'signal' not found in requirements.txt",
+      "file_path": "/home/gusfromspace/Development/projects/claude-wrapper/src/wrapper/claude_wrapper.py",
+      "is_false_positive": true,
+      "reasoning": "Standard library module signal does not belong in requirements.txt",
+      "category": "dependency_stdlib_false_positive"
+    },
+    {
+      "issue_id": 13,
+      "description": "[DEPENDENCY] Import 'dataclasses' not found in requirements.txt",
+      "file_path": "/home/gusfromspace/Development/projects/claude-wrapper/src/wrapper/claude_wrapper.py",
+      "is_false_positive": true,
+      "reasoning": "Standard library module dataclasses does not belong in requirements.txt",
+      "category": "dependency_stdlib_false_positive"
+    }
+  ],
+  "console_output_false_positives": [],
+  "total_training_items": 7
+}

@@ -1,0 +1,18 @@
+[
+    {
+        "type": "dependency",
+        "line": 11,
+        "severity": "medium",
+        "description": "[DEPENDENCY] Import 'traceback' not found in requirements.txt",
+        "file_path": "mesopredator_cli.py",
+        "context": "production"
+    },
+    {
+        "type": "dependency",
+        "line": 24,
+        "severity": "medium",
+        "description": "[DEPENDENCY] Import 'cognitive.recursive' not found",
+        "file_path": "some_module.py", 
+        "context": "production"
+    }
+]

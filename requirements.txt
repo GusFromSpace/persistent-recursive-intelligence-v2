@@ -1,0 +1,36 @@
+# Core memory and AI dependencies
+numpy>=2.2.0
+faiss-cpu>=1.7.4
+sentence-transformers>=2.2.0
+
+# API framework
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+pydantic>=2.0.0
+
+# Database
+# sqlite3 is built-in to Python
+
+# Caching
+redis>=5.0.0
+
+# Authentication and security
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+slowapi>=0.1.9
+
+# Monitoring and observability
+prometheus-client>=0.19.0
+psutil>=5.9.0
+
+# Utilities
+requests>=2.31.0
+python-dotenv>=1.0.0
+click>=8.1.0
+
+# Development and testing
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+pytest-cov>=4.1.0
+httpx>=0.25.0
+factory-boy>=3.3.0

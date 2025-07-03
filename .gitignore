@@ -1,0 +1,10 @@
+*.db
+*.sqlite3
+*.pyc
+__pycache__/
+.idea/
+.vscode/
+build/
+dist/
+*.egg-info/
+*.db.backup

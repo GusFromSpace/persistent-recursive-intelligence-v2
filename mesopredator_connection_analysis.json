@@ -1,0 +1,484 @@
+{
+  "total_orphaned_files": 3,
+  "suggestions_generated": 30,
+  "suggestions": [
+    {
+      "orphaned_file": "src/cognitive/enhanced_patterns/memory_pruning_system.py",
+      "target_file": "mesopredator_cli.py",
+      "connection_score": 0.72,
+      "connection_type": "module_import",
+      "integration_suggestions": [
+        "import src.cognitive.enhanced_patterns.memory_pruning_system",
+        "from src.cognitive.enhanced_patterns.memory_pruning_system import PruningStrategy, PruningConfig",
+        "from src.cognitive.enhanced_patterns.memory_pruning_system import AGE_BASED, QUALITY_BASED, SIMILARITY_BASED",
+        "Consider integrating at line 74: Function 'convert_issues_to_proposals' might benefit from additional functionality"
+      ],
+      "reasoning": [
+        "High semantic similarity (score: 0.50) - files work in related domains",
+        "Good structural compatibility (score: 0.70) - no conflicts detected",
+        "Synergistic dependencies (score: 0.40) - shared imports suggest compatibility",
+        "Detected potential need (score: 0.40) - main file has TODOs or stubs that orphaned file might address"
+      ]
+    },
+    {
+      "orphaned_file": "src/cognitive/memory/simple_memory.py",
+      "target_file": "debug_memory_search.py",
+      "connection_score": 0.634,
+      "connection_type": "module_import",
+      "integration_suggestions": [
+        "import src.cognitive.memory.simple_memory",
+        "from src.cognitive.memory.simple_memory import SimpleMemoryEngine",
+        "from src.cognitive.memory.simple_memory import VECTOR_SEARCH_AVAILABLE, VECTOR_SEARCH_AVAILABLE"
+      ],
+      "reasoning": [
+        "High semantic similarity (score: 0.60) - files work in related domains",
+        "Good structural compatibility (score: 0.75) - no conflicts detected",
+        "Synergistic dependencies (score: 0.42) - shared imports suggest compatibility"
+      ]
+    },
+    {
+      "orphaned_file": "src/cognitive/enhanced_patterns/memory_pruning_system.py",
+      "target_file": "debug_memory_search.py",
+      "connection_score": 0.627,
+      "connection_type": "module_import",
+      "integration_suggestions": [
+        "import src.cognitive.enhanced_patterns.memory_pruning_system",
+        "from src.cognitive.enhanced_patterns.memory_pruning_system import PruningStrategy, PruningConfig",
+        "from src.cognitive.enhanced_patterns.memory_pruning_system import AGE_BASED, QUALITY_BASED, SIMILARITY_BASED"
+      ],
+      "reasoning": [
+        "High semantic similarity (score: 0.50) - files work in related domains",
+        "Good structural compatibility (score: 0.60) - no conflicts detected",
+        "Detected potential need (score: 0.40) - main file has TODOs or stubs that orphaned file might address"
+      ]
+    },
+    {
+      "orphaned_file": "src/cognitive/enhanced_patterns/memory_pruning_system.py",
+      "target_file": "enhanced_security_patch.py",
+      "connection_score": 0.605,
+      "connection_type": "module_import",
+      "integration_suggestions": [
+        "import src.cognitive.enhanced_patterns.memory_pruning_system",
+        "from src.cognitive.enhanced_patterns.memory_pruning_system import PruningStrategy, PruningConfig",
+        "from src.cognitive.enhanced_patterns.memory_pruning_system import AGE_BASED, QUALITY_BASED, SIMILARITY_BASED",
+        "Consider integrating at line 22: Function '__init__' might benefit from additional functionality",
+        "Consider integrating at line 58: Function 'log_and_block' might benefit from additional functionality"
+      ],
+      "reasoning": [
+        "High semantic similarity (score: 0.50) - files work in related domains",
+        "Detected potential need (score: 0.65) - main file has TODOs or stubs that orphaned file might address"
+      ]
+    },
+    {
+      "orphaned_file": "src/cognitive/orchestration/analyzer_orchestrator.py",
+      "target_file": "analyze_cpp_project.py",
+      "connection_score": 0.535,
+      "connection_type": "module_import",
+      "integration_suggestions": [
+        "import src.cognitive.orchestration.analyzer_orchestrator",
+        "from src.cognitive.orchestration.analyzer_orchestrator import AnalyzerOrchestrator",
+        "Consider integrating at line 95: TODO comment suggests potential integration point",
+        "Consider integrating at line 21: Function '__init__' might benefit from additional functionality"
+      ],
+      "reasoning": [
+        "High semantic similarity (score: 0.85) - files work in related domains"
+      ]
+    },
+    {
+      "orphaned_file": "src/cognitive/enhanced_patterns/memory_pruning_system.py",
+      "target_file": "targeted_security_fix.py",
+      "connection_score": 0.5175,
+      "connection_type": "module_import",
+      "integration_suggestions": [
+        "import src.cognitive.enhanced_patterns.memory_pruning_system",
+        "from src.cognitive.enhanced_patterns.memory_pruning_system import PruningStrategy, PruningConfig",
+        "from src.cognitive.enhanced_patterns.memory_pruning_system import AGE_BASED, QUALITY_BASED, SIMILARITY_BASED",
+        "Consider integrating at line 337: Function 'apply_emergency_fix' might benefit from additional functionality",
+        "Consider integrating at line 28: Function '__init__' might benefit from additional functionality"
+      ],
+      "reasoning": [
+        "High semantic similarity (score: 0.50) - files work in related domains",
+        "Detected potential need (score: 0.40) - main file has TODOs or stubs that orphaned file might address"
+      ]
+    },
+    {
+      "orphaned_file": "src/cognitive/orchestration/analyzer_orchestrator.py",
+      "target_file": "targeted_security_fix.py",
+      "connection_score": 0.49249999999999994,
+      "connection_type": "module_import",
+      "integration_suggestions": [
+        "import src.cognitive.orchestration.analyzer_orchestrator",
+        "from src.cognitive.orchestration.analyzer_orchestrator import AnalyzerOrchestrator",
+        "Consider integrating at line 337: Function 'apply_emergency_fix' might benefit from additional functionality",
+        "Consider integrating at line 28: Function '__init__' might benefit from additional functionality"
+      ],
+      "reasoning": [
+        "High semantic similarity (score: 0.70) - files work in related domains",
+        "Synergistic dependencies (score: 0.35) - shared imports suggest compatibility"
+      ]
+    },
+    {
+      "orphaned_file": "src/cognitive/orchestration/analyzer_orchestrator.py",
+      "target_file": "enhanced_security_patch.py",
+      "connection_score": 0.49249999999999994,
+      "connection_type": "module_import",
+      "integration_suggestions": [
+        "import src.cognitive.orchestration.analyzer_orchestrator",
+        "from src.cognitive.orchestration.analyzer_orchestrator import AnalyzerOrchestrator",
+        "Consider integrating at line 22: Function '__init__' might benefit from additional functionality",
+        "Consider integrating at line 58: Function 'log_and_block' might benefit from additional functionality"
+      ],
+      "reasoning": [
+        "High semantic similarity (score: 0.70) - files work in related domains",
+        "Synergistic dependencies (score: 0.35) - shared imports suggest compatibility"
+      ]
+    },
+    {
+      "orphaned_file": "src/cognitive/orchestration/analyzer_orchestrator.py",
+      "target_file": "precise_syntax_checker.py",
+      "connection_score": 0.46249999999999997,
+      "connection_type": "module_import",
+      "integration_suggestions": [
+        "import src.cognitive.orchestration.analyzer_orchestrator",
+        "from src.cognitive.orchestration.analyzer_orchestrator import AnalyzerOrchestrator"
+      ],
+      "reasoning": [
+        "High semantic similarity (score: 0.50) - files work in related domains",
+        "Good structural compatibility (score: 0.70) - no conflicts detected"
+      ]
+    },
+    {
+      "orphaned_file": "src/cognitive/memory/simple_memory.py",
+      "target_file": "fix_real_syntax_errors.py",
+      "connection_score": 0.45,
+      "connection_type": "module_import",
+      "integration_suggestions": [
+        "import src.cognitive.memory.simple_memory",
+        "from src.cognitive.memory.simple_memory import SimpleMemoryEngine",
+        "from src.cognitive.memory.simple_memory import VECTOR_SEARCH_AVAILABLE, VECTOR_SEARCH_AVAILABLE",
+        "Consider integrating at line 69: Function 'fix_missing_indent' might benefit from additional functionality"
+      ],
+      "reasoning": [
+        "High semantic similarity (score: 0.50) - files work in related domains",
+        "Good structural compatibility (score: 0.65) - no conflicts detected"
+      ]
+    },
+    {
+      "orphaned_file": "src/cognitive/memory/simple_memory.py",
+      "target_file": "targeted_security_fix.py",
+      "connection_score": 0.4425,
+      "connection_type": "module_import",
+      "integration_suggestions": [
+        "import src.cognitive.memory.simple_memory",
+        "from src.cognitive.memory.simple_memory import SimpleMemoryEngine",
+        "from src.cognitive.memory.simple_memory import VECTOR_SEARCH_AVAILABLE, VECTOR_SEARCH_AVAILABLE",
+        "Consider integrating at line 337: Function 'apply_emergency_fix' might benefit from additional functionality",
+        "Consider integrating at line 28: Function '__init__' might benefit from additional functionality"
+      ],
+      "reasoning": [
+        "High semantic similarity (score: 0.60) - files work in related domains"
+      ]
+    },
+    {
+      "orphaned_file": "src/cognitive/memory/simple_memory.py",
+      "target_file": "enhanced_security_patch.py",
+      "connection_score": 0.4425,
+      "connection_type": "module_import",
+      "integration_suggestions": [
+        "import src.cognitive.memory.simple_memory",
+        "from src.cognitive.memory.simple_memory import SimpleMemoryEngine",
+        "from src.cognitive.memory.simple_memory import VECTOR_SEARCH_AVAILABLE, VECTOR_SEARCH_AVAILABLE",
+        "Consider integrating at line 22: Function '__init__' might benefit from additional functionality",
+        "Consider integrating at line 58: Function 'log_and_block' might benefit from additional functionality"
+      ],
+      "reasoning": [
+        "High semantic similarity (score: 0.60) - files work in related domains"
+      ]
+    },
+    {
+      "orphaned_file": "src/cognitive/orchestration/analyzer_orchestrator.py",
+      "target_file": "fix_real_syntax_errors.py",
+      "connection_score": 0.44,
+      "connection_type": "module_import",
+      "integration_suggestions": [
+        "import src.cognitive.orchestration.analyzer_orchestrator",
+        "from src.cognitive.orchestration.analyzer_orchestrator import AnalyzerOrchestrator",
+        "Consider integrating at line 69: Function 'fix_missing_indent' might benefit from additional functionality"
+      ],
+      "reasoning": [
+        "High semantic similarity (score: 0.50) - files work in related domains",
+        "Good structural compatibility (score: 0.65) - no conflicts detected"
+      ]
+    },
+    {
+      "orphaned_file": "src/cognitive/memory/simple_memory.py",
+      "target_file": "precise_syntax_checker.py",
+      "connection_score": 0.43749999999999994,
+      "connection_type": "module_import",
+      "integration_suggestions": [
+        "import src.cognitive.memory.simple_memory",
+        "from src.cognitive.memory.simple_memory import SimpleMemoryEngine",
+        "from src.cognitive.memory.simple_memory import VECTOR_SEARCH_AVAILABLE, VECTOR_SEARCH_AVAILABLE"
+      ],
+      "reasoning": [
+        "High semantic similarity (score: 0.40) - files work in related domains",
+        "Good structural compatibility (score: 0.70) - no conflicts detected",
+        "Synergistic dependencies (score: 0.35) - shared imports suggest compatibility"
+      ]
+    },
+    {
+      "orphaned_file": "src/cognitive/memory/simple_memory.py",
+      "target_file": "mesopredator_cli.py",
+      "connection_score": 0.43749999999999994,
+      "connection_type": "module_import",
+      "integration_suggestions": [
+        "import src.cognitive.memory.simple_memory",
+        "from src.cognitive.memory.simple_memory import SimpleMemoryEngine",
+        "from src.cognitive.memory.simple_memory import VECTOR_SEARCH_AVAILABLE, VECTOR_SEARCH_AVAILABLE",
+        "Consider integrating at line 74: Function 'convert_issues_to_proposals' might benefit from additional functionality"
+      ],
+      "reasoning": [
+        "High semantic similarity (score: 0.40) - files work in related domains",
+        "Good structural compatibility (score: 0.70) - no conflicts detected",
+        "Synergistic dependencies (score: 0.35) - shared imports suggest compatibility"
+      ]
+    },
+    {
+      "orphaned_file": "src/cognitive/enhanced_patterns/memory_pruning_system.py",
+      "target_file": "precise_syntax_checker.py",
+      "connection_score": 0.415,
+      "connection_type": "module_import",
+      "integration_suggestions": [
+        "import src.cognitive.enhanced_patterns.memory_pruning_system",
+        "from src.cognitive.enhanced_patterns.memory_pruning_system import PruningStrategy, PruningConfig",
+        "from src.cognitive.enhanced_patterns.memory_pruning_system import AGE_BASED, QUALITY_BASED, SIMILARITY_BASED"
+      ],
+      "reasoning": [
+        "High semantic similarity (score: 0.40) - files work in related domains",
+        "Good structural compatibility (score: 0.65) - no conflicts detected"
+      ]
+    },
+    {
+      "orphaned_file": "src/cognitive/orchestration/analyzer_orchestrator.py",
+      "target_file": "fix_critical_f_strings.py",
+      "connection_score": 0.41,
+      "connection_type": "module_import",
+      "integration_suggestions": [
+        "import src.cognitive.orchestration.analyzer_orchestrator",
+        "from src.cognitive.orchestration.analyzer_orchestrator import AnalyzerOrchestrator",
+        "Consider integrating at line 12: Function 'fix_nested_double_quotes_in_fstring' might benefit from additional functionality",
+        "Consider integrating at line 21: Function 'replace_nested_quotes' might benefit from additional functionality"
+      ],
+      "reasoning": [
+        "High semantic similarity (score: 0.50) - files work in related domains",
+        "Good structural compatibility (score: 0.70) - no conflicts detected"
+      ]
+    },
+    {
+      "orphaned_file": "src/cognitive/enhanced_patterns/memory_pruning_system.py",
+      "target_file": "fix_real_syntax_errors.py",
+      "connection_score": 0.4025,
+      "connection_type": "module_import",
+      "integration_suggestions": [
+        "import src.cognitive.enhanced_patterns.memory_pruning_system",
+        "from src.cognitive.enhanced_patterns.memory_pruning_system import PruningStrategy, PruningConfig",
+        "from src.cognitive.enhanced_patterns.memory_pruning_system import AGE_BASED, QUALITY_BASED, SIMILARITY_BASED",
+        "Consider integrating at line 69: Function 'fix_missing_indent' might benefit from additional functionality"
+      ],
+      "reasoning": [
+        "High semantic similarity (score: 0.40) - files work in related domains",
+        "Good structural compatibility (score: 0.60) - no conflicts detected"
+      ]
+    },
+    {
+      "orphaned_file": "src/cognitive/orchestration/analyzer_orchestrator.py",
+      "target_file": "mesopredator_cli.py",
+      "connection_score": 0.395,
+      "connection_type": "module_import",
+      "integration_suggestions": [
+        "import src.cognitive.orchestration.analyzer_orchestrator",
+        "from src.cognitive.orchestration.analyzer_orchestrator import AnalyzerOrchestrator",
+        "Consider integrating at line 74: Function 'convert_issues_to_proposals' might benefit from additional functionality"
+      ],
+      "reasoning": [
+        "High semantic similarity (score: 0.40) - files work in related domains",
+        "Good structural compatibility (score: 0.65) - no conflicts detected"
+      ]
+    },
+    {
+      "orphaned_file": "src/cognitive/orchestration/analyzer_orchestrator.py",
+      "target_file": "debug_memory_search.py",
+      "connection_score": 0.38999999999999996,
+      "connection_type": "module_import",
+      "integration_suggestions": [
+        "import src.cognitive.orchestration.analyzer_orchestrator",
+        "from src.cognitive.orchestration.analyzer_orchestrator import AnalyzerOrchestrator"
+      ],
+      "reasoning": [
+        "High semantic similarity (score: 0.40) - files work in related domains",
+        "Good structural compatibility (score: 0.65) - no conflicts detected"
+      ]
+    },
+    {
+      "orphaned_file": "src/cognitive/memory/simple_memory.py",
+      "target_file": "self_fix.py",
+      "connection_score": 0.355,
+      "connection_type": "module_import",
+      "integration_suggestions": [
+        "import src.cognitive.memory.simple_memory",
+        "from src.cognitive.memory.simple_memory import SimpleMemoryEngine",
+        "from src.cognitive.memory.simple_memory import VECTOR_SEARCH_AVAILABLE, VECTOR_SEARCH_AVAILABLE",
+        "Consider integrating at line 15: Function 'main' might benefit from additional functionality"
+      ],
+      "reasoning": [
+        "High semantic similarity (score: 0.40) - files work in related domains",
+        "Good structural compatibility (score: 0.45) - no conflicts detected"
+      ]
+    },
+    {
+      "orphaned_file": "src/cognitive/orchestration/analyzer_orchestrator.py",
+      "target_file": "self_fix.py",
+      "connection_score": 0.345,
+      "connection_type": "module_import",
+      "integration_suggestions": [
+        "import src.cognitive.orchestration.analyzer_orchestrator",
+        "from src.cognitive.orchestration.analyzer_orchestrator import AnalyzerOrchestrator",
+        "Consider integrating at line 15: Function 'main' might benefit from additional functionality"
+      ],
+      "reasoning": [
+        "High semantic similarity (score: 0.40) - files work in related domains",
+        "Good structural compatibility (score: 0.45) - no conflicts detected"
+      ]
+    },
+    {
+      "orphaned_file": "src/cognitive/memory/simple_memory.py",
+      "target_file": "fix_critical_f_strings.py",
+      "connection_score": 0.335,
+      "connection_type": "module_import",
+      "integration_suggestions": [
+        "import src.cognitive.memory.simple_memory",
+        "from src.cognitive.memory.simple_memory import SimpleMemoryEngine",
+        "from src.cognitive.memory.simple_memory import VECTOR_SEARCH_AVAILABLE, VECTOR_SEARCH_AVAILABLE",
+        "Consider integrating at line 12: Function 'fix_nested_double_quotes_in_fstring' might benefit from additional functionality",
+        "Consider integrating at line 21: Function 'replace_nested_quotes' might benefit from additional functionality"
+      ],
+      "reasoning": [
+        "High semantic similarity (score: 0.40) - files work in related domains",
+        "Good structural compatibility (score: 0.50) - no conflicts detected",
+        "Synergistic dependencies (score: 0.35) - shared imports suggest compatibility"
+      ]
+    },
+    {
+      "orphaned_file": "src/cognitive/enhanced_patterns/memory_pruning_system.py",
+      "target_file": "analyze_cpp_project.py",
+      "connection_score": 0.3325,
+      "connection_type": "module_import",
+      "integration_suggestions": [
+        "import src.cognitive.enhanced_patterns.memory_pruning_system",
+        "from src.cognitive.enhanced_patterns.memory_pruning_system import PruningStrategy, PruningConfig",
+        "from src.cognitive.enhanced_patterns.memory_pruning_system import AGE_BASED, QUALITY_BASED, SIMILARITY_BASED",
+        "Consider integrating at line 95: TODO comment suggests potential integration point",
+        "Consider integrating at line 21: Function '__init__' might benefit from additional functionality"
+      ],
+      "reasoning": [
+        "High semantic similarity (score: 0.50) - files work in related domains",
+        "Synergistic dependencies (score: 0.40) - shared imports suggest compatibility"
+      ]
+    },
+    {
+      "orphaned_file": "src/cognitive/enhanced_patterns/memory_pruning_system.py",
+      "target_file": "self_fix.py",
+      "connection_score": 0.33249999999999996,
+      "connection_type": "module_import",
+      "integration_suggestions": [
+        "import src.cognitive.enhanced_patterns.memory_pruning_system",
+        "from src.cognitive.enhanced_patterns.memory_pruning_system import PruningStrategy, PruningConfig",
+        "from src.cognitive.enhanced_patterns.memory_pruning_system import AGE_BASED, QUALITY_BASED, SIMILARITY_BASED",
+        "Consider integrating at line 15: Function 'main' might benefit from additional functionality"
+      ],
+      "reasoning": [
+        "High semantic similarity (score: 0.40) - files work in related domains",
+        "Good structural compatibility (score: 0.40) - no conflicts detected"
+      ]
+    },
+    {
+      "orphaned_file": "src/cognitive/memory/simple_memory.py",
+      "target_file": "analyze_cpp_project.py",
+      "connection_score": 0.32249999999999995,
+      "connection_type": "module_import",
+      "integration_suggestions": [
+        "import src.cognitive.memory.simple_memory",
+        "from src.cognitive.memory.simple_memory import SimpleMemoryEngine",
+        "from src.cognitive.memory.simple_memory import VECTOR_SEARCH_AVAILABLE, VECTOR_SEARCH_AVAILABLE",
+        "Consider integrating at line 95: TODO comment suggests potential integration point",
+        "Consider integrating at line 21: Function '__init__' might benefit from additional functionality"
+      ],
+      "reasoning": [
+        "High semantic similarity (score: 0.50) - files work in related domains",
+        "Synergistic dependencies (score: 0.35) - shared imports suggest compatibility"
+      ]
+    },
+    {
+      "orphaned_file": "src/cognitive/memory/simple_memory.py",
+      "target_file": "rebrand_mesopredator.py",
+      "connection_score": 0.32249999999999995,
+      "connection_type": "module_import",
+      "integration_suggestions": [
+        "import src.cognitive.memory.simple_memory",
+        "from src.cognitive.memory.simple_memory import SimpleMemoryEngine",
+        "from src.cognitive.memory.simple_memory import VECTOR_SEARCH_AVAILABLE, VECTOR_SEARCH_AVAILABLE",
+        "Consider integrating at line 15: Function '__init__' might benefit from additional functionality"
+      ],
+      "reasoning": [
+        "High semantic similarity (score: 0.50) - files work in related domains",
+        "Synergistic dependencies (score: 0.35) - shared imports suggest compatibility"
+      ]
+    },
+    {
+      "orphaned_file": "src/cognitive/orchestration/analyzer_orchestrator.py",
+      "target_file": "rebrand_mesopredator.py",
+      "connection_score": 0.3125,
+      "connection_type": "module_import",
+      "integration_suggestions": [
+        "import src.cognitive.orchestration.analyzer_orchestrator",
+        "from src.cognitive.orchestration.analyzer_orchestrator import AnalyzerOrchestrator",
+        "Consider integrating at line 15: Function '__init__' might benefit from additional functionality"
+      ],
+      "reasoning": [
+        "High semantic similarity (score: 0.50) - files work in related domains"
+      ]
+    },
+    {
+      "orphaned_file": "src/cognitive/enhanced_patterns/memory_pruning_system.py",
+      "target_file": "fix_critical_f_strings.py",
+      "connection_score": 0.3125,
+      "connection_type": "module_import",
+      "integration_suggestions": [
+        "import src.cognitive.enhanced_patterns.memory_pruning_system",
+        "from src.cognitive.enhanced_patterns.memory_pruning_system import PruningStrategy, PruningConfig",
+        "from src.cognitive.enhanced_patterns.memory_pruning_system import AGE_BASED, QUALITY_BASED, SIMILARITY_BASED",
+        "Consider integrating at line 12: Function 'fix_nested_double_quotes_in_fstring' might benefit from additional functionality",
+        "Consider integrating at line 21: Function 'replace_nested_quotes' might benefit from additional functionality"
+      ],
+      "reasoning": [
+        "High semantic similarity (score: 0.40) - files work in related domains",
+        "Good structural compatibility (score: 0.45) - no conflicts detected"
+      ]
+    },
+    {
+      "orphaned_file": "src/cognitive/enhanced_patterns/memory_pruning_system.py",
+      "target_file": "rebrand_mesopredator.py",
+      "connection_score": 0.3,
+      "connection_type": "module_import",
+      "integration_suggestions": [
+        "import src.cognitive.enhanced_patterns.memory_pruning_system",
+        "from src.cognitive.enhanced_patterns.memory_pruning_system import PruningStrategy, PruningConfig",
+        "from src.cognitive.enhanced_patterns.memory_pruning_system import AGE_BASED, QUALITY_BASED, SIMILARITY_BASED",
+        "Consider integrating at line 15: Function '__init__' might benefit from additional functionality"
+      ],
+      "reasoning": [
+        "High semantic similarity (score: 0.50) - files work in related domains"
+      ]
+    }
+  ]
+}

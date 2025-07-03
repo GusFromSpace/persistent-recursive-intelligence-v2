@@ -1,0 +1,74 @@
+[
+    {
+        "type": "context",
+        "line": 11,
+        "severity": "low",
+        "description": "[CONTEXT] Print statement found at line 11",
+        "learned_from_memory": false,
+        "enhanced_pattern": true,
+        "context": "test",
+        "suggestion": "Consider using logging for consistency",
+        "confidence": 0.8,
+        "original_severity": "medium"
+    },
+    {
+        "type": "context",
+        "line": 27,
+        "severity": "low",
+        "description": "[CONTEXT] Print statement found at line 27",
+        "learned_from_memory": false,
+        "enhanced_pattern": true,
+        "context": "test",
+        "suggestion": "Consider using logging for consistency",
+        "confidence": 0.8,
+        "original_severity": "medium"
+    },
+    {
+        "type": "context",
+        "line": 26,
+        "severity": "medium",
+        "description": "[CONTEXT] Pattern legitimate_logging at line 26",
+        "learned_from_memory": false,
+        "enhanced_pattern": true,
+        "context": "test",
+        "suggestion": "Review and improve this pattern",
+        "confidence": 0.8,
+        "original_severity": "medium"
+    },
+    {
+        "type": "context",
+        "line": 28,
+        "severity": "medium",
+        "description": "[CONTEXT] Pattern legitimate_logging at line 28",
+        "learned_from_memory": false,
+        "enhanced_pattern": true,
+        "context": "test",
+        "suggestion": "Review and improve this pattern",
+        "confidence": 0.8,
+        "original_severity": "medium"
+    },
+    {
+        "type": "context",
+        "line": 11,
+        "severity": "medium",
+        "description": "[CONTEXT] Pattern legitimate_logging at line 11",
+        "learned_from_memory": false,
+        "enhanced_pattern": true,
+        "context": "test",
+        "suggestion": "Review and improve this pattern",
+        "confidence": 0.8,
+        "original_severity": "medium"
+    },
+    {
+        "type": "context",
+        "line": 27,
+        "severity": "medium",
+        "description": "[CONTEXT] Pattern legitimate_logging at line 27",
+        "learned_from_memory": false,
+        "enhanced_pattern": true,
+        "context": "test",
+        "suggestion": "Review and improve this pattern",
+        "confidence": 0.8,
+        "original_severity": "medium"
+    }
+]

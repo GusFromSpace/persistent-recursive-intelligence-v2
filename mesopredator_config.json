@@ -1,0 +1,8 @@
+{
+    "project_path": "/home/gusfromspace/Development/projects/ai/infvx/",
+    "goal": "Fix the compilation errors in the INFVX project.",
+    "log_file": "analysis_log.json",
+    "knowledge_base": "knowledge_base.json",
+    "max_iterations": 10,
+    "sandboxed_execution": true
+}

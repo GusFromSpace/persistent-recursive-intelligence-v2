@@ -1,0 +1,157 @@
+[
+    {
+        "type": "cpp_platform_specific_includes",
+        "line": 6,
+        "severity": "medium",
+        "description": "AI uses platform-specific includes without guards",
+        "file_path": "/home/gusfromspace/Development/persistent-recursive-intelligence/test_cpp_project/src/main.cpp",
+        "educational_content": "C++ Issue: AI uses platform-specific includes without guards\\n",
+        "similar_patterns": []
+    },
+    {
+        "type": "cpp_syntax_missing_semicolon",
+        "line": 12,
+        "severity": "high",
+        "description": "Possible missing semicolon after class/struct definition",
+        "file_path": "/home/gusfromspace/Development/persistent-recursive-intelligence/test_cpp_project/src/main.cpp",
+        "educational_content": "C++ Issue: Possible missing semicolon after class/struct definition\\n",
+        "similar_patterns": []
+    },
+    {
+        "type": "cpp_include_order",
+        "severity": "low",
+        "file_path": "/home/gusfromspace/Development/persistent-recursive-intelligence/test_cpp_project/src/main.cpp",
+        "line": null,
+        "description": "System includes should come before local includes",
+        "educational_content": "C++ Issue: System includes should come before local includes\\n",
+        "similar_patterns": []
+    },
+    {
+        "type": "cpp_performance_iostream_sync",
+        "line": 9,
+        "severity": "low",
+        "description": "Using std::endl flushes buffer unnecessarily",
+        "suggestion": "Use '\\n' instead of std::endl for better performance, or disable iostream sync",
+        "file_path": "/home/gusfromspace/Development/persistent-recursive-intelligence/test_cpp_project/src/main.cpp",
+        "educational_content": "C++ Issue: Using std::endl flushes buffer unnecessarily\\nRecommendation: Use '\\n' instead of std::endl for better performance, or disable iostream sync\\n\\nC++ Performance Optimization:\\nC++ provides zero-cost abstractions. Understanding move semantics, const correctness, and memory locality can significantly improve performance.",
+        "similar_patterns": []
+    },
+    {
+        "type": "cpp_performance_iostream_sync",
+        "line": 9,
+        "severity": "low",
+        "description": "Using std::endl flushes buffer unnecessarily",
+        "suggestion": "Use '\\n' instead of std::endl for better performance, or disable iostream sync",
+        "file_path": "/home/gusfromspace/Development/persistent-recursive-intelligence/test_cpp_project/src/main.cpp",
+        "educational_content": "C++ Issue: Using std::endl flushes buffer unnecessarily\\nRecommendation: Use '\\n' instead of std::endl for better performance, or disable iostream sync\\n\\nC++ Performance Optimization:\\nC++ provides zero-cost abstractions. Understanding move semantics, const correctness, and memory locality can significantly improve performance.",
+        "similar_patterns": []
+    },
+    {
+        "type": "cpp_double_namespace",
+        "line": 8,
+        "severity": "high",
+        "description": "AI creates double namespace declarations",
+        "file_path": "/home/gusfromspace/Development/persistent-recursive-intelligence/test_cpp_project/src/bad_code.cpp",
+        "educational_content": "C++ Issue: AI creates double namespace declarations\\n",
+        "similar_patterns": []
+    },
+    {
+        "type": "cpp_const_duplication",
+        "line": 10,
+        "severity": "medium",
+        "description": "AI duplicates const keyword",
+        "file_path": "/home/gusfromspace/Development/persistent-recursive-intelligence/test_cpp_project/src/bad_code.cpp",
+        "educational_content": "C++ Issue: AI duplicates const keyword\\n",
+        "similar_patterns": []
+    },
+    {
+        "type": "cpp_static_duplication",
+        "line": 11,
+        "severity": "medium",
+        "description": "AI duplicates static keyword",
+        "file_path": "/home/gusfromspace/Development/persistent-recursive-intelligence/test_cpp_project/src/bad_code.cpp",
+        "educational_content": "C++ Issue: AI duplicates static keyword\\n",
+        "similar_patterns": []
+    },
+    {
+        "type": "cpp_namespace_pollution",
+        "line": 6,
+        "severity": "medium",
+        "description": "AI places using statements in wrong scope",
+        "file_path": "/home/gusfromspace/Development/persistent-recursive-intelligence/test_cpp_project/src/bad_code.cpp",
+        "educational_content": "C++ Issue: AI places using statements in wrong scope\\n",
+        "similar_patterns": []
+    },
+    {
+        "type": "cpp_syntax_missing_semicolon",
+        "line": 15,
+        "severity": "high",
+        "description": "Possible missing semicolon after class/struct definition",
+        "file_path": "/home/gusfromspace/Development/persistent-recursive-intelligence/test_cpp_project/src/bad_code.cpp",
+        "educational_content": "C++ Issue: Possible missing semicolon after class/struct definition\\n",
+        "similar_patterns": []
+    },
+    {
+        "type": "cpp_syntax_missing_semicolon",
+        "line": 16,
+        "severity": "high",
+        "description": "Possible missing semicolon after class/struct definition",
+        "file_path": "/home/gusfromspace/Development/persistent-recursive-intelligence/test_cpp_project/src/bad_code.cpp",
+        "educational_content": "C++ Issue: Possible missing semicolon after class/struct definition\\n",
+        "similar_patterns": []
+    },
+    {
+        "type": "cpp_syntax_missing_semicolon",
+        "line": 17,
+        "severity": "high",
+        "description": "Possible missing semicolon after class/struct definition",
+        "file_path": "/home/gusfromspace/Development/persistent-recursive-intelligence/test_cpp_project/src/bad_code.cpp",
+        "educational_content": "C++ Issue: Possible missing semicolon after class/struct definition\\n",
+        "similar_patterns": []
+    },
+    {
+        "type": "cpp_include_order",
+        "severity": "low",
+        "file_path": "/home/gusfromspace/Development/persistent-recursive-intelligence/test_cpp_project/src/bad_code.cpp",
+        "line": null,
+        "description": "System includes should come before local includes",
+        "educational_content": "C++ Issue: System includes should come before local includes\\n",
+        "similar_patterns": []
+    },
+    {
+        "type": "cpp_incorrect_include_paths",
+        "line": 6,
+        "severity": "high",
+        "description": "AI creates incorrect relative include paths due to lack of project structure context",
+        "file_path": "/home/gusfromspace/Development/persistent-recursive-intelligence/test_cpp_project/src/bad_code.hpp",
+        "educational_content": "C++ Issue: AI creates incorrect relative include paths due to lack of project structure context\\n",
+        "similar_patterns": []
+    },
+    {
+        "type": "cpp_double_namespace",
+        "line": 8,
+        "severity": "high",
+        "description": "AI creates double namespace declarations",
+        "file_path": "/home/gusfromspace/Development/persistent-recursive-intelligence/test_cpp_project/src/bad_code.hpp",
+        "educational_content": "C++ Issue: AI creates double namespace declarations\\n",
+        "similar_patterns": []
+    },
+    {
+        "type": "cpp_syntax_missing_semicolon",
+        "line": 11,
+        "severity": "high",
+        "description": "Possible missing semicolon after class/struct definition",
+        "file_path": "/home/gusfromspace/Development/persistent-recursive-intelligence/test_cpp_project/src/bad_code.hpp",
+        "educational_content": "C++ Issue: Possible missing semicolon after class/struct definition\\n",
+        "similar_patterns": []
+    },
+    {
+        "type": "cpp_syntax_missing_semicolon",
+        "line": 12,
+        "severity": "high",
+        "description": "Possible missing semicolon after class/struct definition",
+        "file_path": "/home/gusfromspace/Development/persistent-recursive-intelligence/test_cpp_project/src/bad_code.hpp",
+        "educational_content": "C++ Issue: Possible missing semicolon after class/struct definition\\n",
+        "similar_patterns": []
+    }
+]

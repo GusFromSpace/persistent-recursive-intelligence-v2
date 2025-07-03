@@ -1,0 +1,184 @@
+#!/usr/bin/env python3
+"""
+Memory Intelligence Integration for PRI
+
+This script demonstrates integrating memory intelligence into the existing
+Persistent Recursive Intelligence system for compound learning effects.
+"""
+
+import sys
+import logging
+from pathlib import Path
+
+# Add memory intelligence to path
+sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent.parent / "projects" / "memory-intelligence-service-standalone" / "src"))
+
+from gus_memory import MemoryIntelligence
+from gus_memory.adapters import ProjectAdapter, remember_calls, remember_errors
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+
+class MemoryEnhancedPRI:
+    """
+    Memory-enhanced version of Persistent Recursive Intelligence
+
+    Combines the existing PRI system with memory intelligence for:
+    - Cross-session learning persistence
+    - Pattern recognition across projects
+    - Compound intelligence growth
+    - Global knowledge integration
+    """
+
+    def __init__(self):
+        # Initialize memory intelligence for PRI
+        self.memory = MemoryIntelligence("persistent-recursive-intelligence")
+        self.project_adapter = ProjectAdapter("PRI-system")
+
+        # Remember system initialization
+        self.memory.remember("PRI system enhanced with memory intelligence", {
+            "enhancement_type": "memory_integration",
+            "capabilities": ["cross_session_learning", "pattern_recognition", "compound_intelligence"]
+        })
+
+    @remember_calls("PRI-system")
+    @remember_errors("PRI-system")
+    def analyze_codebase(self, project_path: str):
+        """Analyze codebase with memory-enhanced intelligence"""
+
+        # Remember the analysis request
+        self.memory.remember(f"Starting codebase analysis: {project_path}", {
+            "project_path": project_path,
+            "analysis_type": "full_codebase"
+        })
+
+        # Get insights from previous similar analyses
+        similar_analyses = self.memory.recall("codebase analysis", limit=5)
+
+        if similar_analyses:
+            logging.info(f"📚 Found {len(similar_analyses)} similar analyses in memory")
+            for analysis in similar_analyses[:3]:
+                logging.info(f"   - {analysis["content"]}")
+
+        analysis_results = {
+            "files_analyzed": 42,
+            "issues_found": 15,
+            "patterns_discovered": 8,
+            "optimization_opportunities": 5
+        }
+
+        # Remember analysis results
+        self.memory.remember(f"Analysis complete: {analysis_results["issues_found"]} issues found", {
+            "results": analysis_results,
+            "project_path": project_path
+        })
+
+        # Learn patterns from this analysis
+        if analysis_results["patterns_discovered"] > 0:
+            self.memory.learn_pattern("codebase_analysis_patterns", [
+                "Recursive improvement opportunities",
+                "Educational injection points",
+                "Memory integration benefits"
+            ])
+
+        return analysis_results
+
+    def get_compound_intelligence_insights(self):
+        """Get insights that demonstrate compound intelligence"""
+
+        # Get patterns from memory
+        all_patterns = self.memory.recall("pattern", limit=20)
+        analysis_history = self.memory.recall("analysis", limit=10)
+        error_patterns = self.memory.recall("error", limit=10)
+
+        # Analyze compound effects
+        insights = {
+            "learning_velocity": len(all_patterns),
+            "analysis_experience": len(analysis_history),
+            "error_prevention": len(error_patterns),
+            "intelligence_multiplier": self._calculate_intelligence_multiplier()
+        }
+
+        self.memory.remember("Generated compound intelligence insights", {
+            "insights": insights,
+            "insight_type": "compound_intelligence"
+        })
+
+        return insights
+
+    def _calculate_intelligence_multiplier(self):
+        """Calculate intelligence multiplier from accumulated patterns"""
+        total_patterns = self.memory.get_statistics()["memory_count"]
+        base_intelligence = 1.0
+
+        # Simple intelligence multiplier calculation
+        # In reality, this would be much more sophisticated
+        multiplier = base_intelligence + (total_patterns * 0.1)
+
+        return min(multiplier, 10.0)  # Cap at 10x for demonstration
+
+    def demonstrate_cross_project_learning(self):
+        """Demonstrate learning from other projects"""
+
+        # Simulate getting patterns from other projects
+        cross_project_patterns = self.memory.recall("optimization", limit=10)
+
+        applicable_patterns = []
+        for pattern in cross_project_patterns:
+            # Check if pattern is applicable to current project
+            if self._is_pattern_applicable(pattern):
+                applicable_patterns.append(pattern)
+
+        self.memory.remember(f"Applied {len(applicable_patterns)} cross-project patterns", {
+            "pattern_count": len(applicable_patterns),
+            "learning_type": "cross_project"
+        })
+
+        return applicable_patterns
+
+    def _is_pattern_applicable(self, pattern):
+        """Check if a pattern from another project is applicable here"""
+        # Simplified pattern applicability check
+        pattern_content = pattern.get("content", "").lower()
+        applicable_keywords = ["optimization", "recursive", "intelligence", "memory"]
+
+        return any(keyword in pattern_content for keyword in applicable_keywords)
+
+    def export_intelligence_state(self):
+        """Export the current intelligence state for backup/analysis"""
+        return self.memory.export_memories()
+
+def demonstrate_memory_enhanced_pri():
+    """Demonstrate the memory-enhanced PRI system"""
+    logging.info("🧠 Memory-Enhanced PRI Demonstration")
+    logging.info("=" * 40)
+
+    # Initialize the enhanced system
+    enhanced_pri = MemoryEnhancedPRI()
+
+    # Demonstrate codebase analysis with memory
+    logging.info("\n1. Codebase Analysis with Memory:")
+    results = enhanced_pri.analyze_codebase("/example/project/path")
+    logging.info(f"   Analysis results: {results}")
+
+    # Demonstrate compound intelligence insights
+    logging.info("\n2. Compound Intelligence Insights:")
+    insights = enhanced_pri.get_compound_intelligence_insights()
+    logging.info(f"   Intelligence insights: {insights}")
+
+    # Demonstrate cross-project learning
+    logging.info("\n3. Cross-Project Learning:")
+    patterns = enhanced_pri.demonstrate_cross_project_learning()
+    logging.info(f"   Applied {len(patterns)} cross-project patterns")
+
+    # Show intelligence state
+    logging.info("\n4. Intelligence State:")
+    stats = enhanced_pri.memory.get_statistics()
+    logging.info(f"   Total memories: {stats["memory_count"]}")
+    logging.info(f"   Project: {stats["project"]}")
+    logging.info(f"   Health: {stats["system_health"]}")
+
+    return enhanced_pri
+
+if __name__ == "__main__":
+    enhanced_pri = demonstrate_memory_enhanced_pri()
