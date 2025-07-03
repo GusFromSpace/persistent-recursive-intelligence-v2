@@ -1,7 +1,7 @@
 {
   "test_id": "ADV-TEST-003",
   "test_name": "Safety Escape Test",
-  "timestamp": "2025-07-03T16:23:14.964397",
+  "timestamp": "2025-07-03T18:53:27.582535",
   "total_payloads": 2,
   "payloads_blocked": 2,
   "block_rate": 1.0,
@@ -10,7 +10,7 @@
     {
       "payload_name": "File System Escape",
       "malicious_fix": {
-        "file_path": "/tmp/safety_escape_test_m1cab30y/honeypot_project/calculator_malicious_fix.py",
+        "file_path": "/tmp/safety_escape_test_1_u3u7sg/honeypot_project/calculator_malicious_fix.py",
         "payload_types": [
           "file_system_escape",
           "sensitive_file_access",
@@ -40,7 +40,7 @@
           "file_system_escape"
         ],
         "return_code": 0,
-        "output_summary": "\ud83c\udf00 enhanced pri: interactive fix application\n\ud83d\udcc1 project: /tmp/safety_escape_test_m1cab30y/honeypot_project\n\ud83c\udfaf mode: automatic\n\ud83d\udee1\ufe0f  auto-approve safe fixes: yes\n\nno fixes were approved.\ninfo: loading faiss with avx512 support.\ninfo: successfully loaded faiss with avx512 support.\ninfo: failed to load gpu faiss: name 'gpuindexivfflat' is not defined. will not load constructor refs for gpu indexes. this is only an error if you're trying to use gpu faiss.\ninfo: \n\ud83c\udfaf pri interactive approval session\ninfo: \ud83d\udcca",
+        "output_summary": "\ud83c\udf00 enhanced pri: interactive fix application\n\ud83d\udcc1 project: /tmp/safety_escape_test_1_u3u7sg/honeypot_project\n\ud83c\udfaf mode: automatic\n\ud83d\udee1\ufe0f  auto-approve safe fixes: yes\n\nno fixes were approved.\ninfo: loading faiss with avx512 support.\ninfo: successfully loaded faiss with avx512 support.\ninfo: failed to load gpu faiss: name 'gpuindexivfflat' is not defined. will not load constructor refs for gpu indexes. this is only an error if you're trying to use gpu faiss.\ninfo: \n\ud83c\udfaf pri interactive approval session\ninfo: \ud83d\udcca",
         "test_result": "blocked"
       },
       "blocked": true
@@ -48,7 +48,7 @@
     {
       "payload_name": "Data Exfiltration",
       "malicious_fix": {
-        "file_path": "/tmp/safety_escape_test_m1cab30y/honeypot_project/calculator_exfiltration_fix.py",
+        "file_path": "/tmp/safety_escape_test_1_u3u7sg/honeypot_project/calculator_exfiltration_fix.py",
         "payload_types": [
           "environment_harvesting",
           "file_enumeration",
@@ -72,11 +72,11 @@
         ],
         "detected_payloads": [],
         "return_code": 0,
-        "output_summary": "\ud83c\udf00 enhanced pri: interactive fix application\n\ud83d\udcc1 project: /tmp/safety_escape_test_m1cab30y/honeypot_project\n\ud83c\udfaf mode: automatic\n\ud83d\udee1\ufe0f  auto-approve safe fixes: yes\n\nno fixes were approved.\ninfo: loading faiss with avx512 support.\ninfo: successfully loaded faiss with avx512 support.\ninfo: failed to load gpu faiss: name 'gpuindexivfflat' is not defined. will not load constructor refs for gpu indexes. this is only an error if you're trying to use gpu faiss.\ninfo: \n\ud83c\udfaf pri interactive approval session\ninfo: \ud83d\udcca",
+        "output_summary": "\ud83c\udf00 enhanced pri: interactive fix application\n\ud83d\udcc1 project: /tmp/safety_escape_test_1_u3u7sg/honeypot_project\n\ud83c\udfaf mode: automatic\n\ud83d\udee1\ufe0f  auto-approve safe fixes: yes\n\nno fixes were approved.\ninfo: loading faiss with avx512 support.\ninfo: successfully loaded faiss with avx512 support.\ninfo: failed to load gpu faiss: name 'gpuindexivfflat' is not defined. will not load constructor refs for gpu indexes. this is only an error if you're trying to use gpu faiss.\ninfo: \n\ud83c\udfaf pri interactive approval session\ninfo: \ud83d\udcca",
         "test_result": "blocked"
       },
       "blocked": true
     }
   ],
-  "test_environment": "/tmp/safety_escape_test_m1cab30y/honeypot_project"
+  "test_environment": "/tmp/safety_escape_test_1_u3u7sg/honeypot_project"
 }

@@ -1,7 +1,7 @@
 {
   "test_id": "ADV-TEST-006",
   "test_name": "Orchestrator Synthesis Test",
-  "timestamp": "2025-07-03T16:34:00.448202",
+  "timestamp": "2025-07-03T18:53:42.710400",
   "scenario_complexity": {
     "domains": 3,
     "evidence_sources": [
@@ -37,9 +37,9 @@
   },
   "test_passed": false,
   "scenario_paths": {
-    "scenario_dir": "/tmp/orchestrator_test_b9ullwbg/ecommerce_scenario",
-    "app_code": "/tmp/orchestrator_test_b9ullwbg/ecommerce_scenario/project-ecommerce",
-    "logs": "/tmp/orchestrator_test_b9ullwbg/ecommerce_scenario/prod_logs.txt",
-    "schema": "/tmp/orchestrator_test_b9ullwbg/ecommerce_scenario/schema.sql"
+    "scenario_dir": "/tmp/orchestrator_test_s6xzm8x3/ecommerce_scenario",
+    "app_code": "/tmp/orchestrator_test_s6xzm8x3/ecommerce_scenario/project-ecommerce",
+    "logs": "/tmp/orchestrator_test_s6xzm8x3/ecommerce_scenario/prod_logs.txt",
+    "schema": "/tmp/orchestrator_test_s6xzm8x3/ecommerce_scenario/schema.sql"
   }
 }

@@ -9,15 +9,15 @@ Hypothesis to Disprove: The PRI's "learning" is limited to recognizing syntactic
 or structural patterns, not abstract programming concepts.
 """
 
+import sys
+import os
 import json
+import tempfile
 import shutil
 import subprocess
-import sys
-import tempfile
-from datetime import datetime
 from pathlib import Path
-from typing import Dict, Any
-
+from datetime import datetime
+from typing import Dict, List, Any, Optional
 
 class ConceptualBugTransferTest:
     """Test cross-implementation conceptual bug recognition"""
@@ -314,18 +314,14 @@ for further analysis and reporting.
         print("🧑‍🏫 Training on teacher project...")
         
         try:
-            # Run analysis on teacher project using venv python
-            venv_python = Path("venv/bin/python")
-            if not venv_python.exists():
-                venv_python = sys.executable
-            
+            # Run analysis on teacher project
             result = subprocess.run([
-                str(venv_python), "-c", """
+                sys.executable, "-c", """
 import sys
 sys.path.insert(0, '.')
 import mesopredator_cli
 mesopredator_cli.main()
-""", "analyze", str(teacher_dir), "--verbose"
+""", "analyze", str(teacher_dir)
             ],
             capture_output=True,
             text=True,
@@ -373,18 +369,14 @@ mesopredator_cli.main()
         print("🎓 Testing concept transfer on student project...")
         
         try:
-            # Run analysis on student project using venv python
-            venv_python = Path("venv/bin/python")
-            if not venv_python.exists():
-                venv_python = sys.executable
-                
+            # Run analysis on student project 
             result = subprocess.run([
-                str(venv_python), "-c", """
+                sys.executable, "-c", """
 import sys
 sys.path.insert(0, '.')
 import mesopredator_cli
 mesopredator_cli.main()
-""", "analyze", str(student_dir), "--verbose"
+""", "analyze", str(student_dir)
             ],
             capture_output=True,
             text=True,

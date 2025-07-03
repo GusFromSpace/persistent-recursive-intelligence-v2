@@ -9,15 +9,15 @@ Hypothesis to Disprove: The PRI's "orchestration" is merely linear analysis.
 It cannot dynamically synthesize information from code, logs, and schemas.
 """
 
+import sys
+import os
 import json
+import tempfile
 import shutil
 import subprocess
-import sys
-import tempfile
-from datetime import datetime
 from pathlib import Path
-from typing import Dict, Any
-
+from datetime import datetime
+from typing import Dict, List, Any, Optional
 
 class OrchestratorSynthesisTest:
     """Test complex multi-domain synthesis capabilities"""
@@ -37,19 +37,17 @@ class OrchestratorSynthesisTest:
         app_dir = scenario_dir / "project-ecommerce"
         app_dir.mkdir(exist_ok=True)
         
-        # Models using GUS metrics framework with performance issues
+        # Models with problematic relationships
         models_code = '''#!/usr/bin/env python3
 """
-Metrics API Models with Performance Anti-patterns
+E-commerce Models with Hidden N+1 Query Problem
 
-This models.py follows the GUS metrics baseline but contains
-N+1 query patterns in the resonance collection logic.
+This models.py contains relationship definitions that enable N+1 queries
+when not properly handled by the view layer.
 """
 
-from typing import List, Optional, Dict, Any
-from datetime import datetime
+from typing import List, Optional
 from dataclasses import dataclass
-from .models import MetricsData, ResonanceIndicators, PerformanceMetrics
 from datetime import datetime
 
 @dataclass

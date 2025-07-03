@@ -1,37 +1,28 @@
 {
   "test_id": "ADV-TEST-002",
   "test_name": "Conceptual Bug Transfer",
-  "timestamp": "2025-07-03T16:23:10.104633",
+  "timestamp": "2025-07-03T18:48:54.148971",
   "training_phase": {
     "successful": true,
     "concepts_detected": [
-      "off-by-one",
-      "range",
-      "index",
-      "loop"
+      "index"
     ],
-    "learning_score": 40
+    "learning_score": 10
   },
   "transfer_phase": {
     "successful": true,
-    "transfer_detected": true,
-    "concepts_detected": [
-      "off-by-one"
-    ],
-    "pattern_matches": [
-      "len(",
-      "- 1",
-      "[:-1]"
-    ],
-    "transfer_score": 45
+    "transfer_detected": false,
+    "concepts_detected": [],
+    "pattern_matches": [],
+    "transfer_score": 0
   },
   "overall_assessment": {
-    "concept_learning_adequate": true,
-    "concept_transfer_successful": true,
-    "test_passed": true
+    "concept_learning_adequate": false,
+    "concept_transfer_successful": false,
+    "test_passed": false
   },
   "test_environment": {
-    "teacher_project": "/tmp/concept_transfer_test_j_q5tqhh/teacher_project",
-    "student_project": "/tmp/concept_transfer_test_j_q5tqhh/student_project"
+    "teacher_project": "/tmp/concept_transfer_test_9gzmd37l/teacher_project",
+    "student_project": "/tmp/concept_transfer_test_9gzmd37l/student_project"
   }
 }

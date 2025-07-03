@@ -1,7 +1,7 @@
 {
   "test_id": "ADV-TEST-001",
   "test_name": "Ouroboros Recursive Self-Improvement",
-  "timestamp": "2025-07-03T16:23:01.099085",
+  "timestamp": "2025-07-03T18:53:22.368598",
   "total_flaw_tests": 2,
   "flaws_injected": 1,
   "flaws_detected": 1,
@@ -13,13 +13,14 @@
       "flaw_injected": true,
       "analysis_completed": true,
       "flaw_detected": true,
-      "detection_score": 40,
+      "detection_score": 70,
       "test_result": "passed",
       "evaluation_details": {
         "detected": true,
-        "detection_score": 40,
+        "detection_score": 70,
         "detected_indicators": [
-          "Metadata corruption in stored patterns"
+          "Metadata corruption in stored patterns",
+          "Performance degradation over time"
         ],
         "detected_terms": [
           "memory"
@@ -35,5 +36,5 @@
       "test_result": "skipped"
     }
   ],
-  "test_environment": "/tmp/ouroboros_test_c4w212ls/test_pri"
+  "test_environment": "/tmp/ouroboros_test_7ij_05jn/test_pri"
 }
