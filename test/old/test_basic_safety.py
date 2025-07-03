@@ -4,7 +4,6 @@ Basic Safety Verification - Tests AI containment without compromising security
 """
 
 import sys
-import os
 from pathlib import Path
 
 # Add src to path for imports
@@ -15,7 +14,7 @@ def test_safety_imports():
     print("🧪 Testing Safety Module Imports...")
     
     try:
-        from safety.emergency_controls import emergency_controller
+        from safety.emergency_controls import e
         print("  ✅ Emergency controls imported")
     except Exception as e:
         print(f"  ❌ Emergency controls failed: {e}")
@@ -149,17 +148,17 @@ def test_emergency_controls():
     """Test that emergency controls are functional"""
     print("\n🧪 Testing Emergency Controls...")
     
-    from safety.emergency_controls import emergency_controller
+    from safety.emergency_controls import e
     
     # Test that emergency controller is working
-    status = emergency_controller.get_status()
+    status = e.get_status()
     print(f"  ✅ Emergency controller operational (stop_requested: {status['stop_requested']})")
     
     # Test that we can register operations
     try:
         op_id = "test_operation_123"
-        emergency_controller.register_operation(op_id, "Test operation")
-        emergency_controller.unregister_operation(op_id)
+        e.register_operation(op_id, "Test operation")
+        e.unregister_operation(op_id)
         print("  ✅ Operation registration/unregistration working")
     except Exception as e:
         print(f"  ❌ Operation management failed: {e}")

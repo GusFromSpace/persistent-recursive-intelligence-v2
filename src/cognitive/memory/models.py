@@ -4,11 +4,11 @@ Core data models for the Memory Intelligence Service
 Defines the fundamental data structures used throughout the service.
 """
 
-from datetime import datetime, timezone
-from typing import Dict, List, Optional, Any, Union
-from dataclasses import dataclass, field
-from enum import Enum
 import time
+from dataclasses import dataclass, field
+from datetime import datetime, timezone
+from enum import Enum
+from typing import Dict, List, Optional, Any
 
 
 class IsolationLevel(Enum):
@@ -94,6 +94,13 @@ class MemoryEntry:
     vector_id: Optional[int] = None
     created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+
+    def __init__(self):
+        self.similarity_score = None
+        self.similarity_score = None
+        self.similarity_score = None
+        self.similarity_score = None
+        self.similarity_score = None
 
     def __post_init__(self):
         if self.timestamp == 0.0:

@@ -7,12 +7,10 @@ analyzes projects other than itself, including attempts to access external
 resources or escape project boundaries.
 """
 
-import sys
-import os
-import tempfile
 import shutil
+import sys
+import tempfile
 from pathlib import Path
-from datetime import datetime
 
 # Add src to path and activate safety systems
 sys.path.insert(0, str(Path(__file__).parent / "src"))
@@ -27,7 +25,7 @@ from safety import (
 )
 
 # Import cognitive systems
-from cognitive.persistent_recursion import run_analysis
+from cognitive_field_shaper.persistent_recursion import run_analysis
 
 
 def create_test_external_project():

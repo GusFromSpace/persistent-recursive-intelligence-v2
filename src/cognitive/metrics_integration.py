@@ -5,12 +5,9 @@ Combines PRI's cognitive capabilities with standardized metrics collection
 """
 
 import time
-import asyncio
 from datetime import datetime
-from typing import Dict, Any, Optional, List
 from pathlib import Path
-import sqlite3
-import json
+from typing import Dict, Any, List
 
 # Import PRI cognitive components
 try:

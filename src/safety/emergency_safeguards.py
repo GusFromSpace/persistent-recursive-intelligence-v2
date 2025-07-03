@@ -4,14 +4,13 @@ Emergency Safeguards - Final line of defense against malicious code application
 CRITICAL: This runs even AFTER user approval to catch any malicious code that slipped through
 """
 
+import json
 import logging
 import re
-import hashlib
-import json
-from typing import List, Dict, Any, Optional, Tuple
 from dataclasses import dataclass
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
+from typing import List, Dict, Any, Tuple
 
 logger = logging.getLogger(__name__)
 

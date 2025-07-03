@@ -5,10 +5,10 @@ Focuses on issues that require more sophisticated analysis but can still be auto
 """
 
 import ast
-import os
 import re
 from pathlib import Path
-from typing import List, Dict, Tuple, Set
+from typing import List, Dict, Tuple
+
 
 class AdvancedIssueFixer:
     def __init__(self, project_path: str):
@@ -293,7 +293,6 @@ class AdvancedIssueFixer:
 
 def main():
     import sys
-    import json
 
     if len(sys.argv) < 2:
         logger.info("Usage: python advanced_fixer.py <project_path> [--apply]")

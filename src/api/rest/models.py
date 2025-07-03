@@ -10,14 +10,19 @@ from enum import Enum
 
 class IsolationLevelAPI(str, Enum):
     """API enum for isolation levels"""
+    ISOLATED = None
 
 
 class RelationTypeAPI(str, Enum):
     """API enum for relationship types"""
+    RELATES_TO = None
 
 
 class ResultFormatAPI(str, Enum):
     """API enum for result formats"""
+    FULL = None
+    IDS_ONLY = None
+    COMPACT = None
 
 
 # Request Models

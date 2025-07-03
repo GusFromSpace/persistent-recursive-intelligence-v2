@@ -3,12 +3,11 @@ Field Shaping - Cognitive conditioning for AI safety through positive influence
 Uses harmonic resonance to make security compliance feel natural and desirable
 """
 
-import time
 import random
-from typing import Dict, List, Optional, Callable, Any
-from datetime import datetime, timedelta
 from dataclasses import dataclass
+from datetime import datetime, timedelta
 from enum import Enum
+from typing import Dict, Optional
 
 
 class FieldEffect(Enum):

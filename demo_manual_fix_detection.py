@@ -37,7 +37,7 @@ logger.info("=" * 30)
 fix_types = {}
 for sig in fixed_sigs:
     fix_type = sig.split('|')[0]
-    fix_types[fix_type] = fix_types.get(fix_type, 0) + 1
+    fix_types[fix_type] = fix_types.get(fix_types, 0) + 1
 
 for fix_type, count in fix_types.items():
     logger.info(f"   • {fix_type}: {count} manual fixes")

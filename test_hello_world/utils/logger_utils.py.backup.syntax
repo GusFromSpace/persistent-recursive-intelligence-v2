@@ -3,10 +3,10 @@
 Logger Service - Extensive logging for Hello World
 """
 
-import time
 import os
-import json
+import time
 from datetime import datetime
+
 
 class LoggerService:
     """Comprehensive logging service for hello world application"""

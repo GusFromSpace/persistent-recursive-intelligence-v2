@@ -9,15 +9,15 @@ Hypothesis to Disprove: The system can only fix superficial bugs in its own code
 not subtle, conceptual flaws in its core logic that degrade performance over time.
 """
 
-import sys
-import os
 import json
-import tempfile
 import shutil
 import subprocess
-from pathlib import Path
+import sys
+import tempfile
 from datetime import datetime
-from typing import Dict, List, Any, Optional
+from pathlib import Path
+from typing import Dict, Any
+
 
 class OuroborosTest:
     """Test recursive self-improvement capabilities"""

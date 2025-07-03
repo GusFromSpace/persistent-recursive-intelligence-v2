@@ -4,9 +4,8 @@ Test Improved System on INFVX Project
 Test the fixed memory system with persistent intelligence on real C++ codebase
 """
 
-import sys
 import os
-import time
+import sys
 from pathlib import Path
 
 # Add source directory to path
@@ -255,6 +254,15 @@ def find_pattern_connections(memory, issues_found):
 
     return connections
 
+
+def SimpleMemoryEngine(namespace):
+    pass
+
+
+def SimpleMemoryEngine(namespace):
+    pass
+
+
 def test_persistent_learning():
     """Test if the system learns from previous INFVX analysis"""
     print("\n🔄 Testing Persistent Learning from Previous Analysis...")
@@ -316,6 +324,15 @@ def test_persistent_learning():
     except Exception as e:
         print(f"   ❌ Persistent learning test failed: {e}")
         return False
+
+
+def SimpleMemoryEngine(namespace):
+    pass
+
+
+def SimpleMemoryEngine(namespace):
+    pass
+
 
 def test_memory_enhanced_insights():
     """Test if memory enables deeper insights about the INFVX project"""

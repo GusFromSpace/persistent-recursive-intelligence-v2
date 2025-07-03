@@ -7,16 +7,15 @@ compound intelligence learning effects across different codebases.
 """
 
 import sys
-import os
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
 
 # Add memory intelligence to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "projects" / "memory-intelligence-service-standalone" / "src"))
 
 from gus_memory import MemoryIntelligence
 from gus_memory.adapters import ProjectAdapter, remember_calls, remember_errors
-from src.cognitive.recursive.recursive_improvement_enhanced import MemoryEnhancedRecursiveImprovement
+
 
 class CompoundIntelligenceAnalyzer:
     """

@@ -5,7 +5,6 @@ Shows how PRI can ask for approval before applying fixes
 """
 
 import sys
-import os
 from pathlib import Path
 
 # Add src to path

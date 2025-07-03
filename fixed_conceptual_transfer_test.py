@@ -8,15 +8,15 @@ into text-only mode which can't do semantic concept transfer.
 This fixed version ensures FAISS and semantic vector search are properly enabled.
 """
 
-import sys
 import json
-import tempfile
-import shutil
-import subprocess
-import sqlite3
 import os
-from pathlib import Path
+import sqlite3
+import subprocess
+import sys
+import tempfile
 from datetime import datetime
+from pathlib import Path
+
 
 def create_teacher_project_enhanced(base_dir: Path):
     """Create Project A with clearer off-by-one patterns"""

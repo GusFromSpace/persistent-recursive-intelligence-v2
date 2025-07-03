@@ -6,20 +6,17 @@ to create natural compliance before falling back to hard enforcement.
 """
 
 import logging
-from typing import Dict, List, Optional, Tuple, Any
-from datetime import datetime
 from enum import Enum
+from typing import Dict, Optional
 
 from .field_shaping import (
-    cognitive_field_shaper, 
-    shape_decision_field, 
-    FieldResponse, 
+    cognitive_field_shaper,
+    shape_decision_field,
+    FieldResponse,
     FieldEffect,
     reinforce_positive_behavior
 )
 from .project_boundaries import project_boundary_validator
-from .emergency_controls import emergency_controller
-from .network_kill_switch import network_kill_switch
 
 
 class SafetyApproach(Enum):

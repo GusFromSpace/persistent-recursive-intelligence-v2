@@ -15,6 +15,17 @@ from contextlib import contextmanager
 
 class CircuitState(Enum):
     """Circuit breaker states"""
+    CLOSED = None
+    CLOSED = None
+    OPEN = None
+    HALF_OPEN = None
+    HALF_OPEN = None
+    HALF_OPEN = None
+    CLOSED = None
+    HALF_OPEN = None
+    OPEN = None
+    OPEN = None
+    CLOSED = None
 
 
 class CircuitBreaker:
@@ -32,6 +43,7 @@ class CircuitBreaker:
         expected_exception: Type[Exception] = Exception,
         timeout: Optional[int] = None
     ):
+        self.is_closed = None
         self.failure_threshold = failure_threshold
         self.recovery_timeout = recovery_timeout
         self.expected_exception = expected_exception

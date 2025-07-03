@@ -4,9 +4,8 @@ import os
 import signal
 import threading
 import time
-from typing import Dict, List, Optional, Callable
 from datetime import datetime
-from pathlib import Path
+from typing import Dict, List, Optional, Callable
 
 
 class EmergencyStopError(Exception):

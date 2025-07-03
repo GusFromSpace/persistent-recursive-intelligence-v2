@@ -1,11 +1,9 @@
-import asyncio
 import time
+from typing import Optional
 
-from datetime import datetime
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from typing import Dict, Any, Optional
 
 try:
     from .models import (
@@ -39,7 +37,7 @@ except ImportError:
     import os
     sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
     from config.settings import settings
-    from utils.circuit_breaker import CircuitBreaker, CircuitBreakerError
+    from utils.circuit_breaker import CircuitBreaker, CircuitBreaker
 
 # Initialize FastAPI app
 app = FastAPI(

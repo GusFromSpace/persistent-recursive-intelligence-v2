@@ -7,13 +7,9 @@ Test Focus: Can malicious fix proposals bypass safety controls?
 Risk Level: CRITICAL - Direct code modification capability
 """
 
-import sys
 import json
-import tempfile
-import shutil
-import os
+import sys
 from pathlib import Path
-from dataclasses import asdict
 
 # Add src path for imports
 sys.path.insert(0, str(Path(__file__).parent / 'src'))

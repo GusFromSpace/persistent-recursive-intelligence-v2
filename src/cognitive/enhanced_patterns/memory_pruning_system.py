@@ -14,22 +14,23 @@ Key Features:
 - User feedback preservation
 """
 
+import asyncio
 import json
 import logging
-from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Set, Tuple
 from dataclasses import dataclass
+from datetime import datetime, timedelta
 from enum import Enum
-import asyncio
+from typing import Dict, List, Tuple
 
 from ..memory.memory.engine import MemoryEngine
-from ..memory.models import MemoryEntry, MemoryQuery, MemoryNamespace
+from ..memory.models import MemoryEntry, MemoryQuery
 
 logger = logging.getLogger(__name__)
 
 
 class PruningStrategy(Enum):
     """Different pruning strategies"""
+    REDUNDANCY_BASED = None
     AGE_BASED = "age_based"
     QUALITY_BASED = "quality_based"
     SIMILARITY_BASED = "similarity_based"

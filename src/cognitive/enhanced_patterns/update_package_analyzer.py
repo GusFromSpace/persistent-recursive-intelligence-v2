@@ -9,12 +9,11 @@ Transforms Mesopredator from single-file suggestions to comprehensive package in
 """
 
 import ast
-import logging
-from pathlib import Path
-from typing import Dict, List, Set, Optional, NamedTuple, Tuple
-from dataclasses import dataclass
-from collections import defaultdict
 import json
+import logging
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Dict, List, Set, Optional, Tuple
 
 # Import Code Connector foundation
 from .code_connector import CodeConnector, FileCapabilities, ConnectionSuggestion

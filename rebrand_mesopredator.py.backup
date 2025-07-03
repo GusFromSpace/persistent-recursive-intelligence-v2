@@ -5,7 +5,6 @@ Uses Mesopredator's own pattern matching to safely rebrand user-facing strings
 """
 
 import re
-import os
 from pathlib import Path
 from typing import List, Dict, Tuple
 

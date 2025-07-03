@@ -4,13 +4,13 @@ Interactive Approval System for PRI Fixes
 Provides user-friendly interface for reviewing and approving code changes
 """
 
-import sys
+import difflib
 import logging
-from typing import List, Dict, Any, Tuple, Optional
+import sys
+import textwrap
 from dataclasses import dataclass
 from enum import Enum
-import textwrap
-import difflib
+from typing import List, Tuple
 
 # Set up logger
 logger = logging.getLogger(__name__)

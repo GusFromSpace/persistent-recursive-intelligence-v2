@@ -4,8 +4,6 @@ Security and Quality Fixer - Targets specific high-impact issues
 Focuses on critical security vulnerabilities and high-priority quality issues.
 """
 
-import ast
-import os
 import re
 from pathlib import Path
 from typing import List, Dict, Tuple
@@ -216,7 +214,6 @@ class SecurityQualityFixer:
 
 def main():
     import sys
-    import json
 
     if len(sys.argv) < 2:
         logger.info("Usage: python security_fixer.py <project_path> [--apply]")

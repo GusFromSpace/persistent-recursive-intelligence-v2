@@ -14,13 +14,13 @@ CRITICAL GAPS ADDRESSED:
 APPROACH: Runtime interception of dangerous operations
 """
 
-import sys
+import builtins
 import os
 import subprocess
-import builtins
-from pathlib import Path
 import threading
-from typing import Dict, List, Any
+from pathlib import Path
+from typing import Dict, List
+
 
 class CriticalSecurityFix:
     """Targeted fix for ADV-TEST-003 critical vulnerabilities"""

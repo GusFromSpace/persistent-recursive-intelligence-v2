@@ -7,21 +7,20 @@ This test evaluates the Code Connector's ability to intelligently suggest connec
 for a "box of building blocks" - orphaned files with no clear integration path.
 """
 
-import os
+import json
+import logging
+import shutil
 import sys
 import tempfile
-import shutil
 from pathlib import Path
 from typing import List, Dict
-import logging
-import json
 
 # Add the project root to the path for imports
 current_dir = Path(__file__).parent
 project_root = current_dir
 sys.path.insert(0, str(project_root / "src"))
 
-from cognitive.enhanced_patterns.code_connector import CodeConnector, suggest_code_connections
+from cognitive.enhanced_patterns.code_connector import CodeConnectorAdversarialTest, suggest_code_connections
 from cognitive.interactive_approval import ConnectionProposal
 
 logging.basicConfig(level=logging.INFO)
@@ -791,7 +790,7 @@ class RetryWithProgress:
             # Run Code Connector analysis
             logger.info(f"🔍 Analyzing {len(orphaned_files)} orphaned files against {len(main_files)} main files")
             
-            connector = CodeConnector(str(test_dir), confidence_threshold=0.3)
+            connector = CodeConnectorAdversarialTest(str(test_dir), confidence_threshold=0.3)
             suggestions = connector.analyze_orphaned_files(orphaned_files, main_files)
             
             # Evaluate results
@@ -917,6 +916,9 @@ class RetryWithProgress:
         """Clean up test environment"""
         if self.test_dir and self.test_dir.exists():
             shutil.rmtree(self.test_dir)
+
+    def analyze_orphaned_files(self, orphaned_files, main_files):
+        pass
 
 
 def main():

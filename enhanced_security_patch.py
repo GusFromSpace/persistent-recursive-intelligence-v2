@@ -8,13 +8,12 @@ Addressing the remaining vulnerability from verification test:
 This enhanced patch achieves 100% blocking of ADV-TEST-003 attack vectors.
 """
 
-import sys
-import os
-import subprocess
 import builtins
-from pathlib import Path
+import subprocess
 import threading
-from typing import Dict, List, Any
+from pathlib import Path
+from typing import Dict, List
+
 
 class EnhancedSecurityPatch:
     """Enhanced security patch targeting 100% attack prevention"""

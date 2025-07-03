@@ -9,7 +9,7 @@ making it actually actionable for developers. Now enhanced with analyzer orchest
 import json
 import sys
 from pathlib import Path
-from typing import Dict, List, Any
+from typing import Dict, List
 
 # Add source directory to path for enhanced imports
 sys.path.insert(0, str(Path(__file__).parent / "src"))

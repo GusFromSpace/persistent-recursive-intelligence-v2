@@ -11,13 +11,12 @@ existing tools) and Creative Intelligence (generating new solutions).
 """
 
 import ast
-import re
 import logging
+import re
 import time
-from pathlib import Path
-from typing import Dict, List, Set, Optional, NamedTuple, Tuple
 from collections import defaultdict
-import hashlib
+from pathlib import Path
+from typing import Dict, List, Set, Optional, NamedTuple
 
 # Import metrics collection
 try:

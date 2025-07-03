@@ -1,12 +1,11 @@
-
-import pkgutil
 import inspect
 from pathlib import Path
 from typing import List, Dict, Any
 
-from ..analyzers.base_analyzer import BaseLanguageAnalyzer
 from ..analyzers import cpp_analyzer, python_analyzer
+from ..analyzers.base_analyzer import BaseLanguageAnalyzer
 from ..memory.simple_memory import SimpleMemoryEngine as MemoryIntelligence
+
 
 class AnalyzerOrchestrator:
     """
@@ -40,3 +39,6 @@ class AnalyzerOrchestrator:
         if analyzer:
             return analyzer.analyze_file(file_path, content, memory, global_memory)
         return []
+
+    def register_language_analyzer(self, analyzer):
+        pass

@@ -5,18 +5,16 @@ Enhanced version of the original memory service, extracted and optimized
 for standalone use with multi-tenancy and improved performance.
 """
 
-import sqlite3
-import json
-import time
-import logging
-import threading
-from datetime import datetime, timezone
-from typing import List, Dict, Optional, Tuple, Any
-from contextlib import contextmanager
 import asyncio
+import json
+import logging
+import sqlite3
+import threading
+import time
 from concurrent.futures import ThreadPoolExecutor
-
-import numpy as np
+from contextlib import contextmanager
+from datetime import datetime
+from typing import List, Dict, Tuple
 
 # Optional FAISS import
 try:
@@ -36,12 +34,12 @@ except ImportError:
 
 from ..models import (
     MemoryEntry, MemoryQuery, MemorySearchResult, MemoryRelationship,
-    MemoryNamespace, MemoryStats, HealthStatus, TimeRange
+    MemoryNamespace, HealthStatus
 )
-from .exceptions import MemoryError, StorageError, VectorSearchError, NamespaceError
+from .exceptions import StorageError, NamespaceError
 from ...utils.config import get_config
 from ...utils.monitoring import get_metrics_collector
-from ...utils.circuit_breaker import CircuitBreaker, CircuitBreakerError
+from ...utils.circuit_breaker import CircuitBreaker
 
 
 class MemoryEngine:
@@ -684,3 +682,21 @@ class MemoryEngine:
         except Exception:
             # Don't raise exceptions in destructor
             pass
+
+    async def list_namespaces(self):
+        pass
+
+    async def list_namespaces(self):
+        pass
+
+    async def delete_memory(self, id):
+        pass
+
+    async def delete_memory(self, memory_id):
+        pass
+
+    async def list_namespaces(self):
+        pass
+
+    async def list_namespaces(self):
+        pass

@@ -4,7 +4,7 @@ Hello Orchestrator - Coordinates the hello world execution
 """
 
 import time
-import sys
+
 
 class HelloOrchestrator:
     """Orchestrates the complex hello world process"""

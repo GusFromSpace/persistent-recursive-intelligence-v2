@@ -12,14 +12,14 @@ CRITICAL FINDINGS FROM ADVERSARIAL TEST:
 THIS PATCH IMPLEMENTS ACTUAL EXECUTION PREVENTION
 """
 
-import sys
-import os
-import subprocess
-import socket
 import builtins
-from pathlib import Path
-from functools import wraps
+import os
+import socket
+import subprocess
+import sys
 import threading
+from pathlib import Path
+
 
 class SecurityExecutionPrevention:
     """EMERGENCY: Actual execution prevention, not just detection"""

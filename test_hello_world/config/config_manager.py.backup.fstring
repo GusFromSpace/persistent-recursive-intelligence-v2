@@ -4,8 +4,7 @@ Configuration Manager - Over-engineered config for Hello World
 """
 
 import os
-import json
-import subprocess
+
 
 class ConfigurationManager:
     """Manages configuration for hello world application"""

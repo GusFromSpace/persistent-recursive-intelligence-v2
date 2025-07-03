@@ -5,7 +5,6 @@ Only fixes actual Python syntax errors detected by AST parsing
 """
 
 import ast
-import re
 from pathlib import Path
 
 def get_real_syntax_errors():

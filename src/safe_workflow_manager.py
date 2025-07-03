@@ -13,15 +13,14 @@ Generation 2.0: Target for full cognitive integration with temporal intelligence
 """
 
 import os
+import re
 import shutil
 import subprocess
 import tempfile
-from pathlib import Path
-from typing import Dict, List, Tuple, Optional, Set
 from dataclasses import dataclass
 from datetime import datetime
-import json
-import re
+from pathlib import Path
+from typing import Dict, List, Tuple, Optional
 
 # Import educational injection system
 from educational_injector import (
@@ -30,6 +29,7 @@ from educational_injector import (
     AnnotationStyle,
     create_educational_fix_context
 )
+
 
 @dataclass
 class SecurityScanResult:

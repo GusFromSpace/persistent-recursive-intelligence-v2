@@ -5,9 +5,7 @@ Tests automatic kill switches and containment features
 """
 
 import sys
-import os
 import tempfile
-import time
 from pathlib import Path
 
 # Add src to path for imports

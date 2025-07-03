@@ -62,7 +62,7 @@ def test_self_analysis():
                         issues.append("Maintenance: TODO/FIXME comments present")
 
                     analysis_results[file_path] = {
-                        "issues": issues,
+                        "issues": issue,
                         "line_count": len(content.split("\n")),
                         "file_size": len(content)
                     }
@@ -218,6 +218,7 @@ def test_edge_cases():
     """Test behavior on edge cases and problematic code."""
     print("\n🚨 Testing Edge Cases...")
 
+    from jinja2.utils import missing
     edge_cases = [
         {
             "name": "Empty file",

@@ -4,13 +4,9 @@ Comprehensive test of persistent recursive intelligence debugging capabilities
 Tests the system"s ability to detect, analyze, and fix code issues
 """
 
-import sys
 import os
-import json
-import time
-import ast
+import sys
 from pathlib import Path
-from typing import Dict, List, Any
 
 # Add source directory to path
 sys.path.insert(0, str(Path(__file__).parent / "src"))

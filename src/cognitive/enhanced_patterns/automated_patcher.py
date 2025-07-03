@@ -8,25 +8,23 @@ atomic operations, and comprehensive rollback capabilities.
 Transforms Mesopredator from planning integrations to performing integrations.
 """
 
+import json
+import logging
 import os
 import shutil
 import tempfile
-import subprocess
-import json
 import time
-import logging
-from pathlib import Path
-from typing import Dict, List, Optional, Callable, Tuple, Any
 from dataclasses import dataclass, field
 from enum import Enum
-import hashlib
+from pathlib import Path
+from typing import Dict, List, Optional, Callable, Any
 
 # Import foundation components
 from .integration_mapper import (
     IntegrationMap, IntegrationStep, FileModification
 )
 from ..interactive_approval import (
-    InteractiveApprovalSystem, FixProposal, FixSeverity, ApprovalDecision
+    InteractiveApprovalSystem, FixProposal, FixSeverity
 )
 
 logger = logging.getLogger(__name__)

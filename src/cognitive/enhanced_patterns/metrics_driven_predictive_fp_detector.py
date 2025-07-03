@@ -17,17 +17,16 @@ Key Features:
 import json
 import logging
 import statistics
-from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Tuple, Set
 from dataclasses import dataclass, asdict
+from datetime import datetime, timedelta
 from enum import Enum
-import asyncio
+from typing import Dict, List, Optional, Tuple
 
+from .context_analyzer import FileContext, ContextAnalyzer
+from .memory_enhanced_false_positive_detector import MemoryEnhancedFalsePositiveDetector
 from ..memory.memory.engine import MemoryEngine
 from ..memory.models import MemoryEntry, MemoryQuery
 from ..metrics.models import AnalysisMetrics, IntelligenceMetrics, PerformanceMetrics
-from .context_analyzer import FileContext, ContextAnalyzer
-from .memory_enhanced_false_positive_detector import MemoryEnhancedFalsePositiveDetector
 
 logger = logging.getLogger(__name__)
 

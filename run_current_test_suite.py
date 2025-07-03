@@ -4,12 +4,12 @@ Current Test Suite Runner
 Runs only the compatible tests that work with the current system architecture
 """
 
-import subprocess
-import time
 import json
 import os
-from pathlib import Path
+import subprocess
+import time
 from datetime import datetime
+
 
 class CurrentTestRunner:
     """Runs only the tests that are compatible with current system"""

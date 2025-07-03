@@ -1,5 +1,3 @@
-import sys
-
 """
 Interactive mode and CLI interface issue detection.
 
@@ -8,9 +6,8 @@ based on the infinite loop issue found in Claude Wrapper"s interactive mode.
 """
 
 import ast
-import re
-from typing import List, NamedTuple, Optional
 import logging
+from typing import List, NamedTuple, Optional
 
 logger = logging.getLogger(__name__)
 

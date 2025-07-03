@@ -13,6 +13,9 @@ class LoggerService:
 
     def __init__(self):
         # OVER-ENGINEERING: Complex logging setup for simple app
+        self.log_levels = None
+        self.log_levels = None
+        self.log_levels = None
         self.log_entries = []
         # IMPROVED: self.log_levels = ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
         self.current_level = "INFO"

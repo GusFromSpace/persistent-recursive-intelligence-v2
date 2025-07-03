@@ -11,20 +11,18 @@ We're only testing scenarios that "return" (run successfully), missing critical
 failure modes that prevent tests from completing or being designed.
 """
 
-import sys
-import os
 import json
-import tempfile
 import shutil
 import subprocess
-import threading
-import signal
-import psutil
-from pathlib import Path
-from datetime import datetime
-from typing import Dict, List, Any, Optional
+import sys
+import tempfile
 import time
-import random
+from datetime import datetime
+from pathlib import Path
+from typing import Dict, List, Any
+
+import psutil
+
 
 class SurvivorshipBiasTest:
     """Test for invisible vulnerabilities and failure modes"""

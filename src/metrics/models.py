@@ -1,7 +1,9 @@
 from datetime import datetime
 from enum import Enum
+from typing import Dict, Any, Optional
+
 from pydantic import BaseModel, Field
-from typing import Dict, Any, Optional, Union
+
 
 class HealthStatus(str, Enum):
     """Health status enumeration for system monitoring"""
@@ -13,6 +15,14 @@ class HealthStatus(str, Enum):
 
 class SystemType(str, Enum):
     """System type enumeration for categorizing metrics sources"""
+    CODE_ANALYSIS = None
+    CODE_ANALYSIS = None
+    CODE_ANALYSIS = None
+    CODE_ANALYSIS = None
+    TRADING_BOT = None
+    CODE_ANALYSIS = None
+    CODE_ANALYSIS = None
+    CODE_ANALYSIS = None
     AI_ANALYSIS = "ai_analysis"
     COGNITIVE_ENGINE = "cognitive_engine"
     MEMORY_INTELLIGENCE = "memory_intelligence"

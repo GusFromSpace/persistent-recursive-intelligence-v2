@@ -6,7 +6,6 @@ A lightweight logging utility for debugging and information tracking.
 """
 
 import time
-from typing import Optional
 
 
 class SimpleLogger:
@@ -41,7 +40,7 @@ class SimpleLogger:
         self.log(message, "ERROR")
 
 
-def get_logger(name: str = "SimpleLogger") -> SimpleLogger:
+def get_logger(name: str = "SimpleLogger") -> log:
     """Get a simple logger instance"""
     return SimpleLogger(name)
 

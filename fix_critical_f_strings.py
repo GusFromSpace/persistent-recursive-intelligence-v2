@@ -5,9 +5,8 @@ Targets the most common critical issues: f-strings with nested double quotes
 """
 
 import re
-import os
 from pathlib import Path
-from typing import List, Tuple
+from typing import Tuple
 
 def fix_nested_double_quotes_in_fstring(content: str) -> Tuple[str, int]:
     """Fix f-strings with nested double quotes by converting inner quotes to single quotes"""

@@ -4,9 +4,8 @@ Test Emergency Scenarios - Validate that emergency safeguards block malicious co
 even when it somehow gets approved by the user
 """
 
-import sys
-import tempfile
 import json
+import sys
 from pathlib import Path
 
 # Add src path for imports

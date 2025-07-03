@@ -19,8 +19,8 @@ from safety.emergency_controls import (
 )
 from cognitive.utils.circuit_breaker import (
     CircuitBreaker, 
-    CircuitBreakerState, 
-    CircuitBreakerError
+    CircuitBreaker, 
+    CircuitBreaker
 )
 from metrics.models import HealthStatus, SystemType
 
@@ -44,9 +44,9 @@ def test_enum_definitions():
         print("  ✅ SystemType enum working")
         
         # Test CircuitBreakerState enum
-        assert CircuitBreakerState.CLOSED.value == "closed"
-        assert CircuitBreakerState.OPEN.value == "open"
-        assert CircuitBreakerState.HALF_OPEN.value == "half_open"
+        assert CircuitBreaker.CLOSED.value == "closed"
+        assert CircuitBreaker.OPEN.value == "open"
+        assert CircuitBreaker.HALF_OPEN.value == "half_open"
         print("  ✅ CircuitBreakerState enum working")
         
         print("✅ All enum definitions working correctly!\n")
@@ -94,7 +94,7 @@ def test_circuit_breaker():
             pass
         print("  ❌ Circuit breaker should be open!")
         return False
-    except CircuitBreakerError:
+    except CircuitBreaker:
         print("  ✅ Circuit breaker correctly opened after failures")
     
     # Test manual reset

@@ -4,10 +4,9 @@ Test Persistent Recursive Intelligence on Over-Engineered Hello World
 This tests the debugging capabilities on a simple but ridiculously complex hello world
 """
 
-import sys
 import os
+import sys
 from pathlib import Path
-import time
 
 # Add source directory to path
 sys.path.insert(0, str(Path(__file__).parent / "src"))

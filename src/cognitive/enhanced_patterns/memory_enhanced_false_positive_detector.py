@@ -15,14 +15,14 @@ Key Features:
 
 import json
 import logging
+from dataclasses import dataclass
 from datetime import datetime
-from typing import Dict, List, Optional, Tuple, Set
-from dataclasses import dataclass, asdict
 from enum import Enum
+from typing import Dict, List, Optional, Tuple
 
+from .context_analyzer import FileContext, ContextAnalyzer
 from ..memory.memory.engine import MemoryEngine
 from ..memory.models import MemoryEntry, MemoryQuery, MemoryNamespace
-from .context_analyzer import FileContext, ContextAnalyzer
 
 logger = logging.getLogger(__name__)
 

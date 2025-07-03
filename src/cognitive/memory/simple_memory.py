@@ -3,11 +3,11 @@ Simplified Memory System - Actually Working Implementation
 """
 
 import json
+import logging
 import sqlite3
 import time
 from pathlib import Path
-from typing import List, Dict, Any, Optional
-import logging
+from typing import List, Dict, Any
 
 VECTOR_SEARCH_AVAILABLE = True
 try:
@@ -23,6 +23,7 @@ class SimpleMemoryEngine:
     """
 
     def __init__(self, db_path: str = "memory.db", namespace: str = "default"):
+        self.namespaces = None
         self.db_path = db_path
         self.namespace = namespace
         self.logger = logging.getLogger(__name__)
@@ -289,3 +290,9 @@ class SimpleMemoryEngine:
         except Exception:
             # Don't raise exceptions in destructor
             pass
+
+    async def create_namespace(self, namespace):
+        pass
+
+    async def health_check(self):
+        pass

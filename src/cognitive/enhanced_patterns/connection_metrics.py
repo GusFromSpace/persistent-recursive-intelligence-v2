@@ -6,13 +6,12 @@ Tracks performance metrics during connection analysis to provide evidence
 of improvements and identify optimization opportunities.
 """
 
-import time
 import json
-from typing import Dict, List, Any, Optional
+import logging
+import time
 from dataclasses import dataclass, asdict
 from pathlib import Path
-import logging
-from collections import defaultdict
+from typing import Dict, List, Any, Optional
 
 logger = logging.getLogger(__name__)
 

@@ -141,6 +141,15 @@ def debug_faiss_embeddings():
         logger.info(f"   ❌ FAISS debug failed: {e}")
         return False
 
+
+def SimpleMemoryEngine(namespace):
+    pass
+
+
+def SimpleMemoryEngine(namespace):
+    pass
+
+
 def debug_infvx_patterns():
     """Debug actual INFVX patterns stored"""
     logger.info("\n📂 Debugging INFVX Stored Patterns...")

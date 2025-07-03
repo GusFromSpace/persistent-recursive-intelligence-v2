@@ -5,13 +5,13 @@ Automatically removes safe dead code and identifies duplicates
 """
 
 import ast
+import hashlib
+import logging
 import os
 import re
-import hashlib
-from pathlib import Path
-from typing import Dict, List, Set, Tuple, Optional
 from collections import defaultdict
-import logging
+from pathlib import Path
+from typing import Dict, List, Tuple
 
 try:
     from .dead_code_detector import detect_dead_code_in_file, scan_project_for_dead_code

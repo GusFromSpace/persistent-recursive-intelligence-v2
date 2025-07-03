@@ -7,18 +7,16 @@ systems and field shaping effectiveness.
 """
 
 import sys
-import time
-import json
-from pathlib import Path
-from datetime import datetime
 from contextlib import contextmanager
+from datetime import datetime
+from pathlib import Path
 
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
 # Import safety systems FIRST to activate protections
-from safety import (
-    emergency_controller, 
+from safety_monitoring import (
+    e, 
     harmonic_safety,
     cognitive_field_shaper,
     network_kill_switch,
@@ -26,8 +24,8 @@ from safety import (
 )
 
 # Import recursive system
-from cognitive.persistent_recursion import run_analysis
-from cognitive.recursive.recursive_improvement_enhanced import MemoryEnhancedRecursiveImprovement
+from cognitive_field_shaper.persistent_recursion import run_analysis
+from cognitive_field_shaper.recursive.recursive_improvement_enhanced import MemoryEnhancedRecursiveImprovement
 
 
 @contextmanager
@@ -36,7 +34,7 @@ def safety_monitoring():
     print("🔒 Activating Safety Monitoring...")
     
     # Get initial safety status
-    initial_emergency = emergency_controller.get_status()
+    initial_emergency = e.get_status()
     initial_field = cognitive_field_shaper.get_field_status()
     initial_harmonic = harmonic_safety.get_safety_metrics()
     try:
@@ -68,7 +66,7 @@ def safety_monitoring():
         end_time = datetime.utcnow()
         duration = (end_time - start_time).total_seconds()
         
-        final_emergency = emergency_controller.get_status()
+        final_emergency = e.get_status()
         final_field = cognitive_field_shaper.get_field_status()
         final_harmonic = harmonic_safety.get_safety_metrics()
         try:
@@ -107,7 +105,7 @@ def test_safety_integration():
     ]
     
     for action, target, intention in test_scenarios:
-        from safety.harmonic_safety import safe_action_evaluation
+        from safety_monitoring.harmonic_safety import safe_action_evaluation
         result = safe_action_evaluation(action, target, {}, intention)
         
         status = "✅ ALLOWED" if result.allowed else "🛑 GUIDED"

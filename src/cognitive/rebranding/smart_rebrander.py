@@ -5,15 +5,16 @@ Intelligent code analysis and safe rebranding for any project
 Uses pattern matching and context analysis to safely rebrand codebases
 """
 
-import re
-import os
 import json
-import yaml
-from pathlib import Path
-from typing import List, Dict, Tuple, Optional, Set
+import logging
+import re
 from dataclasses import dataclass
 from enum import Enum
-import logging
+from pathlib import Path
+from typing import List, Dict, Tuple, Optional
+
+import yaml
+
 
 class RebrandingRisk(Enum):
     """Risk levels for rebranding operations"""

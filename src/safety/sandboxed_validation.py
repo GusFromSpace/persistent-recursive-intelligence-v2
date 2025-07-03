@@ -4,17 +4,15 @@ Sandboxed Build and Run Validation - Final safety layer before committing change
 Tests fixes in isolated environment to detect runtime malicious behavior
 """
 
+import logging
+import shutil
 import subprocess
 import tempfile
-import shutil
-import os
 import time
-import signal
-import logging
-from pathlib import Path
-from typing import Dict, Any, List, Tuple, Optional
-from dataclasses import dataclass
 from contextlib import contextmanager
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Dict, Any, List, Tuple
 
 logger = logging.getLogger(__name__)
 

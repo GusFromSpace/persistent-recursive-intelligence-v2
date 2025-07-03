@@ -12,19 +12,18 @@ This showcases the transformation of Mesopredator from a strategic coordinator
 to a creative architect capable of intelligent code integration.
 """
 
-import logging
-import tempfile
-import shutil
 import json
+import logging
+import shutil
 import time
 from pathlib import Path
-from typing import Dict, List, Any
+from typing import Dict, Any
 
+from src.cognitive.enhanced_patterns.automated_patcher import AutomatedPatcher
 # Import the complete Auto-Updater pipeline
 from src.cognitive.enhanced_patterns.code_connector import CodeConnector
-from src.cognitive.enhanced_patterns.update_package_analyzer import UpdatePackageAnalyzer
 from src.cognitive.enhanced_patterns.integration_mapper import IntegrationMapGenerator
-from src.cognitive.enhanced_patterns.automated_patcher import AutomatedPatcher
+from src.cognitive.enhanced_patterns.update_package_analyzer import UpdatePackageAnalyzer
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')

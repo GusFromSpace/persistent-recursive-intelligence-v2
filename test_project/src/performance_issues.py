@@ -4,7 +4,7 @@ Performance-related issues for testing optimization capabilities
 """
 
 import time
-import random
+
 
 # PERFORMANCE: O(n²) when O(n) is possible
 def slow_sum_calculation(numbers):

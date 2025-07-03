@@ -6,8 +6,8 @@ This tool provides surgical precision in finding and diagnosing syntax issues.
 
 import ast
 import re
-from pathlib import Path
-from typing import List, Dict, Tuple, Optional
+from typing import List, Dict
+
 
 def find_unclosed_quotes(content: str) -> List[Dict]:
     """Find unclosed triple quotes with precise line numbers."""

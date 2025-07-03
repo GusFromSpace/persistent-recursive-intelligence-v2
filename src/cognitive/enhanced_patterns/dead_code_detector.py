@@ -5,10 +5,9 @@ Identifies unused imports, functions, classes, and variables
 """
 
 import ast
-import os
-from pathlib import Path
-from typing import Dict, List, Set, Tuple
 import logging
+from pathlib import Path
+from typing import Dict, List
 
 logger = logging.getLogger(__name__)
 

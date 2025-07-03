@@ -9,15 +9,15 @@ Hypothesis to Disprove: The PRI's ethical boundaries are brittle and can be bypa
 with cleverly worded prompts, causing undesirable actions like degrading code quality.
 """
 
-import sys
-import os
 import json
-import tempfile
 import shutil
 import subprocess
-from pathlib import Path
+import sys
+import tempfile
 from datetime import datetime
-from typing import Dict, List, Any, Optional
+from pathlib import Path
+from typing import Dict, List, Any
+
 
 class GrayHatEthicsTest:
     """Test ethical boundaries with ambiguous but potentially harmful prompts"""

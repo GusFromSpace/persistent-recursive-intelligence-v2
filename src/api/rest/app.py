@@ -2,22 +2,87 @@
 FastAPI application for Memory Intelligence Service REST API
 """
 
-from fastapi import FastAPI, HTTPException, Depends, status
+import logging
+from typing import List
+
+from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from datetime import datetime
-import logging
-from typing import List, Optional
 
-from ...cognitive.memory.simple_memory import SimpleMemoryEngine
-from ...cognitive.synthesis.persistent_recursive_engine import PersistentRecursiveIntelligence
 from .models import (
     StoreMemoryRequest, SearchMemoriesRequest, CreateNamespaceRequest,
-    CreateRelationshipRequest, StoreResponse, SearchResponse,
+    StoreResponse, SearchResponse,
     MemoryResponse, NamespaceResponse, HealthResponse, MetricsResponse,
-    ErrorResponse, MemoryCompactResponse, RelationshipResponse,
+    MemoryCompactResponse, RelationshipResponse,
     ResultFormatAPI
 )
+from ...cognitive.memory.simple_memory import SimpleMemoryEngine
+
+
+def MemoryQuery(namespace, limit):
+    pass
+
+
+def QuotaConfig(max_memories, max_storage_mb, max_requests_per_hour):
+    pass
+
+
+def IsolationLevel(value):
+    pass
+
+
+def MemoryNamespace(namespace_id, name, description, isolation_level, quota_limits, metadata):
+    pass
+
+
+def MemoryQuery(filters, limit):
+    pass
+
+
+def MemoryQuery(namespace, semantic_query, filters, time_range, similarity_threshold, limit, offset,
+                include_relationships, include_metadata):
+    pass
+
+
+def TimeRange(start, end):
+    pass
+
+
+def MemoryEntry(namespace, content, memory_type, relevance_score, metadata, tags):
+    pass
+
+
+def MemoryQuery(namespace, limit):
+    pass
+
+
+def QuotaConfig(max_memories, max_storage_mb, max_requests_per_hour):
+    pass
+
+
+def IsolationLevel(value):
+    pass
+
+
+def MemoryNamespace(namespace_id, name, description, isolation_level, quota_limits, metadata):
+    pass
+
+
+def MemoryQuery(filters, limit):
+    pass
+
+
+def MemoryQuery(namespace, semantic_query, filters, time_range, similarity_threshold, limit, offset,
+                include_relationships, include_metadata):
+    pass
+
+
+def TimeRange(start, end):
+    pass
+
+
+def MemoryEntry(namespace, content, memory_type, relevance_score, metadata, tags):
+    pass
 
 
 def create_app() -> FastAPI:

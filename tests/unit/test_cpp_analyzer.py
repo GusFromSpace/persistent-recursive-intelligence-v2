@@ -4,11 +4,10 @@ Comprehensive test suite for C++ Analyzer
 Ensuring 85%+ code coverage as required by Phase 1 completion criteria
 """
 
+import sys
+import tempfile
 import unittest
 from pathlib import Path
-import tempfile
-import os
-import sys
 
 # Add the src directory to the path
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / 'src'))

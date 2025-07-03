@@ -9,13 +9,11 @@ generates insights about how to enhance its own intelligence.
 Generation 1.6: Meta-cognitive recursive self-improvement with compound learning
 """
 
-import json
-import time
 import logging
-from pathlib import Path
-from datetime import datetime
-from typing import Dict, List, Any
+import time
 from dataclasses import dataclass
+from typing import Dict, List
+
 from educational_injector import MesopredatorEducationalInjector, create_educational_fix_context
 
 logger = logging.getLogger(__name__)

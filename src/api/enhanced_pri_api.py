@@ -4,13 +4,13 @@ Enhanced PRI API with Integrated Metrics
 Combines PRI's recursive intelligence with standardized metrics API
 """
 
-import time
 import asyncio
+import time
 from datetime import datetime
-from typing import Dict, Any, Optional
 from pathlib import Path
+from typing import Dict, Any, Optional
 
-from fastapi import FastAPI, HTTPException, Request, BackgroundTasks
+from fastapi import FastAPI, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field

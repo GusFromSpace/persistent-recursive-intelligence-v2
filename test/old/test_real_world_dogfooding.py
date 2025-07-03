@@ -218,6 +218,7 @@ def test_edge_cases():
     """Test behavior on edge cases and problematic code."""
     print("\n🚨 Testing Edge Cases...")
 
+    from jinja2.utils import missing
     edge_cases = [
         {
             "name": "Empty file",

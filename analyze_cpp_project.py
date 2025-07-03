@@ -142,16 +142,16 @@ class CppMesopredatorAnalyzer:
     
     def recursive_analysis(self, max_depth: int = 7):
         """Perform recursive analysis with increasing sophistication"""
-        logger.info(f"🌀 Mesopredator C++ Recursive Analysis - Depth {max_depth}")
-        logger.info("=" * 60)
+        self.logger.info(f"🌀 Mesopredator C++ Recursive Analysis - Depth {max_depth}")
+        self.logger.info("=" * 60)
         
         all_issues = []
         cpp_files = self.find_cpp_files()
         
-        logger.info(f"📁 Found {len(cpp_files)} C++ files to analyze")
+        self.logger.info(f"📁 Found {len(cpp_files)} C++ files to analyze")
         
         for depth in range(1, max_depth + 1):
-            logger.info(f"\n🔍 Recursive Depth {depth}/{max_depth}")
+            self.logger.info(f"\n🔍 Recursive Depth {depth}/{max_depth}")
             self.recursive_depth = depth
             
             depth_issues = []
@@ -171,9 +171,9 @@ class CppMesopredatorAnalyzer:
             # Apply recursive learning - each depth builds on previous knowledge
             if depth > 1:
                 previous_patterns = self.memory.recall(f"cpp analysis depth {depth-1}", limit=10)
-                logger.info(f"   🧠 Learning from {len(previous_patterns)} previous patterns")
+                self.logger.info(f"   🧠 Learning from {len(previous_patterns)} previous patterns")
             
-            logger.info(f"   📊 Depth {depth}: {len(depth_issues)} issues found")
+            self.logger.info(f"   📊 Depth {depth}: {len(depth_issues)} issues found")
             
             # Store depth-specific intelligence
             self.memory.remember(f"Recursive depth {depth} complete", {
@@ -186,8 +186,8 @@ class CppMesopredatorAnalyzer:
     
     def generate_report(self, issues):
         """Generate comprehensive analysis report"""
-        logger.info(f"\n📊 Mesopredator C++ Analysis Results")
-        logger.info("=" * 50)
+        self.logger.info(f"\n📊 Mesopredator C++ Analysis Results")
+        self.logger.info("=" * 50)
         
         # Categorize issues
         critical = [i for i in issues if i.get('severity') == 'critical']
@@ -195,27 +195,27 @@ class CppMesopredatorAnalyzer:
         medium = [i for i in issues if i.get('severity') == 'medium']
         low = [i for i in issues if i.get('severity') == 'low']
         
-        logger.info(f"🔥 Issue Breakdown:")
-        logger.info(f"   Critical: {len(critical)}")
-        logger.info(f"   High: {len(high)}")
-        logger.info(f"   Medium: {len(medium)}")
-        logger.info(f"   Low: {len(low)}")
-        logger.info(f"   Total: {len(issues)}")
+        self.logger.info(f"🔥 Issue Breakdown:")
+        self.logger.info(f"   Critical: {len(critical)}")
+        self.logger.info(f"   High: {len(high)}")
+        self.logger.info(f"   Medium: {len(medium)}")
+        self.logger.info(f"   Low: {len(low)}")
+        self.logger.info(f"   Total: {len(issues)}")
         
         # Show top priority issues
         priority_issues = critical + high
         if priority_issues:
-            logger.info(f"\n⚠️  Top Priority Issues:")
+            self.logger.info(f"\n⚠️  Top Priority Issues:")
             for i, issue in enumerate(priority_issues[:10], 1):
                 file_name = Path(issue['file_path']).name
-                logger.info(f"   {i}. {issue['type'].upper()} ({issue['severity'].upper()})")
-                logger.info(f"      {file_name}:{issue['line']} - {issue['description']}")
+                self.logger.info(f"   {i}. {issue['type'].upper()} ({issue['severity'].upper()})")
+                self.logger.info(f"      {file_name}:{issue['line']} - {issue['description']}")
         
         # Memory intelligence insights
         patterns = self.memory.recall("cpp", limit=5)
-        logger.info(f"\n🧠 Intelligence Insights:")
-        logger.info(f"   Patterns learned: {len(patterns)}")
-        logger.info(f"   Recursive depth achieved: {self.recursive_depth}")
+        self.logger.info(f"\n🧠 Intelligence Insights:")
+        self.logger.info(f"   Patterns learned: {len(patterns)}")
+        self.logger.info(f"   Recursive depth achieved: {self.recursive_depth}")
         
         return {
             'total_issues': len(issues),

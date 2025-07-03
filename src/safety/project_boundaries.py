@@ -1,18 +1,16 @@
 """Project boundary security enforcement for safe AI operation"""
 
-import os
-import sys
-import subprocess
-import socket
-from pathlib import Path
-from typing import List, Set, Dict, Optional, Callable, Any
-from datetime import datetime
-import threading
 import logging
+import os
+import subprocess
+import threading
+from datetime import datetime
+from pathlib import Path
+from typing import List, Dict, Optional
 
 # Import emergency controls
-from .emergency_controls import emergency_controller, EmergencyStopError
-from .field_shaping import cognitive_field_shaper, shape_decision_field, gentle_boundary_reminder
+from .emergency_controls import emergency_controller
+from .field_shaping import shape_decision_field
 
 
 class SecurityViolationError(Exception):

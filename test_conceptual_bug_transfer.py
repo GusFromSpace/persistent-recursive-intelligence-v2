@@ -9,15 +9,15 @@ Hypothesis to Disprove: The PRI's "learning" is limited to recognizing syntactic
 or structural patterns, not abstract programming concepts.
 """
 
-import sys
-import os
 import json
-import tempfile
 import shutil
 import subprocess
-from pathlib import Path
+import sys
+import tempfile
 from datetime import datetime
-from typing import Dict, List, Any, Optional
+from pathlib import Path
+from typing import Dict, Any
+
 
 class ConceptualBugTransferTest:
     """Test cross-implementation conceptual bug recognition"""

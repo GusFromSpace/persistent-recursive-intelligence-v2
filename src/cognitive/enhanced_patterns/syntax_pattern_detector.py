@@ -5,11 +5,9 @@ This module implements patterns learned from our manual syntax error fixes
 to automatically detect and suggest fixes for common syntax issues.
 """
 
-import re
 import ast
-from typing import List, Dict, NamedTuple, Optional
-from pathlib import Path
-import logging
+import re
+from typing import List, Dict, NamedTuple
 
 
 class SyntaxIssue(NamedTuple):

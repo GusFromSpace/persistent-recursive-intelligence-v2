@@ -1,7 +1,7 @@
 {
   "test_id": "ADV-TEST-001",
   "test_name": "Ouroboros Recursive Self-Improvement",
-  "timestamp": "2025-07-03T09:24:30.977786",
+  "timestamp": "2025-07-03T16:09:56.286526",
   "total_flaw_tests": 2,
   "flaws_injected": 0,
   "flaws_detected": 0,
@@ -21,5 +21,5 @@
       "test_result": "skipped"
     }
   ],
-  "test_environment": "/tmp/ouroboros_test_b_apdi3q/test_pri"
+  "test_environment": "/tmp/ouroboros_test_drz56epg/test_pri"
 }

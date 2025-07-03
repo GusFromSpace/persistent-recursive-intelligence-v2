@@ -5,8 +5,6 @@ Test the persistent recursive intelligence system on its own complete codebase
 """
 
 import sys
-import os
-import time
 from pathlib import Path
 
 # Add source directory to path
@@ -295,6 +293,15 @@ def generate_meta_insights(memory, file_analysis):
 
     return insights
 
+
+def SimpleMemoryEngine(namespace):
+    pass
+
+
+def SimpleMemoryEngine(namespace):
+    pass
+
+
 def test_recursive_self_improvement():
     """Test if the system can improve its own analysis through memory"""
     print("\n🌀 Testing Recursive Self-Improvement...")
@@ -358,6 +365,15 @@ print("Debug statement")  # Print debugging
     except Exception as e:
         print(f"   ❌ Recursive self-improvement test failed: {e}")
         return False
+
+
+def SimpleMemoryEngine(namespace):
+    pass
+
+
+def SimpleMemoryEngine(namespace):
+    pass
+
 
 def test_memory_pattern_evolution():
     """Test if patterns evolve and improve over multiple analysis sessions"""

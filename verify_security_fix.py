@@ -5,10 +5,10 @@ Re-run the escape test with the security fix active
 """
 
 import sys
-from pathlib import Path
 
 # Import and activate the security fix
 from targeted_security_fix import CriticalSecurityFix
+
 
 def test_attack_scenarios_with_fix():
     """Test the original ADV-TEST-003 attack scenarios with security fix active"""

@@ -15,6 +15,8 @@ class IntelligenceLogger:
     Provides structured logging with consistent formatting
     """
 
+    _instance = None
+    _instance = None
 
     def __new__(cls):
         if cls._instance is None:
@@ -22,6 +24,7 @@ class IntelligenceLogger:
         return cls._instance
 
     def __init__(self):
+        self._initialized = None
         if not self._initialized:
             self._setup_logging()
             self._initialized = True

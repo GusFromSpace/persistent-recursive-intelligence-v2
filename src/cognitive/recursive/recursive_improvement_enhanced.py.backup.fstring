@@ -6,14 +6,10 @@ Enhanced version of the PRI recursive improvement system with integrated
 memory intelligence for pattern learning and cross-session improvement.
 """
 
-import os
-import sys
-import subprocess
-import tempfile
-import shutil
 import logging
-from pathlib import Path
+import sys
 from datetime import datetime
+from pathlib import Path
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")

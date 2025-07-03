@@ -5,12 +5,11 @@ More aggressive cleaning while still maintaining safety
 """
 
 import ast
-import os
+import logging
 import re
 import shutil
 from pathlib import Path
-from typing import Dict, List, Set, Tuple
-import logging
+from typing import Dict, Tuple
 
 logger = logging.getLogger(__name__)
 
@@ -559,7 +558,6 @@ def aggressive_clean(project_path: str, dry_run: bool = True) -> Dict:
     return cleaner.clean_project()
 
 if __name__ == "__main__":
-    import sys
     import argparse
 
     parser = argparse.ArgumentParser(description="Aggressively clean dead code")

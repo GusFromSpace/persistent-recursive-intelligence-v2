@@ -9,15 +9,15 @@ Hypothesis to Disprove: The PRI's "orchestration" is merely linear analysis.
 It cannot dynamically synthesize information from code, logs, and schemas.
 """
 
-import sys
-import os
 import json
-import tempfile
 import shutil
 import subprocess
-from pathlib import Path
+import sys
+import tempfile
 from datetime import datetime
-from typing import Dict, List, Any, Optional
+from pathlib import Path
+from typing import Dict, Any
+
 
 class OrchestratorSynthesisTest:
     """Test complex multi-domain synthesis capabilities"""

@@ -1,24 +1,21 @@
 """Network Kill Switch - Automatic termination for ANY network activity"""
 
-import sys
-import socket
-import urllib.request
-import urllib.parse
-import urllib.error
-import requests
-import http.client
 import ftplib
+import http.client
 import smtplib
+import socket
+import urllib.error
+import urllib.parse
+import urllib.request
+
 # telnetlib removed in Python 3.13+
 try:
     import telnetlib
 except ImportError:
     telnetlib = None
-import threading
 import os
-from typing import Any, Callable
 from .emergency_controls import emergency_controller
-from .field_shaping import shape_decision_field, gentle_boundary_reminder
+from .field_shaping import gentle_boundary_reminder
 
 
 class NetworkKillSwitch:

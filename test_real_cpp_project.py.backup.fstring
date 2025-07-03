@@ -4,9 +4,8 @@ Real-World Test: INFVX C++ Project Analysis
 Test the persistent recursive intelligence system on an actual complex C++ codebase
 """
 
-import sys
 import os
-import time
+import sys
 from pathlib import Path
 
 # Add source directory to path

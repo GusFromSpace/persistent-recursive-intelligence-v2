@@ -3,15 +3,15 @@ Simple API for Persistent Recursive Intelligence
 Provides easy external program integration
 """
 
+import logging
+import sys
+from datetime import datetime
+from pathlib import Path
+from typing import List, Optional, Dict, Any
+
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from datetime import datetime
-import logging
-from typing import List, Optional, Dict, Any
-import asyncio
-import sys
-from pathlib import Path
 
 # Add project paths
 sys.path.append(str(Path(__file__).parent.parent.parent))

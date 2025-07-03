@@ -6,9 +6,9 @@ in test/demo files but critical in production code.
 """
 
 import re
-from pathlib import Path
-from typing import Dict, List, NamedTuple, Optional
 from enum import Enum
+from pathlib import Path
+from typing import Dict, List, NamedTuple
 
 
 class FileContext(Enum):

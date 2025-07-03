@@ -1,9 +1,10 @@
 """Circuit breaker pattern for graceful degradation"""
 
-import time
 import threading
+import time
 from enum import Enum
-from typing import Type, Optional
+from typing import Type
+
 
 class CircuitBreakerState(Enum):
     """Circuit breaker states for fault tolerance"""

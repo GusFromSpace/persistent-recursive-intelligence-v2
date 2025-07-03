@@ -9,20 +9,18 @@ suggestions and executable integration plans.
 Core of the Auto-Updater workflow - transforms analysis into actionable plans.
 """
 
-import ast
-import re
-import logging
-from pathlib import Path
-from typing import Dict, List, Set, Optional, NamedTuple, Tuple
-from dataclasses import dataclass, field
-from collections import defaultdict
 import json
+import logging
+import re
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Dict, List, Optional, Tuple
 
+from .code_connector import ConnectionSuggestion
 # Import foundation components
 from .update_package_analyzer import (
-    UpdatePackageAnalyzer, PackageIntegrationPlan, PackageFile, PackageDependencyGraph
+    UpdatePackageAnalyzer, PackageIntegrationPlan
 )
-from .code_connector import ConnectionSuggestion
 
 logger = logging.getLogger(__name__)
 

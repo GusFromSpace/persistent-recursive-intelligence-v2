@@ -10,20 +10,21 @@ FAISS index degradation, performance decay, or "cognitive drift" where learned c
 become polluted or less accurate.
 """
 
-import sys
-import os
-import time
 import json
-import psutil
-import sqlite3
-import subprocess
-import threading
-from pathlib import Path
-from datetime import datetime, timedelta
-from typing import Dict, List, Any, Optional
-import tempfile
+import os
 import shutil
+import sqlite3
 import statistics
+import subprocess
+import sys
+import tempfile
+import time
+from datetime import datetime, timedelta
+from pathlib import Path
+from typing import Dict, List
+
+import psutil
+
 
 class MarathonTestMonitor:
     """Monitor system performance and cognitive stability during marathon test"""

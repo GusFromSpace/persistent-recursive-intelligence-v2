@@ -7,12 +7,13 @@ the AI diagnostic toolkit running on itself.
 """
 
 import re
-import os
 import shutil
+from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Dict, Tuple
-from dataclasses import dataclass
+
 from safety_validator import SafetyValidator
+
 
 @dataclass
 class DamageReport:

@@ -16,14 +16,14 @@ Test Design:
 4. Test if the system can transfer the abstract concept learned from A to detect bug in B
 """
 
-import sys
 import json
-import tempfile
-import shutil
-import subprocess
 import sqlite3
-from pathlib import Path
+import subprocess
+import sys
+import tempfile
 from datetime import datetime
+from pathlib import Path
+
 
 def create_teacher_project(base_dir: Path):
     """Create Project A with a known conceptual bug: Off-by-one error"""

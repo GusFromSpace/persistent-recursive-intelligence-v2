@@ -4,12 +4,11 @@ Test codebase with intentional issues for debugging system validation
 This file contains various types of bugs and anti-patterns for testing
 """
 
-import subprocess
-import os
 import json
+import subprocess
+
 
 def process_user_command(user_input):
-    import shlex
     try:
         # Safely handle user input - no shell injection possible
         return subprocess.run(["ls", user_input], shell=False, capture_output=True, text=True)

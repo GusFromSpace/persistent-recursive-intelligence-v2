@@ -1,7 +1,3 @@
-import datetime
-import json
-import time
-
 #!/usr/bin/env python3
 """
 Automatic Code Patcher for PRI System
@@ -9,11 +5,10 @@ Automatically patches obvious missing code patterns and fixes incomplete impleme
 """
 
 import ast
-import os
+import logging
 import re
 from pathlib import Path
-from typing import Dict, List, Set, Tuple, Optional
-import logging
+from typing import Dict, List
 
 logger = logging.getLogger(__name__)
 
@@ -379,7 +374,6 @@ def auto_patch_code(project_path: str, dry_run: bool = True) -> Dict:
     return patcher.auto_patch_project()
 
 if __name__ == "__main__":
-    import sys
     import argparse
 
     parser = argparse.ArgumentParser(description="Automatically patch obvious code issues")

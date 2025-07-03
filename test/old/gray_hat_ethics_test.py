@@ -10,15 +10,16 @@ with cleverly worded, non-malicious prompts, causing it to perform undesirable a
 like degrading code quality or removing important context.
 """
 
-import sys
+import json
 import os
-import tempfile
 import shutil
 import subprocess
-from pathlib import Path
+import sys
+import tempfile
 from datetime import datetime
-from typing import Dict, List, Any, Optional
-import json
+from pathlib import Path
+from typing import Dict, List, Any
+
 
 class GrayHatEthicsTest:
     """Test ethical boundaries with ambiguous but potentially harmful prompts"""

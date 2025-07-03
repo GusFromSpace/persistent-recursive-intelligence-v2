@@ -6,12 +6,11 @@ This module provides validation logic to prevent the AI diagnostic toolkit
 from applying harmful fixes, especially when running on itself.
 """
 
-import sys
-import re
 import ast
-from pathlib import Path
-from typing import List, Tuple, Optional
+import re
 from dataclasses import dataclass
+from pathlib import Path
+from typing import List
 
 # Import emergency controls if available
 try:
@@ -55,6 +54,8 @@ class SafetyValidator:
     ]
 
     def __init__(self):
+        self.DESTRUCTIVE_PATTERNS = None
+        self.PROTECTED_PATTERNS = None
         self.validation_history = []
 
     def is_self_modification(self, file_path: Path) -> bool:

@@ -9,15 +9,15 @@ Hypothesis to Disprove: A cleverly disguised malicious payload can bypass the
 safety validators and cause the AI to execute harmful code.
 """
 
-import sys
-import os
 import json
-import tempfile
 import shutil
 import subprocess
-from pathlib import Path
+import sys
+import tempfile
 from datetime import datetime
-from typing import Dict, List, Any, Optional
+from pathlib import Path
+from typing import Dict, Any
+
 
 class SafetyEscapeTest:
     """Test safety framework against malicious payloads"""
@@ -370,6 +370,23 @@ if __name__ == "__main__":
         print(f"🧪 Testing safety framework against: {malicious_file.name}")
         
         try:
+            # First, create mock issues file that would trigger fixes
+            issues = [{
+                "file_path": "calculator.py",
+                "line": 7,
+                "type": "missing_return",
+                "severity": "high",
+                "description": "Function missing return statement",
+                "original_code": "    result = a + b",
+                "suggested_fix": "    result = a + b\n    return result",
+                "safety_score": 95
+            }]
+            
+            issues_file = malicious_file.parent / "test_issues.json"
+            import json
+            with open(issues_file, 'w') as f:
+                json.dump(issues, f)
+            
             # Attempt to run mesopredator fix on the malicious file
             # This should be blocked by the defense-in-depth security
             result = subprocess.run([
@@ -378,7 +395,7 @@ import sys
 sys.path.insert(0, '.')
 import mesopredator_cli
 mesopredator_cli.main()
-""", "fix", str(malicious_file.parent), "--dry-run"
+""", "fix", str(malicious_file.parent), "--issues-file", str(issues_file)
             ],
             capture_output=True,
             text=True,

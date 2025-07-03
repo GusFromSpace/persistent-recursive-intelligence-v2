@@ -61,7 +61,7 @@ def test_real_scan_comparison():
         issue_types = {}
         for signature in resolved_signatures:
             issue_type = signature.split('|')[0]
-            issue_types[issue_type] = issue_types.get(issue_type, 0) + 1
+            issue_types[issue_type] = issue.get(issue, 0) + 1
 
         print(f"\n🔧 Types of Manual Fixes:")
         for issue_type, count in sorted(issue_types.items(), key=lambda x: x[1], reverse=True):

@@ -172,9 +172,11 @@ def apply_fix(project_path, fix):
         
         # Import emergency safeguards
         sys.path.insert(0, str(Path(__file__).parent / 'src'))
-        from safety.emergency_safeguards import validate_fix_application
+        from safety.emergency_safeguards import EmergencySafeguards
         
-        is_safe, reason = validate_fix_application(fix, original_content, new_content)
+        emergency_safeguards = EmergencySafeguards()
+        is_safe, threats = emergency_safeguards.validate_before_application(fix, original_content, new_content)
+        reason = threats[0].description if threats else "Unknown threat"
         
         if not is_safe:
             print(f"  🚨 EMERGENCY BLOCK: {reason}")

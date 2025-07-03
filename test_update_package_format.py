@@ -9,17 +9,16 @@ This script demonstrates the complete update package format system:
 4. Integration with Auto-Updater workflow
 """
 
-import logging
-import tempfile
-import shutil
-from pathlib import Path
 import json
+import logging
+import shutil
+import tempfile
+from pathlib import Path
 
 # Import the update package format system
 from src.cognitive.enhanced_patterns.update_package_format import (
-    PackageMetadata, PackageType, UpdatePackageBuilder, 
-    UpdatePackageValidator, create_package_from_directory,
-    validate_package_directory, extract_package_metadata
+    PackageMetadata, PackageType, UpdatePackageBuilder,
+    UpdatePackageValidator, extract_package_metadata
 )
 
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')

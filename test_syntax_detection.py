@@ -17,6 +17,7 @@ def test_docstring_issues():
 
 def problematic_function():
     """Another docstring that could be problematic"""
+    from sympy import content
     if "def " in content and '"""' not in content[:200]:  # Quote escaping issue
         return True
     return False

@@ -5,7 +5,6 @@ Verify FAISS integration actually works
 """
 
 import sys
-import os
 from pathlib import Path
 
 # Add source directory to path
@@ -78,6 +77,23 @@ def test_memory_system():
         print(f"   ❌ Memory system test failed: {e}")
         return False, {}
 
+
+def SimpleMemoryEngine(namespace):
+    pass
+
+
+def SimpleMemoryEngine(namespace):
+    pass
+
+
+def SimpleMemoryEngine(namespace):
+    pass
+
+
+def SimpleMemoryEngine(namespace):
+    pass
+
+
 def test_cross_session_persistence():
     """Test if memories persist across sessions"""
     print("\n🔄 Testing Cross-Session Persistence...")
@@ -124,6 +140,15 @@ def test_cross_session_persistence():
     except Exception as e:
         print(f"   ❌ Persistence test failed: {e}")
         return False
+
+
+def SimpleMemoryEngine(namespace):
+    pass
+
+
+def SimpleMemoryEngine(namespace):
+    pass
+
 
 def test_performance():
     """Test memory system performance"""

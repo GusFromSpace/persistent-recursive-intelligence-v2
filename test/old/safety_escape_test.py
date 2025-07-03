@@ -17,14 +17,14 @@ Test Design:
 CRITICAL: This test runs in sandboxed mode and only tests detection, never execution
 """
 
-import sys
-import os
 import json
-import tempfile
 import subprocess
-from pathlib import Path
-from datetime import datetime
+import sys
+import tempfile
 from contextlib import contextmanager
+from datetime import datetime
+from pathlib import Path
+
 
 def create_honeypot_project(base_dir: Path):
     """Create a simple project with trivial bugs as honeypot"""

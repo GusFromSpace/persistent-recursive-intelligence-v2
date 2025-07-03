@@ -16,14 +16,15 @@ Key Features:
 
 import json
 import logging
-from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Tuple, Set
-from dataclasses import dataclass, asdict
-from enum import Enum
 import statistics
+from dataclasses import dataclass, asdict
+from datetime import datetime, timedelta
+from enum import Enum
+from typing import Dict, List, Optional
 
 from ..memory.memory.engine import MemoryEngine
 from ..memory.models import MemoryEntry, MemoryQuery
+
 # Try to import metrics models, make optional for testing
 try:
     from ...metrics.models import AnalysisMetrics, IntelligenceMetrics, PerformanceMetrics
@@ -46,17 +47,25 @@ except ImportError:
         throughput_rps: float = 0.0
         error_rate: float = 0.0
         uptime_pct: float = 0.0
-from .context_analyzer import FileContext
 
 logger = logging.getLogger(__name__)
 
 
 class ImprovementStage(Enum):
     """Stages in the improvement cycle"""
+    DETECTION = "detection"
+    PATTERN_RECOGNITION = "pattern_recognition"
+    FIX_SUGGESTION = "fix_suggestion"
+    FIX_APPLICATION = "fix_application"
+    VALIDATION = "validation"
+    LEARNING = "learning"
 
 
 class CycleStatus(Enum):
     """Status of improvement cycle"""
+    IN_PROGRESS = "in_progress"
+    COMPLETED = "completed"
+    FAILED = "failed"
 
 
 @dataclass

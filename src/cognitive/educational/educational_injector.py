@@ -9,17 +9,16 @@ This embodies the mesopredator field shaping principle - create an environment
 where good practices naturally emerge through knowledge transfer.
 """
 
-import re
-import json
-from pathlib import Path
-from typing import Dict, List, Optional, Tuple
 from dataclasses import dataclass
 from enum import Enum
-from datetime import datetime
+from pathlib import Path
+from typing import Dict, List, Optional
 
 
 class AnnotationStyle(Enum):
     """Different styles of educational annotations"""
+    DETAILED = None
+    DETAILED = None
     STANDARD = "standard"
     CONCISE = "concise"
     COMPREHENSIVE = "comprehensive"
@@ -27,6 +26,10 @@ class AnnotationStyle(Enum):
 
 class CognitivePrinciple(Enum):
     """Mesopredator cognitive principles for learning"""
+    HUNTED_MODE = None
+    HUNTER_MODE = None
+    FIELD_SHAPING = None
+    EXECUTIVE_FUNCTION = None
 
 
 @dataclass

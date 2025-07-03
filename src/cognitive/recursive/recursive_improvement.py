@@ -9,15 +9,11 @@ This embodies the mesopredator principle of field shaping - creating recursive
 improvement loops that compound cognitive intelligence over time.
 """
 
-import os
-import subprocess
-import tempfile
-import shutil
 import logging
 from pathlib import Path
-from datetime import datetime
-from safe_workflow_manager import SafeWorkflowManager
+
 from educational_injector import MesopredatorEducationalInjector
+from safe_workflow_manager import SafeWorkflowManager
 
 # Configure logging for recursive improvement
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")

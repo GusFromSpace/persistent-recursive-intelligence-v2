@@ -4,13 +4,13 @@ Intelligent Fix Generator - Generates fix suggestions that feed back into approv
 Creates positive feedback loop for learning safe vs dangerous patterns
 """
 
-import logging
 import json
+import logging
 import re
-from typing import List, Dict, Any, Optional, Tuple
 from dataclasses import dataclass
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
+from typing import List, Dict, Any, Optional
 
 from ..interactive_approval import FixProposal, FixSeverity
 
