@@ -197,8 +197,8 @@ class SmartRebrander:
             "is_print_statement": 'print(' in line_content,
             "is_logging": any(log_func in line_content for log_func in ['logging.', 'logger.', 'log.']),
             "is_string_literal": '"' in line_content or "'" in line_content,
-            "is_function_def": line_content.strip().startswith('def "),
-            "is_class_def": line_content.strip().startswith('class "),
+            "is_function_def": line_content.strip().startswith('def '),
+            "is_class_def": line_content.strip().startswith('class '),
             "is_import": line_content.strip().startswith(('import ', 'from '))
         }
         

@@ -520,7 +520,7 @@ class MemoryPruningSystem:
             to_remove = [memory.id for memory in sorted_group[keep_count:]]
             to_consolidate = []
 
-        logger.info(f"Aggressive pruning for {saturation_analysis.get('pattern_type', 'unknown")}: "
+        logger.info(f"Aggressive pruning for {saturation_analysis.get('pattern_type', 'unknown')}: "
                    f"keeping {group_size - len(to_remove)} out of {group_size}")
 
         return {

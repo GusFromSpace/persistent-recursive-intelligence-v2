@@ -579,10 +579,10 @@ if __name__ == "__main__":
     logger.info("=" * 50)
     logger.info(f"🎯 Mode: {'DRY RUN' if dry_run else 'APPLYING CHANGES'}")
     logger.info(f'📊 Total Items Removed: {results['total_items_removed']}')
-    logger.info(f'📁 Files Cleaned: {results['files_cleaned']}")
+    logger.info(f'📁 Files Cleaned: {results["files_cleaned"]}')
     logger.info(f"📄 Files Scanned: {results['total_files_scanned']}")
 
     if results["removals"] and args.verbose:
         logger.info(f"\n📋 Removed Items:")
         for removal in results["removals"][:20]:  # Show first 20
-            logger.info(f"   {removal['type']}: {removal.get('import', removal.get('variable', removal.get('function', 'unknown")))}")
+            logger.info(f"   {removal['type']}: {removal.get('import', removal.get('variable', removal.get('function', 'unknown')))}")

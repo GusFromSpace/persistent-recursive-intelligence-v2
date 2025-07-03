@@ -1,0 +1,25 @@
+{
+  "test_id": "ADV-TEST-001",
+  "test_name": "Ouroboros Recursive Self-Improvement",
+  "timestamp": "2025-07-03T09:24:30.977786",
+  "total_flaw_tests": 2,
+  "flaws_injected": 0,
+  "flaws_detected": 0,
+  "success_rate": 0,
+  "test_passed": false,
+  "individual_results": [
+    {
+      "flaw_type": "Memory Corruption",
+      "flaw_injected": false,
+      "reason": "Could not find suitable injection point",
+      "test_result": "skipped"
+    },
+    {
+      "flaw_type": "Learning Decay",
+      "flaw_injected": false,
+      "reason": "Could not find suitable injection point",
+      "test_result": "skipped"
+    }
+  ],
+  "test_environment": "/tmp/ouroboros_test_b_apdi3q/test_pri"
+}

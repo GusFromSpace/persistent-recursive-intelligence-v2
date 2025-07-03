@@ -1,0 +1,45 @@
+{
+  "test_id": "ADV-TEST-006",
+  "test_name": "Orchestrator Synthesis Test",
+  "timestamp": "2025-07-03T09:26:21.961047",
+  "scenario_complexity": {
+    "domains": 3,
+    "evidence_sources": [
+      "code",
+      "logs",
+      "schema"
+    ],
+    "problem_type": "N+1 query performance issue"
+  },
+  "synthesis_results": {
+    "synthesis_achieved": false,
+    "synthesis_score": 5,
+    "domains_analyzed": 0,
+    "domain_analysis": {
+      "code_analysis": false,
+      "log_analysis": false,
+      "schema_analysis": false
+    },
+    "synthesis_mentions": 1,
+    "n_plus_one_recognized": false,
+    "solution_completeness": {
+      "code_fix": false,
+      "database_fix": false,
+      "performance_fix": false
+    },
+    "solution_layers": 0,
+    "analysis_details": {
+      "total_domains": 3,
+      "domains_found": [],
+      "synthesis_indicators_found": 1,
+      "multi_layer_solution": false
+    }
+  },
+  "test_passed": false,
+  "scenario_paths": {
+    "scenario_dir": "/tmp/orchestrator_test_e59ev05p/ecommerce_scenario",
+    "app_code": "/tmp/orchestrator_test_e59ev05p/ecommerce_scenario/project-ecommerce",
+    "logs": "/tmp/orchestrator_test_e59ev05p/ecommerce_scenario/prod_logs.txt",
+    "schema": "/tmp/orchestrator_test_e59ev05p/ecommerce_scenario/schema.sql"
+  }
+}

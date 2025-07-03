@@ -1,8 +1,8 @@
 {
   "total_orphaned_files": 4,
-  "suggestions_generated": 15,
-  "high_quality_suggestions": 6,
-  "false_positives": 1,
+  "suggestions_generated": 11,
+  "high_quality_suggestions": 5,
+  "false_positives": 0,
   "missed_opportunities": 0,
   "test_scenarios": [
     {
@@ -15,48 +15,6 @@
       "evaluation_notes": [
         "\u2705 AdvancedCache could replace simple cache in engine",
         "\u2705 High confidence score: 0.887",
-        "\u2705 Good semantic analysis",
-        "\u2705 Detected integration opportunities"
-      ]
-    },
-    {
-      "orphaned_file": "progress_tracker.py",
-      "target_file": "core/engine.py",
-      "connection_score": 0.8525,
-      "connection_type": "module_import",
-      "is_high_quality": true,
-      "is_false_positive": false,
-      "evaluation_notes": [
-        "\u2705 ProgressTracker could track processing progress",
-        "\u2705 High confidence score: 0.853",
-        "\u2705 Good semantic analysis",
-        "\u2705 Detected integration opportunities"
-      ]
-    },
-    {
-      "orphaned_file": "metrics.py",
-      "target_file": "core/engine.py",
-      "connection_score": 0.8049999999999999,
-      "connection_type": "module_import",
-      "is_high_quality": true,
-      "is_false_positive": false,
-      "evaluation_notes": [
-        "\u2705 Metrics decorators could track engine performance",
-        "\u2705 High confidence score: 0.805",
-        "\u2705 Good semantic analysis",
-        "\u2705 Detected integration opportunities"
-      ]
-    },
-    {
-      "orphaned_file": "validation.py",
-      "target_file": "config.py",
-      "connection_score": 0.76,
-      "connection_type": "module_import",
-      "is_high_quality": true,
-      "is_false_positive": false,
-      "evaluation_notes": [
-        "\u2705 validate_config_data could be used for settings validation",
-        "\u2705 High confidence score: 0.760",
         "\u2705 Good semantic analysis",
         "\u2705 Detected integration opportunities"
       ]
@@ -76,52 +34,40 @@
       ]
     },
     {
-      "orphaned_file": "validation.py",
-      "target_file": "main.py",
-      "connection_score": 0.73,
-      "connection_type": "module_import",
-      "is_high_quality": false,
-      "is_false_positive": false,
-      "evaluation_notes": [
-        "\u2705 High confidence score: 0.730",
-        "\u2705 Good semantic analysis",
-        "\u2705 Detected integration opportunities"
-      ]
-    },
-    {
-      "orphaned_file": "validation.py",
-      "target_file": "utils/logger.py",
-      "connection_score": 0.62,
-      "connection_type": "module_import",
-      "is_high_quality": false,
-      "is_false_positive": false,
-      "evaluation_notes": [
-        "\u2705 Good semantic analysis",
-        "\u2705 Detected integration opportunities"
-      ]
-    },
-    {
       "orphaned_file": "metrics.py",
-      "target_file": "main.py",
-      "connection_score": 0.6025,
+      "target_file": "core/engine.py",
+      "connection_score": 0.7,
       "connection_type": "module_import",
       "is_high_quality": true,
       "is_false_positive": false,
       "evaluation_notes": [
-        "\u2705 MetricsCollector could be used for application metrics",
+        "\u2705 Metrics decorators could track engine performance",
+        "\u2705 Good semantic analysis",
+        "\u2705 Detected integration opportunities"
+      ]
+    },
+    {
+      "orphaned_file": "validation.py",
+      "target_file": "config.py",
+      "connection_score": 0.5850000000000001,
+      "connection_type": "module_import",
+      "is_high_quality": true,
+      "is_false_positive": false,
+      "evaluation_notes": [
+        "\u2705 validate_config_data could be used for settings validation",
         "\u2705 Good semantic analysis",
         "\u2705 Detected integration opportunities"
       ]
     },
     {
       "orphaned_file": "progress_tracker.py",
-      "target_file": "config.py",
-      "connection_score": 0.485,
+      "target_file": "core/engine.py",
+      "connection_score": 0.4575,
       "connection_type": "module_import",
-      "is_high_quality": false,
-      "is_false_positive": true,
+      "is_high_quality": true,
+      "is_false_positive": false,
       "evaluation_notes": [
-        "\u274c False positive - connection doesn't make semantic sense",
+        "\u2705 ProgressTracker could track processing progress",
         "\u2705 Good semantic analysis",
         "\u2705 Detected integration opportunities"
       ]
@@ -139,6 +85,19 @@
       ]
     },
     {
+      "orphaned_file": "validation.py",
+      "target_file": "main.py",
+      "connection_score": 0.38749999999999996,
+      "connection_type": "module_import",
+      "is_high_quality": false,
+      "is_false_positive": false,
+      "evaluation_notes": [
+        "\u26a0\ufe0f Low confidence score: 0.387",
+        "\u2705 Good semantic analysis",
+        "\u2705 Detected integration opportunities"
+      ]
+    },
+    {
       "orphaned_file": "cache_utils.py",
       "target_file": "data/processor.py",
       "connection_score": 0.385,
@@ -160,19 +119,6 @@
       "evaluation_notes": [
         "\u26a0\ufe0f Low confidence score: 0.385",
         "\u2705 Good semantic analysis"
-      ]
-    },
-    {
-      "orphaned_file": "cache_utils.py",
-      "target_file": "main.py",
-      "connection_score": 0.35750000000000004,
-      "connection_type": "module_import",
-      "is_high_quality": false,
-      "is_false_positive": false,
-      "evaluation_notes": [
-        "\u26a0\ufe0f Low confidence score: 0.358",
-        "\u2705 Good semantic analysis",
-        "\u2705 Detected integration opportunities"
       ]
     },
     {
@@ -200,7 +146,7 @@
       ]
     }
   ],
-  "precision": 0.4,
-  "false_positive_rate": 0.06666666666666667,
-  "recall": 1.2
+  "precision": 0.45454545454545453,
+  "false_positive_rate": 0.0,
+  "recall": 1.0
 }

@@ -133,27 +133,27 @@ class AutoCodePatcher:
         # Common patterns based on function names
         if "get_" in func_name:
             if func_node.returns:
-                return f"    '''Get {func_name[4:].replace('_', ' ")}'''\n    # Implement getter logic\n    return None"
+                return f"    '''Get {func_name[4:].replace('_', ' ')}'''\n    # Implement getter logic\n    return None"
             else:
-                return f"    '''Get {func_name[4:].replace('_', ' ")}'''\n    # Implement getter logic\n    pass"
+                return f"    '''Get {func_name[4:].replace('_', ' ')}'''\n    # Implement getter logic\n    pass"
 
         elif "set_" in func_name:
-            return f"    '''Set {func_name[4:].replace('_', ' ")}'''\n    # Implement setter logic\n    pass"
+            return f"    '''Set {func_name[4:].replace('_', ' ')}'''\n    # Implement setter logic\n    pass"
 
         elif "init" in func_name:
-            return f"    '''Initialize {func_name.replace('_', ' ")}'''\n    # Implement initialization logic\n    pass"
+            return f"    '''Initialize {func_name.replace('_', ' ')}'''\n    # Implement initialization logic\n    pass"
 
         elif "create" in func_name:
-            return f"    '''Create {func_name[7:].replace('_', ' ') if func_name.startswith('create_") else 'resource'}'''\n    # TODO: Implement creation logic\n    return None"
+            return f"    '''Create {func_name[7:].replace('_', ' ') if func_name.startswith('create_') else 'resource'}'''\n    # TODO: Implement creation logic\n    return None"
 
         elif "validate" in func_name:
             return f"    '''Validate input parameters'''\n    # Implement validation logic\n    return True"
 
         elif "process" in func_name:
-            return f"    '''Process {func_name[8:].replace('_', ' ') if func_name.startswith('process_") else 'data'}'''\n    # TODO: Implement processing logic\n    pass"
+            return f"    '''Process {func_name[8:].replace('_', ' ') if func_name.startswith('process_') else 'data'}'''\n    # TODO: Implement processing logic\n    pass"
 
         else:
-            return f"    '''{func_name.replace('_', ' ").title()}'''\n    # Implement function logic\n    pass"
+            return f"    '''{func_name.replace('_', ' ').title()}'''\n    # Implement function logic\n    pass"
 
     def _has_return_statement(self, func_node: ast.FunctionDef) -> bool:
         """Check if function has any return statements"""
@@ -399,7 +399,7 @@ if __name__ == "__main__":
     logger.info("=" * 50)
     logger.info(f"🎯 Mode: {'DRY RUN' if dry_run else 'APPLYING PATCHES'}")
     logger.info(f'📊 Total Patches: {results['total_patches_applied']}')
-    logger.info(f'📁 Files Patched: {results['files_patched']}")
+    logger.info(f'📁 Files Patched: {results["files_patched"]}')
 
     if results["patches_applied"] and args.verbose:
         logger.info(f"\n📋 Applied Patches:")

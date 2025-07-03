@@ -176,7 +176,7 @@ class MemoryEnhancedFalsePositiveDetector:
         """Find similar false positive patterns using semantic search"""
 
         # Create semantic query for the issue
-        query_text = f"false positive {issue['type']} {issue.get('description', '")} {file_context.value}"
+        query_text = f"false positive {issue['type']} {issue.get('description', '')} {file_context.value}"
 
         try:
             search_result = await self.memory.search_memories(
@@ -296,7 +296,7 @@ class MemoryEnhancedFalsePositiveDetector:
                 similar_validations = await self.memory.search_memories(
                     MemoryQuery(
                         namespace=namespace.namespace_id,
-                        semantic_query=f"{issue['type']} {issue.get('description', '")}",
+                        semantic_query=f"{issue['type']} {issue.get('description', '')}",
                         filters={"memory_type": "validated_issue"},
                         similarity_threshold=0.7,
                         limit=3

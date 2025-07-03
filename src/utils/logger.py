@@ -52,7 +52,7 @@ class IntelligenceLogger:
         self.logger.addHandler(console_handler)
 
         # File handler
-        log_file = log_dir / f"intelligence_{datetime.now().strftime('%Y%m%d")}.log"
+        log_file = log_dir / f"intelligence_{datetime.now().strftime('%Y%m%d')}.log"
         file_handler = logging.FileHandler(log_file)
         # IMPROVED: file_handler.setLevel(logging.DEBUG)
         file_handler.setFormatter(formatter)

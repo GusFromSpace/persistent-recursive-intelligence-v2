@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "last_updated": 1751372327.8485882,
-    "total_runs": 10
+    "last_updated": 1751545599.1872535,
+    "total_runs": 13
   },
   "runs": [
     {
@@ -270,6 +270,96 @@
       "high_value_percentage": 0.0,
       "connection_type_distribution": {},
       "reasoning_type_distribution": {},
+      "score_improvement": 0.0,
+      "quality_improvement": 0.0
+    },
+    {
+      "run_id": "analysis_1751544720",
+      "timestamp": 1751544720.2352495,
+      "project_path": "/tmp/code_connector_test_tedrwhhl",
+      "orphaned_files_count": 4,
+      "main_files_count": 5,
+      "total_suggestions": 11,
+      "processing_time_seconds": 0.011784791946411133,
+      "excellent_connections": 1,
+      "high_quality_connections": 2,
+      "medium_quality_connections": 3,
+      "low_quality_connections": 5,
+      "avg_connection_score": 0.5111363636363636,
+      "max_connection_score": 0.8875,
+      "min_connection_score": 0.3,
+      "score_std_deviation": 0.18264895426984454,
+      "files_analyzed_per_second": 763.6961298023427,
+      "suggestions_per_orphaned_file": 2.75,
+      "high_value_percentage": 27.27272727272727,
+      "connection_type_distribution": {
+        "module_import": 11
+      },
+      "reasoning_type_distribution": {
+        "semantic_analysis": 11,
+        "need_detection": 7,
+        "structural_compatibility": 5
+      },
+      "score_improvement": 0.5111363636363636,
+      "quality_improvement": 27.27272727272727
+    },
+    {
+      "run_id": "analysis_1751545080",
+      "timestamp": 1751545080.7162292,
+      "project_path": "/tmp/code_connector_test_puf_wb8f",
+      "orphaned_files_count": 4,
+      "main_files_count": 5,
+      "total_suggestions": 11,
+      "processing_time_seconds": 0.011322975158691406,
+      "excellent_connections": 1,
+      "high_quality_connections": 2,
+      "medium_quality_connections": 3,
+      "low_quality_connections": 5,
+      "avg_connection_score": 0.5111363636363636,
+      "max_connection_score": 0.8875,
+      "min_connection_score": 0.3,
+      "score_std_deviation": 0.18264895426984454,
+      "files_analyzed_per_second": 794.8441000589573,
+      "suggestions_per_orphaned_file": 2.75,
+      "high_value_percentage": 27.27272727272727,
+      "connection_type_distribution": {
+        "module_import": 11
+      },
+      "reasoning_type_distribution": {
+        "semantic_analysis": 11,
+        "need_detection": 7,
+        "structural_compatibility": 5
+      },
+      "score_improvement": 0.0,
+      "quality_improvement": 0.0
+    },
+    {
+      "run_id": "analysis_1751545599",
+      "timestamp": 1751545599.1762252,
+      "project_path": "/tmp/code_connector_test_i1plh6oe",
+      "orphaned_files_count": 4,
+      "main_files_count": 5,
+      "total_suggestions": 11,
+      "processing_time_seconds": 0.011019706726074219,
+      "excellent_connections": 1,
+      "high_quality_connections": 2,
+      "medium_quality_connections": 3,
+      "low_quality_connections": 5,
+      "avg_connection_score": 0.5111363636363636,
+      "max_connection_score": 0.8875,
+      "min_connection_score": 0.3,
+      "score_std_deviation": 0.18264895426984454,
+      "files_analyzed_per_second": 816.718649935093,
+      "suggestions_per_orphaned_file": 2.75,
+      "high_value_percentage": 27.27272727272727,
+      "connection_type_distribution": {
+        "module_import": 11
+      },
+      "reasoning_type_distribution": {
+        "semantic_analysis": 11,
+        "need_detection": 7,
+        "structural_compatibility": 5
+      },
       "score_improvement": 0.0,
       "quality_improvement": 0.0
     }

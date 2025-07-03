@@ -47,7 +47,7 @@ class PersistentRecursiveIntelligence:
     def __init__(self, config: Dict[str, Any] = None):
         """Initialize the persistent recursive intelligence system."""
         self.config = config or {}
-        self.session_id = f"session_{datetime.now().strftime('%Y%m%d_%H%M%S")}"
+        self.session_id = f"session_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
         self.logger = get_logger("persistent_engine")
 
         # Initialize component systems

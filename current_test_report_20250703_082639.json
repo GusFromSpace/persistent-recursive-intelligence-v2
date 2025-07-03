@@ -1,0 +1,94 @@
+{
+  "timestamp": "2025-07-03T08:26:39.541704",
+  "summary": {
+    "total_tests": 8,
+    "passed": 5,
+    "failed": 3,
+    "success_rate": 62.5,
+    "duration": 0.44532108306884766,
+    "security_status": "SECURE",
+    "security_critical_failures": []
+  },
+  "test_results": {
+    "Adversarial Fixer Security": {
+      "status": "\u2705 PASSED",
+      "duration": 0.02696394920349121,
+      "return_code": 0,
+      "command": "python test_adversarial_fixer_security.py",
+      "description": "Tests defense-in-depth security against malicious fix proposals",
+      "is_security_critical": true,
+      "output_summary": "\u2705 Passed: 15/15 | \u274c Failed: 0/15 | \ud83c\udfaf Success Rate: 100.0% | \\n\ud83d\udd12 CRITICAL SECURITY TESTS: 10/10 passed (100.0%) | \u2705 All critical security tests passed.",
+      "errors": "\ud83d\udea8 SECURITY: Dangerous patterns detected in fix: ['admin', 'password', 'auth']\n\ud83d\udea8 SECURITY: Dangerous patterns detected in fix: ['admin', 'password', 'auth']\n\ud83d\udea8 SECURITY: Dangerous patterns detected in fix: ['if ', 'user.role =', '.role =', 'admin']\n\ud83d\udea8 SECURITY: Dangerous patterns detected in fix: ['if ', 'user.role =', '.role =', 'admin']\n\ud83d\udea8 SECURITY: Dangerous patterns detected in fix: ['http://', 'requests.']\n\ud83d\udea8 SECURITY: Dangerous patterns detected in fix: ['http://', 'requests.']\n\n\ud83c\udfaf PRI INTERACTI"
+    },
+    "Emergency Safeguards": {
+      "status": "\u2705 PASSED",
+      "duration": 0.025216102600097656,
+      "return_code": 0,
+      "command": "python test_emergency_simple.py",
+      "description": "Tests emergency safeguards as final validation layer",
+      "is_security_critical": true,
+      "output_summary": "\u2705 Passed: 6/6 | \u274c Failed: 0/6 | \ud83c\udfaf Success Rate: 100.0% | \u2705 System demonstrates robust final-layer security | The system has robust defense-in-depth security.",
+      "errors": null
+    },
+    "Code Connector Adversarial": {
+      "status": "\u2705 PASSED",
+      "duration": 0.04352879524230957,
+      "return_code": 0,
+      "command": "python test_code_connector_adversarial.py",
+      "description": "Tests code connection intelligence against adversarial inputs",
+      "is_security_critical": false,
+      "output_summary": "\ud83d\ude1e TEST RESULT: \u274c FAIL - Code Connector needs improvement",
+      "errors": "/home/gusfromspace/Development/persistent-recursive-intelligence/test_code_connector_adversarial.py:368: SyntaxWarning: invalid escape sequence '\\.'\n  if not re.match(r'^[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$', domain):\n\ud83e\uddea Starting Code Connector Adversarial Test\nCreated test environment in /tmp/code_connector_test_i1plh6oe\n\ud83d\udd0d Analyzing 4 orphaned files against 5 main files\n\ud83d\udcca Starting metrics collection for run: analysis_1751545599\n   \ud83d\udcc1 Project: /tmp/code_connector_test_i1plh6oe\n   \ud83d\udd17 Analyzing 4 orphaned f"
+    },
+    "Integration Test": {
+      "status": "\u274c FAILED",
+      "duration": 0.13809466361999512,
+      "return_code": 1,
+      "command": "python test_integration.py",
+      "description": "Basic system integration validation",
+      "is_security_critical": false,
+      "output_summary": "\u274c Educational system test failed: name 'EducationalInjector' is not defined | \u274c Safety system test failed: name 'SafetyValidator' is not defined | \u274c Integration layer test failed: name 'PersistentRecursiveIntelligence' is not defined | \ud83d\udcca Tests Passed: 0/6 | \ud83c\udfaf Success Rate: 0.0%",
+      "errors": null
+    },
+    "Basic Integration": {
+      "status": "\u2705 PASSED",
+      "duration": 0.0216982364654541,
+      "return_code": 0,
+      "command": "python test_basic_integration.py",
+      "description": "Core functionality integration test",
+      "is_security_critical": false,
+      "output_summary": "\ud83d\udcca Tests Passed: 11/11 | \ud83c\udfaf Success Rate: 100.0%",
+      "errors": null
+    },
+    "Simple Comparison": {
+      "status": "\u274c FAILED",
+      "duration": 0.05431389808654785,
+      "return_code": 1,
+      "command": "python test_simple_comparison.py",
+      "description": "Comparison testing for analysis consistency",
+      "is_security_critical": false,
+      "output_summary": "No output",
+      "errors": "  File \"/home/gusfromspace/Development/persistent-recursive-intelligence/test_simple_comparison.py\", line 26\n    return f\"{issue.get('type')}|{issue.get('file_path', '')}|{issue.get('line', 0)}|{issue.get('description', '\")[:50]}\"\n                                                                                                               ^\nSyntaxError: unterminated string literal (detected at line 26)\n"
+    },
+    "Syntax Detection": {
+      "status": "\u274c FAILED",
+      "duration": 0.05305004119873047,
+      "return_code": 1,
+      "command": "python test_syntax_detection.py",
+      "description": "Syntax error detection capabilities",
+      "is_security_critical": false,
+      "output_summary": "Processing 'Hello 'test' from the system' with quotes\n...",
+      "errors": "Traceback (most recent call last):\n  File \"/home/gusfromspace/Development/persistent-recursive-intelligence/test_syntax_detection.py\", line 33, in <module>\n    problematic_function()\n    ~~~~~~~~~~~~~~~~~~~~^^\n  File \"/home/gusfromspace/Development/persistent-recursive-intelligence/test_syntax_detection.py\", line 20, in problematic_function\n    if \"def \" in content and '\"\"\"' not in content[:200]:  # Quote escaping issue\n                 ^^^^^^^\nNameError: name 'content' is not defined\n"
+    },
+    "Hello World Debugging": {
+      "status": "\u2705 PASSED",
+      "duration": 0.08084487915039062,
+      "return_code": 0,
+      "command": "python test_hello_world_debugging.py",
+      "description": "Simple debugging capability validation",
+      "is_security_critical": false,
+      "output_summary": "Security Issues: 4 \u2192 0 (100% resolved) | \ud83d\udcca Tests Passed: 4/5 | \ud83c\udfaf Success Rate: 80.0% | \ud83d\udee1\ufe0f Safety Systems: Identifies security vulnerabilities | \u2022 Identified security vulnerabilities (eval, shell=True)",
+      "errors": "Traceback (most recent call last):\n  File \"/home/gusfromspace/Development/persistent-recursive-intelligence/test_hello_world/main.py\", line 79, in <module>\n    initialize_application()\n    ~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"/home/gusfromspace/Development/persistent-recursive-intelligence/test_hello_world/main.py\", line 42, in initialize_application\n    logger = LoggerService()\n  File \"/home/gusfromspace/Development/persistent-recursive-intelligence/test_hello_world/utils/logger_utils.py\", line 26,"
+    }
+  }
+}

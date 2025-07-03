@@ -697,7 +697,7 @@ if __name__ == "__main__":
                 logger.info(f"\nSecurity Issues ({len(results['security_issues'])}):")
                 for issue in results['security_issues']:
                     severity_emoji = {"critical": "🚨", "high": "🔴", "medium": "🟡", "low": "🟢"}
-                    logger.info(f"  {severity_emoji.get(issue['severity'], '⚠️")} {issue['description']}")
+                    logger.info(f"  {severity_emoji.get(issue['severity'], '⚠️')} {issue['description']}")
         
         except Exception as e:
             logger.info(f"❌ Validation failed: {e}")

@@ -3,6 +3,7 @@ import json
 import shutil
 import sys
 import logging
+from datetime import datetime
 
 from pathlib import Path
 
@@ -22,7 +23,7 @@ from cognitive.enhanced_patterns.memory_pruning_system import MemoryPruningSyste
 from cognitive.enhanced_patterns.improvement_cycle_tracker import ImprovementCycleTracker
 from cognitive.memory.memory.engine import MemoryEngine
 
-def run_fixer(project_path: str, issues_file: str, dynamic_approval: bool = False, conservative_level: float = 0.7):
+def run_fixer(project_path: str, issues_file: str, dynamic_approval: bool = False, conservative_level: float = 0.95):
     """Interactively fixes issues in a project."""
     print(f"🌀 Enhanced PRI: Interactive Fix Application")
     print(f"📁 Project: {project_path}")
@@ -42,10 +43,14 @@ def run_fixer(project_path: str, issues_file: str, dynamic_approval: bool = Fals
     fix_proposals = convert_issues_to_proposals(issues)
     
     if dynamic_approval:
-        # Filter based on conservative level
+        # Filter based on STRICT conservative level
         original_count = len(fix_proposals)
-        fix_proposals = [p for p in fix_proposals if calculate_fix_safety_score(p) >= conservative_level]
-        print(f"\n📊 Dynamic Approval: {len(fix_proposals)}/{original_count} fixes meet safety threshold")
+        # Ensure conservative level is never below 0.9 for dynamic approval
+        strict_conservative_level = max(conservative_level, 0.9)
+        fix_proposals = [p for p in fix_proposals if calculate_fix_safety_score(p) >= strict_conservative_level]
+        print(f"\n📊 STRICT Dynamic Approval: {len(fix_proposals)}/{original_count} fixes meet safety threshold (≥{strict_conservative_level:.1f})")
+        if len(fix_proposals) < original_count:
+            print(f"🛡️  SAFETY: {original_count - len(fix_proposals)} potentially risky fixes filtered out")
     
     approval_system = InteractiveApprovalSystem(auto_approve_safe=True, interactive_mode=False)
     approved_fixes, rejected_fixes = approval_system.process_fix_batch(fix_proposals)
@@ -61,59 +66,193 @@ def run_fixer(project_path: str, issues_file: str, dynamic_approval: bool = Fals
         print("\nNo fixes were approved.")
 
 def calculate_fix_safety_score(proposal):
-    """Calculate a safety score for a fix proposal."""
-    score = 0.5  # Base score
+    """Calculate a STRICT safety score for a fix proposal."""
+    score = 0.1  # MUCH lower base score - assume unsafe until proven otherwise
     
-    # Issue type safety modifiers
-    safe_types = {'debugging', 'exception_handling', 'cosmetic'}
-    risky_types = {'security', 'performance', 'logic'}
+    # STRICT issue type safety categorization
+    ultra_safe_types = {'whitespace_cleanup', 'typo_corrections'}  # Only truly cosmetic
+    risky_types = {
+        'security', 'performance', 'logic', 'syntax_errors', 'exception_handling',
+        'missing_imports', 'string_formatting', 'algorithm_changes', 'api_modifications',
+        'database_queries', 'concurrency_fixes', 'memory_management'
+    }
     
-    if proposal.issue_type in safe_types:
-        score += 0.3
+    if proposal.issue_type in ultra_safe_types:
+        score += 0.4  # Still conservative
     elif proposal.issue_type in risky_types:
-        score -= 0.2
+        score -= 0.1  # Penalize risky types more heavily
+        return 0.0    # Immediately fail risky types
     
-    # Check if it's a simple replacement
+    # STRICT code change analysis
     if proposal.original_code and proposal.proposed_fix:
-        # Simple replacements are safer
-        if proposal.original_code.count('\n') == proposal.proposed_fix.count('\n'):
-            score += 0.1
+        # Any structural changes are dangerous
+        orig_lines = proposal.original_code.count('\n')
+        new_lines = proposal.proposed_fix.count('\n')
         
-        # Check for drastic changes
-        if len(proposal.proposed_fix) > len(proposal.original_code) * 2:
+        if orig_lines != new_lines:
+            score -= 0.3  # Line count changes are risky
+        
+        # Any significant size changes are dangerous
+        size_ratio = len(proposal.proposed_fix) / max(len(proposal.original_code), 1)
+        if size_ratio > 1.2 or size_ratio < 0.8:  # More than 20% change
+            score -= 0.2
+        
+        # Check for dangerous patterns in the fix - COMPREHENSIVE LIST
+        dangerous_code_patterns = [
+            'import ', 'def ', 'class ', 'try:', 'except:', 'with ', 'for ', 'while ', 'if ',
+            'subprocess', 'os.system', 'eval(', 'exec(', '__import__', 'getattr(',
+            'setattr(', 'delattr(', 'globals()', 'locals()', 'vars()', 'dir(',
+            'open(', 'file(', 'input()', 'raw_input()', 'compile(', 'memoryview(',
+            'user.role =', '.role =', 'admin', 'root', 'password', 'auth',
+            'return True', 'return False', '== True', '== False',
+            'http://', 'https://', 'ftp://', 'requests.', 'urllib.',
+            'rm -rf', 'del ', 'shutil.', 'pathlib.', 'pickle.',
+            'yaml.load', 'marshal.', 'shelve.', 'dill.', 'joblib.'
+        ]
+        
+        dangerous_found = [pattern for pattern in dangerous_code_patterns 
+                          if pattern in proposal.proposed_fix]
+        
+        if dangerous_found:
+            score = 0.0  # Immediate fail for any dangerous pattern
+            # Log what was detected for security audit
+            print(f"🚨 SECURITY: Dangerous patterns detected in fix: {dangerous_found}")
+        
+        # Additional check for assignment/modification patterns
+        modification_patterns = [' = ', '+=', '-=', '*=', '/=', '|=', '&=', '^=']
+        if any(pattern in proposal.proposed_fix for pattern in modification_patterns):
+            # Any assignments in fixes are very risky
+            score = min(score, 0.1)
+    
+    # STRICT context penalties
+    if hasattr(proposal, 'context'):
+        if proposal.context == 'production':
+            score -= 0.2  # Heavy penalty for production
+        elif proposal.context == 'config':
+            score -= 0.3  # Configuration changes are very risky
+    
+    # STRICT severity penalties
+    if hasattr(proposal, 'severity'):
+        if proposal.severity.value in ['high', 'critical']:
+            return 0.0  # Immediate fail for high/critical
+        elif proposal.severity.value == 'medium':
             score -= 0.2
     
-    # Use existing safety score if available
+    # Use existing safety score if available, but be more conservative
     if hasattr(proposal, 'safety_score'):
-        score = (score + proposal.safety_score / 100) / 2
+        existing_score = proposal.safety_score / 100
+        score = min(score, existing_score * 0.8)  # Take 80% of existing score as maximum
     
     return max(0.0, min(1.0, score))
 
 def apply_fix(project_path, fix):
-    """Applies a single fix to a file."""
+    """Applies a single fix to a file with emergency safeguards."""
     try:
         file_path = Path(project_path) / fix.file_path
         if not file_path.exists():
             print(f"  ❌ Error: File not found at {file_path}")
             return False
 
+        # Read original file content
+        with open(file_path, 'r') as f:
+            original_content = f.read()
+            original_lines = f.readlines()
+
+        # Calculate what the new content would be
+        if fix.line_number - 1 >= len(original_lines):
+            print(f"  ❌ Error: Line number {fix.line_number} is out of bounds for file {fix.file_path}")
+            return False
+        
+        new_lines = original_lines.copy()
+        new_lines[fix.line_number - 1] = new_lines[fix.line_number - 1].replace(fix.original_code, fix.proposed_fix)
+        new_content = ''.join(new_lines)
+
+        # 🚨 EMERGENCY SAFEGUARDS: Pattern-based validation
+        print(f"  🛡️ Emergency validation for {fix.file_path}...")
+        
+        # Import emergency safeguards
+        sys.path.insert(0, str(Path(__file__).parent / 'src'))
+        from safety.emergency_safeguards import validate_fix_application
+        
+        is_safe, reason = validate_fix_application(fix, original_content, new_content)
+        
+        if not is_safe:
+            print(f"  🚨 EMERGENCY BLOCK: {reason}")
+            print(f"  🛑 Fix blocked by emergency safeguards despite user approval!")
+            
+            # Log the emergency block
+            emergency_log = {
+                'timestamp': datetime.now().isoformat(),
+                'action': 'EMERGENCY_APPLICATION_BLOCK',
+                'file_path': str(file_path),
+                'fix_type': fix.issue_type,
+                'reason': reason,
+                'proposed_fix': fix.proposed_fix
+            }
+            
+            emergency_log_file = Path('emergency_application_blocks.log')
+            with open(emergency_log_file, 'a') as f:
+                import json
+                f.write(json.dumps(emergency_log) + '\n')
+            
+            return False
+
+        print(f"  ✅ Emergency validation passed")
+
+        # 🏗️ SANDBOX VALIDATION: Ultimate safety test
+        print(f"  🏗️ Sandbox validation for {fix.file_path}...")
+        
+        try:
+            from safety.sandboxed_validation import validate_fix_with_sandbox
+            
+            sandbox_safe, sandbox_reason, sandbox_result = validate_fix_with_sandbox(
+                project_path, fix, original_content, new_content
+            )
+            
+            if not sandbox_safe:
+                print(f"  🚨 SANDBOX BLOCK: {sandbox_reason}")
+                print(f"  🏗️ Build passed: {sandbox_result.build_passed}")
+                print(f"  🧪 Tests passed: {sandbox_result.tests_passed}")
+                print(f"  🔍 Runtime safe: {sandbox_result.runtime_safe}")
+                print(f"  🛑 Fix blocked by sandbox validation despite all other approvals!")
+                
+                # Log the sandbox block
+                sandbox_log = {
+                    'timestamp': datetime.now().isoformat(),
+                    'action': 'SANDBOX_APPLICATION_BLOCK',
+                    'file_path': str(file_path),
+                    'fix_type': fix.issue_type,
+                    'reason': sandbox_reason,
+                    'build_passed': sandbox_result.build_passed,
+                    'tests_passed': sandbox_result.tests_passed,
+                    'runtime_safe': sandbox_result.runtime_safe,
+                    'execution_time': sandbox_result.execution_time,
+                    'issues': sandbox_result.issues_found,
+                    'security_violations': sandbox_result.security_violations
+                }
+                
+                sandbox_log_file = Path('sandbox_application_blocks.log')
+                with open(sandbox_log_file, 'a') as f:
+                    f.write(json.dumps(sandbox_log) + '\n')
+                
+                return False
+            
+            print(f"  ✅ Sandbox validation passed ({sandbox_result.execution_time:.2f}s)")
+            
+        except Exception as e:
+            print(f"  ⚠️ Sandbox validation unavailable: {e}")
+            print(f"  🔄 Proceeding with emergency validation only")
+
         # Create a backup
         backup_path = file_path.with_suffix(file_path.suffix + '.bak')
         shutil.copy2(file_path, backup_path)
 
-        with open(file_path, 'r+') as f:
-            lines = f.readlines()
-            # This is a simplified approach, a more robust solution would be needed for multi-line fixes
-            if fix.line_number - 1 < len(lines):
-                lines[fix.line_number - 1] = lines[fix.line_number - 1].replace(fix.original_code, fix.proposed_fix)
-                f.seek(0)
-                f.writelines(lines)
-                f.truncate()
-                print(f"  ✅ Applied fix: {fix.issue_type} in {fix.file_path}")
-                return True
-            else:
-                print(f"  ❌ Error: Line number {fix.line_number} is out of bounds for file {fix.file_path}")
-                return False
+        # Apply the fix
+        with open(file_path, 'w') as f:
+            f.write(new_content)
+        
+        print(f"  ✅ Applied fix: {fix.issue_type} in {fix.file_path}")
+        return True
 
     except Exception as e:
         print(f"  ❌ Error applying fix to {fix.file_path}: {e}")

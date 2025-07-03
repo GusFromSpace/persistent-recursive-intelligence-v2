@@ -744,7 +744,7 @@ class SafeWorkflowManager:
 
         try:
             # Create backup of current source
-            backup_dir = self.source_directory.parent / f"{self.source_directory.name}_backup_{datetime.now().strftime('%Y%m%d_%H%M%S")}"
+            backup_dir = self.source_directory.parent / f"{self.source_directory.name}_backup_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
             shutil.copytree(self.source_directory, backup_dir)
             logger.info(f"📋 Created source backup at: {backup_dir}")
 

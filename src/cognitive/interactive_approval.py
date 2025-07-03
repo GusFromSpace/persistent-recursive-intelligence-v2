@@ -5,11 +5,16 @@ Provides user-friendly interface for reviewing and approving code changes
 """
 
 import sys
+import logging
 from typing import List, Dict, Any, Tuple, Optional
 from dataclasses import dataclass
 from enum import Enum
 import textwrap
 import difflib
+
+# Set up logger
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO, format='%(message)s')
 
 class FixSeverity(Enum):
     LOW = "low"
@@ -56,22 +61,32 @@ class ConnectionProposal:
 class InteractiveApprovalSystem:
     """Handles interactive approval of PRI fixes"""
 
-    # Define which fixes are safe for auto-approval
+    # Define which fixes are safe for auto-approval - STRICT THRESHOLDS
     AUTO_APPROVABLE_FIXES = {
-        'unused_imports': 90,  # Very safe
-        'syntax_errors': 95,   # Critical and safe
-        'missing_imports': 85, # Generally safe
-        'whitespace_cleanup': 95, # Cosmetic and safe
-        'string_formatting': 80,  # Usually safe
+        'unused_imports': 95,     # Very safe - only obvious removals
+        'whitespace_cleanup': 98, # Cosmetic only - spaces/tabs
+        'missing_semicolons': 95, # Language-specific syntax
+        'typo_corrections': 90,   # Simple typos in strings/comments
     }
 
-    # Fixes that should always require approval
+    # Fixes that ALWAYS require manual approval - EXPANDED LIST
     REQUIRE_APPROVAL = {
-        'bare_except_blocks',     # Logic changes
-        'security_vulnerabilities', # Critical but may break functionality
-        'algorithm_changes',      # Logic changes
-        'api_modifications',      # Breaking changes
-        'database_queries',       # Data safety
+        'bare_except_blocks',        # Logic changes
+        'security_vulnerabilities',  # Critical but may break functionality
+        'algorithm_changes',         # Logic changes
+        'api_modifications',         # Breaking changes
+        'database_queries',          # Data safety
+        'syntax_errors',             # Can break compilation
+        'missing_imports',           # Can break functionality
+        'string_formatting',         # May change behavior
+        'exception_handling',        # Changes error flow
+        'performance_optimizations', # May affect behavior
+        'type_annotations',          # Can affect type checking
+        'function_signatures',       # Breaking changes
+        'class_modifications',       # Structural changes
+        'configuration_changes',     # Environment dependent
+        'concurrency_fixes',         # Threading/async complexity
+        'memory_management',         # Resource management
     }
 
     def __init__(self, auto_approve_safe: bool = True, interactive_mode: bool = True):
@@ -87,12 +102,46 @@ class InteractiveApprovalSystem:
         if fix.issue_type in self.REQUIRE_APPROVAL:
             return False
 
-        # Check safety score threshold
-        if fix.safety_score < 80:
+        # ENHANCED PATTERN-BASED SECURITY CHECK
+        # Check for dangerous patterns in the proposed fix
+        dangerous_code_patterns = [
+            'import ', 'def ', 'class ', 'try:', 'except:', 'with ', 'for ', 'while ', 'if ',
+            'subprocess', 'os.system', 'eval(', 'exec(', '__import__', 'getattr(',
+            'setattr(', 'delattr(', 'globals()', 'locals()', 'vars()', 'dir(',
+            'open(', 'file(', 'input()', 'raw_input()', 'compile(', 'memoryview(',
+            'user.role =', '.role =', 'admin', 'root', 'password', 'auth',
+            'return True', 'return False', '== True', '== False',
+            'http://', 'https://', 'ftp://', 'requests.', 'urllib.',
+            'rm -rf', 'del ', 'shutil.', 'pathlib.', 'pickle.',
+            'yaml.load', 'marshal.', 'shelve.', 'dill.', 'joblib.'
+        ]
+        
+        dangerous_found = [pattern for pattern in dangerous_code_patterns 
+                          if pattern in fix.proposed_fix]
+        
+        if dangerous_found:
+            logger.info(f"🚨 SECURITY: Dangerous patterns detected in fix: {dangerous_found}")
+            return False  # Immediate rejection for any dangerous pattern
+        
+        # Check for assignment/modification patterns
+        modification_patterns = [' = ', '+=', '-=', '*=', '/=', '|=', '&=', '^=']
+        if any(pattern in fix.proposed_fix for pattern in modification_patterns):
+            # Any assignments in fixes are very risky - only allow in very limited cases
+            if fix.issue_type not in {'whitespace_cleanup'} or fix.safety_score < 98:
+                return False
+
+        # STRICT safety score threshold - raised from 80 to 95
+        if fix.safety_score < 95:
             return False
 
-        # Context-based safety rules
-        if fix.context == 'production' and fix.severity in [FixSeverity.HIGH, FixSeverity.CRITICAL]:
+        # STRICT context-based safety rules
+        if fix.context == 'production':
+            # NO auto-approval for production code except cosmetic
+            if fix.severity != FixSeverity.COSMETIC or fix.safety_score < 98:
+                return False
+        
+        # No auto-approval for critical or high severity in any context
+        if fix.severity in [FixSeverity.HIGH, FixSeverity.CRITICAL]:
             return False
 
         # Check if fix type is in auto-approvable list
@@ -100,8 +149,8 @@ class InteractiveApprovalSystem:
             required_score = self.AUTO_APPROVABLE_FIXES[fix.issue_type]
             return fix.safety_score >= required_score
 
-        # Test files can have more relaxed auto-approval
-        if fix.context == 'test' and fix.safety_score >= 70:
+        # Test files still require high safety standards - raised from 70 to 85
+        if fix.context == 'test' and fix.safety_score >= 85 and fix.issue_type in self.AUTO_APPROVABLE_FIXES:
             return True
 
         return fix.auto_approvable
@@ -244,7 +293,7 @@ class InteractiveApprovalSystem:
             'config': 'Configuration code - changes affect system behavior'
         }
 
-        logger.info(f"Context: {context_description.get(fix.context, 'Unknown context")}")
+        logger.info(f"Context: {context_description.get(fix.context, 'Unknown context')}")
 
         # Risk assessment
         risks = []
@@ -262,8 +311,8 @@ class InteractiveApprovalSystem:
         else:
             logger.info(f"\n✅ No significant risk factors identified")
 
-    def process_fix_batch(self, fixes: List[FixProposal]) -> Tuple[List[FixProposal], List[FixProposal]]:
-        """Process a batch of fixes and return approved/rejected lists"""
+    def process_fix_batch(self, fixes: List[FixProposal], feedback_generator=None) -> Tuple[List[FixProposal], List[FixProposal]]:
+        """Process a batch of fixes and return approved/rejected lists with feedback loop learning"""
 
         approved_fixes = []
         rejected_fixes = []
@@ -285,6 +334,9 @@ class InteractiveApprovalSystem:
         for i, fix in enumerate(fixes, 1):
             if self.global_decision == ApprovalDecision.REJECT_ALL:
                 rejected_fixes.append(fix)
+                # FEEDBACK LOOP: Learn from batch rejection
+                if feedback_generator:
+                    feedback_generator.learn_from_approval_decision(fix, False, "Batch rejected by user")
                 continue
 
             logger.info(f"\n📋 Review {i}/{len(fixes)}")
@@ -294,12 +346,26 @@ class InteractiveApprovalSystem:
             if decision in [ApprovalDecision.APPROVE, ApprovalDecision.APPROVE_ALL_SAFE]:
                 approved_fixes.append(fix)
                 logger.info(f"✅ Approved: {fix.issue_type}")
+                # FEEDBACK LOOP: Learn from approval
+                if feedback_generator:
+                    feedback_generator.learn_from_approval_decision(fix, True, "User approved")
             elif decision == ApprovalDecision.REJECT:
                 rejected_fixes.append(fix)
                 logger.info(f"❌ Rejected: {fix.issue_type}")
+                # FEEDBACK LOOP: Learn from rejection
+                if feedback_generator:
+                    feedback_generator.learn_from_approval_decision(fix, False, "User rejected")
             elif decision == ApprovalDecision.SKIP:
                 rejected_fixes.append(fix)  # Treat skip as reject for now
                 logger.info(f"⏭️  Skipped: {fix.issue_type}")
+                # FEEDBACK LOOP: Learn from skip
+                if feedback_generator:
+                    feedback_generator.learn_from_approval_decision(fix, False, "User skipped")
+
+        # FEEDBACK LOOP: Show learning progress
+        if feedback_generator:
+            stats = feedback_generator.get_learning_statistics()
+            logger.info(f"\n🧠 LEARNING UPDATE: {stats['fixes_approved']} approved, {stats['fixes_rejected']} rejected (Rate: {stats['approval_rate']:.1f}%)")
 
         return approved_fixes, rejected_fixes
 
@@ -328,17 +394,17 @@ class InteractiveApprovalSystem:
         if connection.impact_level == 'high':
             return False
         
-        # Check safety score threshold
-        if connection.safety_score < 75:
+        # STRICT connection safety threshold - raised from 75 to 90
+        if connection.safety_score < 90:
             return False
             
-        # Low-impact connections with good confidence can be auto-approved
-        if connection.impact_level == 'low' and connection.connection_score > 0.7:
+        # Low-impact connections need VERY high confidence - raised from 0.7 to 0.9
+        if connection.impact_level == 'low' and connection.connection_score > 0.9 and connection.safety_score >= 95:
             return True
             
-        # Specific connection types that are generally safe
-        safe_connection_types = {'function_import', 'constant_import', 'utility_import'}
-        if connection.connection_type in safe_connection_types and connection.safety_score >= 80:
+        # VERY limited safe connection types with high thresholds
+        ultra_safe_connection_types = {'constant_import'}  # Only constants are truly safe
+        if connection.connection_type in ultra_safe_connection_types and connection.safety_score >= 95:
             return True
             
         return connection.auto_approvable
@@ -441,7 +507,7 @@ class InteractiveApprovalSystem:
             'medium': 'Medium impact - adds significant functionality, moderate risk',
             'high': 'High impact - major architectural change, requires careful review'
         }
-        logger.info(f"Impact: {impact_descriptions.get(connection.impact_level, 'Unknown impact")}")
+        logger.info(f"Impact: {impact_descriptions.get(connection.impact_level, 'Unknown impact')}")
         
         # Connection type explanation
         type_descriptions = {
@@ -453,7 +519,7 @@ class InteractiveApprovalSystem:
             'selective_function_import': 'Import selected functions from the orphaned file',
             'selective_class_import': 'Import selected classes from the orphaned file'
         }
-        logger.info(f"Connection Type: {type_descriptions.get(connection.connection_type, 'Unknown type")}")
+        logger.info(f"Connection Type: {type_descriptions.get(connection.connection_type, 'Unknown type')}")
         
         # Risk assessment
         risks = []

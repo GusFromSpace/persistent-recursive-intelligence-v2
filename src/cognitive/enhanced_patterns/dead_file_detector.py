@@ -364,7 +364,7 @@ class DeadFileDetector:
         possible_files = [
             current_dir / f"{import_name}.py",
             current_dir / import_name / "__init__.py",
-            self.project_path / f"{import_name.replace('.', '/")}.py",
+            self.project_path / f"{import_name.replace('.', '/')}.py",
             self.project_path / import_name.replace('.', '/') / "__init__.py"
         ]
 

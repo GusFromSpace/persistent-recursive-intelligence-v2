@@ -146,7 +146,7 @@ class ImprovementCycleTracker:
     ) -> str:
         """Start tracking a new improvement cycle"""
 
-        cycle_id = f"cycle_{datetime.now().strftime('%Y%m%d_%H%M%S")}_{hash(file_path)}_{issue['type']}"
+        cycle_id = f"cycle_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{hash(file_path)}_{issue['type']}"
 
         file_context = detection_context.get("file_context", "unknown")
 

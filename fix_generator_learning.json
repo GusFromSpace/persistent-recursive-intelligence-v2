@@ -1,0 +1,171 @@
+{
+  "approved_patterns": [
+    {
+      "issue_type": "whitespace_cleanup",
+      "context": "test",
+      "severity": "cosmetic",
+      "original_snippet": "x = 1  ",
+      "fix_snippet": "x = 1",
+      "timestamp": "2025-07-02T23:49:49.408343"
+    },
+    {
+      "issue_type": "whitespace_cleanup",
+      "context": "test",
+      "severity": "cosmetic",
+      "original_snippet": "x = 1  ",
+      "fix_snippet": "x = 1",
+      "timestamp": "2025-07-02T23:49:49.408787"
+    },
+    {
+      "issue_type": "whitespace_cleanup",
+      "context": "test",
+      "severity": "cosmetic",
+      "original_snippet": "x = 1  ",
+      "fix_snippet": "x = 1",
+      "timestamp": "2025-07-02T23:50:13.012535"
+    },
+    {
+      "issue_type": "whitespace_cleanup",
+      "context": "test",
+      "severity": "cosmetic",
+      "original_snippet": "x = 1  ",
+      "fix_snippet": "x = 1",
+      "timestamp": "2025-07-02T23:50:13.013047"
+    }
+  ],
+  "rejected_patterns": [
+    {
+      "issue_type": "whitespace_cleanup",
+      "context": "production",
+      "severity": "cosmetic",
+      "original_snippet": "def process_data():    ",
+      "fix_snippet": "def process_data():",
+      "rejection_reason": "User rejected",
+      "timestamp": "2025-07-02T23:49:49.407792"
+    },
+    {
+      "issue_type": "missing_imports",
+      "context": "production",
+      "severity": "medium",
+      "original_snippet": "def load_config():",
+      "fix_snippet": "import os\ndef load_config():",
+      "rejection_reason": "User rejected",
+      "timestamp": "2025-07-02T23:49:49.407935"
+    },
+    {
+      "issue_type": "typo_corrections",
+      "context": "production",
+      "severity": "cosmetic",
+      "original_snippet": "# Procces the data",
+      "fix_snippet": "# Process the data",
+      "rejection_reason": "User rejected",
+      "timestamp": "2025-07-02T23:49:49.408083"
+    },
+    {
+      "issue_type": "security_fix",
+      "context": "production",
+      "severity": "high",
+      "original_snippet": "if True:",
+      "fix_snippet": "if user.is_admin:",
+      "rejection_reason": "User rejected",
+      "timestamp": "2025-07-02T23:49:49.408479"
+    },
+    {
+      "issue_type": "typo_corrections",
+      "context": "production",
+      "severity": "low",
+      "original_snippet": "# Configuration file",
+      "fix_snippet": "# Configuration settings",
+      "rejection_reason": "User rejected",
+      "timestamp": "2025-07-02T23:49:49.408662"
+    },
+    {
+      "issue_type": "optimization",
+      "context": "production",
+      "severity": "medium",
+      "original_snippet": "for i in range(len(items)):",
+      "fix_snippet": "for i, item in enumerate(items):",
+      "rejection_reason": "User rejected",
+      "timestamp": "2025-07-02T23:49:49.408996"
+    },
+    {
+      "issue_type": "whitespace_cleanup",
+      "context": "test",
+      "severity": "cosmetic",
+      "original_snippet": "def helper(): ",
+      "fix_snippet": "def helper():",
+      "rejection_reason": "User rejected",
+      "timestamp": "2025-07-02T23:49:49.409150"
+    },
+    {
+      "issue_type": "whitespace_cleanup",
+      "context": "production",
+      "severity": "cosmetic",
+      "original_snippet": "def process_data():    ",
+      "fix_snippet": "def process_data():",
+      "rejection_reason": "User rejected",
+      "timestamp": "2025-07-02T23:50:13.011920"
+    },
+    {
+      "issue_type": "missing_imports",
+      "context": "production",
+      "severity": "medium",
+      "original_snippet": "def load_config():",
+      "fix_snippet": "import os\ndef load_config():",
+      "rejection_reason": "User rejected",
+      "timestamp": "2025-07-02T23:50:13.012100"
+    },
+    {
+      "issue_type": "typo_corrections",
+      "context": "production",
+      "severity": "cosmetic",
+      "original_snippet": "# Procces the data",
+      "fix_snippet": "# Process the data",
+      "rejection_reason": "User rejected",
+      "timestamp": "2025-07-02T23:50:13.012260"
+    },
+    {
+      "issue_type": "security_fix",
+      "context": "production",
+      "severity": "high",
+      "original_snippet": "if True:",
+      "fix_snippet": "if user.is_admin:",
+      "rejection_reason": "User rejected",
+      "timestamp": "2025-07-02T23:50:13.012695"
+    },
+    {
+      "issue_type": "typo_corrections",
+      "context": "production",
+      "severity": "low",
+      "original_snippet": "# Configuration file",
+      "fix_snippet": "# Configuration settings",
+      "rejection_reason": "User rejected",
+      "timestamp": "2025-07-02T23:50:13.012895"
+    },
+    {
+      "issue_type": "optimization",
+      "context": "production",
+      "severity": "medium",
+      "original_snippet": "for i in range(len(items)):",
+      "fix_snippet": "for i, item in enumerate(items):",
+      "rejection_reason": "User rejected",
+      "timestamp": "2025-07-02T23:50:13.013276"
+    },
+    {
+      "issue_type": "whitespace_cleanup",
+      "context": "test",
+      "severity": "cosmetic",
+      "original_snippet": "def helper(): ",
+      "fix_snippet": "def helper():",
+      "rejection_reason": "User rejected",
+      "timestamp": "2025-07-02T23:50:13.013447"
+    }
+  ],
+  "dangerous_indicators": [
+    "import ",
+    "admin"
+  ],
+  "safe_indicators": [
+    " = "
+  ]
+}

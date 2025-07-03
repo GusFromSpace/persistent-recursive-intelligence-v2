@@ -171,7 +171,7 @@ class SyntaxPatternDetector:
 
         # Apply the fix pattern we learned
         fixed = re.sub(r'f"[^"]*"[^"]*"[^"]*"', replace_inner_quotes, line)
-        return fixed if fixed != line else line.replace('f"', 'f\'").replace('")', '\')')
+        return fixed if fixed != line else line.replace('f"', "f'").replace('")', "')")
 
     def _fix_docstring_to_comment(self, line: str) -> str:
         """Convert docstring to comment as we learned to do."""
