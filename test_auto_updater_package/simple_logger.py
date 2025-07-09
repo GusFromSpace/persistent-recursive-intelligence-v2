@@ -23,7 +23,7 @@ class SimpleLogger:
         """Log a message with optional timestamp"""
         timestamp = ""
         if self.enable_timestamps:
-            timestamp = f"[{time.strftime('%Y-%m-%d %H:%M:%S")}] "
+            timestamp = f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] "
         
         print(f"{timestamp}[{level}] {self.name}: {message}")
     

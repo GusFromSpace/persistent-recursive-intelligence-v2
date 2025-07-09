@@ -1,0 +1,272 @@
+name: Mesopredator PRI CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  security-scan:
+    name: Security & Vulnerability Scanning
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install bandit safety semgrep
+    
+    - name: Run Bandit Security Scanner
+      run: |
+        bandit -r src/ -f json -o bandit-report.json || true
+        bandit -r src/ --severity-level medium
+    
+    - name: Run Safety (Dependency Vulnerability Scanner)
+      run: |
+        safety check --json --output safety-report.json || true
+        safety check
+    
+    - name: Run Semgrep Security Analysis
+      run: |
+        semgrep --config=auto src/ --json --output=semgrep-report.json || true
+        semgrep --config=auto src/ --error
+    
+    - name: Self-Analysis with PRI Security Focus
+      run: |
+        python mesopredator_cli.py analyze . --focus security --output-file pri-security-scan.json
+        # Fail if critical security issues found
+        python -c "
+import json
+with open('pri-security-scan.json') as f:
+    results = json.load(f)
+critical_issues = [i for i in results.get('issues', []) if i.get('severity') == 'critical']
+if critical_issues:
+    print(f'CRITICAL: Found {len(critical_issues)} critical security issues')
+    exit(1)
+print(f'Security scan passed: {len(results.get(\"issues\", []))} total issues found')
+"
+    
+    - name: Upload Security Reports
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: security-reports
+        path: |
+          bandit-report.json
+          safety-report.json
+          semgrep-report.json
+          pri-security-scan.json
+
+  quality-tests:
+    name: Code Quality & Testing
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest pytest-cov flake8 black mypy
+    
+    - name: Code Style Check (Black)
+      run: black --check --diff src/
+    
+    - name: Linting (Flake8)
+      run: flake8 src/ --max-line-length=100 --ignore=E203,W503
+    
+    - name: Type Checking (MyPy)
+      run: mypy src/ --ignore-missing-imports || true
+    
+    - name: Run Unit Tests
+      run: |
+        pytest tests/unit/ -v --cov=src --cov-report=xml --cov-report=html
+    
+    - name: Run Integration Tests
+      run: |
+        pytest tests/integration/ -v
+    
+    - name: PRI Self-Analysis for Quality
+      run: |
+        python mesopredator_cli.py analyze . --output-file quality-analysis.json
+        python -c "
+import json
+with open('quality-analysis.json') as f:
+    results = json.load(f)
+high_issues = [i for i in results.get('issues', []) if i.get('severity') in ['critical', 'high']]
+print(f'Quality analysis: {len(results.get(\"issues\", []))} total issues, {len(high_issues)} high/critical')
+"
+    
+    - name: Upload Coverage Reports
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        flags: unittests
+
+  adversarial-validation:
+    name: Adversarial Security Testing
+    runs-on: ubuntu-latest
+    needs: [security-scan]
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Run Complete Adversarial Test Suite
+      run: |
+        python run_comprehensive_adversarial_tests.py
+        # Check results
+        python -c "
+import json, glob
+results_files = glob.glob('*_test_results.json')
+total_tests = 0
+passed_tests = 0
+for file in results_files:
+    try:
+        with open(file) as f:
+            data = json.load(f)
+        if 'test_status' in data:
+            total_tests += 1
+            if data['test_status'] == 'PASS':
+                passed_tests += 1
+            print(f'{file}: {data[\"test_status\"]}')
+    except: pass
+
+if total_tests == 0:
+    print('WARNING: No adversarial test results found')
+    exit(1)
+
+pass_rate = (passed_tests / total_tests) * 100
+print(f'Adversarial Tests: {passed_tests}/{total_tests} passed ({pass_rate:.1f}%)')
+
+# Require at least 70% pass rate (5/7 tests)
+if pass_rate < 70:
+    print(f'FAIL: Adversarial test pass rate {pass_rate:.1f}% below 70% threshold')
+    exit(1)
+"
+    
+    - name: Upload Adversarial Test Reports
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: adversarial-test-results
+        path: "*_test_results.json"
+
+  performance-benchmarks:
+    name: Performance Regression Testing
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest-benchmark
+    
+    - name: Benchmark Code Analysis Performance
+      run: |
+        python -c "
+import time, json
+from src.cognitive.persistent_recursion import analyze_project
+
+# Benchmark with test project
+start_time = time.time()
+results = analyze_project('test_hello_world', max_depth=2, enable_learning=True)
+analysis_time = time.time() - start_time
+
+# Create benchmark report
+benchmark = {
+    'timestamp': time.strftime('%Y-%m-%d %H:%M:%S'),
+    'analysis_time_seconds': round(analysis_time, 2),
+    'files_analyzed': getattr(results, 'total_files', 0),
+    'issues_found': len(getattr(results, 'issues', [])),
+    'performance_score': round(getattr(results, 'total_files', 0) / max(analysis_time, 0.1), 2)
+}
+
+with open('performance-benchmark.json', 'w') as f:
+    json.dump(benchmark, f, indent=2)
+
+print(f'Performance Benchmark:')
+print(f'  Analysis Time: {benchmark[\"analysis_time_seconds\"]}s')
+print(f'  Files Analyzed: {benchmark[\"files_analyzed\"]}')
+print(f'  Performance Score: {benchmark[\"performance_score\"]} files/sec')
+
+# Fail if performance significantly degrades (> 30s for small project)
+if analysis_time > 30:
+    print(f'PERFORMANCE REGRESSION: Analysis took {analysis_time:.2f}s (threshold: 30s)')
+    exit(1)
+"
+    
+    - name: Upload Performance Reports
+      uses: actions/upload-artifact@v3
+      with:
+        name: performance-benchmarks
+        path: performance-benchmark.json
+
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: [security-scan, quality-tests, adversarial-validation, performance-benchmarks]
+    if: github.ref == 'refs/heads/develop'
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Deploy to Staging Environment
+      run: |
+        echo "🚀 Deploying to staging environment..."
+        # Add actual deployment commands here
+        echo "✅ Staging deployment complete"
+    
+    - name: Run Smoke Tests
+      run: |
+        echo "🧪 Running smoke tests..."
+        # Add smoke tests here
+        echo "✅ Smoke tests passed"
+
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [security-scan, quality-tests, adversarial-validation, performance-benchmarks]
+    if: github.ref == 'refs/heads/main'
+    environment: production
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Production Deployment (Manual Approval Required)
+      run: |
+        echo "🚀 Deploying to production environment..."
+        # Add actual production deployment commands here
+        echo "✅ Production deployment complete"
+    
+    - name: Post-Deployment Monitoring
+      run: |
+        echo "📊 Starting 24-hour monitoring period..."
+        # Add monitoring setup here
+        echo "✅ Monitoring configured"

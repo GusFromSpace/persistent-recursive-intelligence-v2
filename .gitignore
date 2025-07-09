@@ -8,3 +8,27 @@ build/
 dist/
 *.egg-info/
 *.db.backup
+
+# Virtual environments
+venv/
+env/
+.env
+
+# Test databases
+test_*.db
+connection_suggestions.db
+
+# Analysis results
+*_analysis.json
+*_results.json
+analysis_results/
+
+# Backup files
+*.tar.gz
+*.zip
+*.bak
+
+# Temporary files
+*.tmp
+*.temp
+.DS_Store

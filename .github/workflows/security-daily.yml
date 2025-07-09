@@ -1,0 +1,133 @@
+name: Daily Security Monitoring
+
+on:
+  schedule:
+    # Run daily at 6 AM UTC
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+jobs:
+  dependency-audit:
+    name: Daily Dependency Security Audit
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install safety pip-audit
+    
+    - name: Run Safety Check
+      run: |
+        safety check --json --output daily-safety-report.json || true
+        safety check --short-report
+    
+    - name: Run Pip-Audit
+      run: |
+        pip-audit --format=json --output=daily-pip-audit.json || true
+        pip-audit --desc
+    
+    - name: Check for Critical Vulnerabilities
+      run: |
+        python -c "
+import json
+import sys
+
+# Check Safety report
+try:
+    with open('daily-safety-report.json') as f:
+        safety_data = json.load(f)
+    critical_safety = [v for v in safety_data if 'critical' in v.get('advisory', '').lower()]
+except:
+    critical_safety = []
+
+# Check Pip-Audit report  
+try:
+    with open('daily-pip-audit.json') as f:
+        audit_data = json.load(f)
+    critical_audit = [v for v in audit_data if v.get('aliases', []) and any('critical' in str(alias).lower() for alias in v.get('aliases', []))]
+except:
+    critical_audit = []
+
+total_critical = len(critical_safety) + len(critical_audit)
+
+if total_critical > 0:
+    print(f'🚨 CRITICAL: Found {total_critical} critical vulnerabilities!')
+    print('Safety critical:', len(critical_safety))
+    print('Pip-audit critical:', len(critical_audit))
+    sys.exit(1)
+else:
+    print('✅ No critical vulnerabilities detected in daily scan')
+"
+    
+    - name: Create Security Issue if Vulnerabilities Found
+      if: failure()
+      uses: actions/github-script@v6
+      with:
+        script: |
+          github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: '🚨 Daily Security Scan: Critical Vulnerabilities Detected',
+            body: `## Security Alert
+            
+            The daily dependency security scan has detected critical vulnerabilities.
+            
+            **Scan Date:** ${new Date().toISOString().split('T')[0]}
+            **Status:** 🚨 CRITICAL
+            
+            ### Actions Required:
+            1. Review the security reports in the workflow artifacts
+            2. Update vulnerable dependencies immediately
+            3. Test all functionality after updates
+            4. Close this issue once vulnerabilities are resolved
+            
+            ### Reports Available:
+            - Safety scan results
+            - Pip-audit results
+            
+            **Priority:** HIGH - Address within 24 hours`,
+            labels: ['security', 'critical', 'dependencies']
+          })
+    
+    - name: Upload Security Reports
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: daily-security-scan
+        path: |
+          daily-safety-report.json
+          daily-pip-audit.json
+
+  codeql-analysis:
+    name: Weekly CodeQL Security Analysis
+    runs-on: ubuntu-latest
+    # Only run on Mondays
+    if: github.event.schedule == '0 6 * * 1' || github.event_name == 'workflow_dispatch'
+    
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: python
+
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v2
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2

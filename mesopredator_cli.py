@@ -5,9 +5,41 @@ import shutil
 import sys
 import logging
 import traceback
+import os
+import subprocess
 from datetime import datetime
 
 from pathlib import Path
+
+
+def ensure_venv():
+    """Ensure we're running in the project's virtual environment"""
+    # Check if we're already in a virtual environment
+    if hasattr(sys, 'real_prefix') or (hasattr(sys, 'base_prefix') and sys.base_prefix != sys.prefix):
+        return  # Already in a venv
+    
+    # Find the project root and venv
+    script_dir = Path(__file__).parent.absolute()
+    venv_path = script_dir / "venv"
+    
+    if venv_path.exists():
+        # Get the python executable in the venv
+        if os.name == 'nt':  # Windows
+            python_exe = venv_path / "Scripts" / "python.exe"
+        else:  # Unix/Linux/macOS
+            python_exe = venv_path / "bin" / "python"
+        
+        if python_exe.exists():
+            # Re-execute this script with the venv python
+            args = [str(python_exe)] + sys.argv
+            os.execv(str(python_exe), args)
+    
+    # If we get here, no venv found or couldn't switch - continue with current environment
+    print("⚠️  Warning: Running without virtual environment. Some features may not work.")
+
+
+# Ensure we're using the venv before doing anything else
+ensure_venv()
 
 
 class HiddenCommandArgumentParser(argparse.ArgumentParser):
@@ -110,15 +142,197 @@ logger = logging.getLogger(__name__)
 # Add the src directory to the path to allow for module imports
 sys.path.insert(0, str(Path(__file__).parent / 'src'))
 
-from cognitive.persistent_recursion import run_analysis
-from cognitive.interactive_approval import (
+
+def run_git_aware_analysis(project_path: str, git_diff: bool = False, staged_only: bool = False, 
+                          since_commit: str = None, verbose: bool = False, quick: bool = False):
+    """Run analysis on git-filtered files"""
+    try:
+        repo = GitRepo(project_path)
+        
+        # Get git status summary
+        git_status = get_git_status_summary(repo)
+        
+        print(f"📂 Git Repository Analysis")
+        print(f"   Branch: {git_status.get('branch', 'unknown')}")
+        print(f"   Commit: {git_status.get('commit', 'unknown')}")
+        
+        # Determine which files to analyze
+        if since_commit:
+            changed_files = repo.get_files_in_commit_range(since_commit)
+            mode_desc = f"since commit {since_commit}"
+        elif staged_only:
+            changed_files = repo.get_changed_files(staged_only=True)
+            mode_desc = "staged files only"
+        else:
+            changed_files = repo.get_changed_files()
+            mode_desc = "working directory changes"
+        
+        # Filter to analyzable files
+        analyzable_files = filter_analyzable_files(changed_files)
+        
+        if not analyzable_files:
+            print(f"✅ No analyzable files found in {mode_desc}")
+            return []
+        
+        print(f"🔍 Analyzing {len(analyzable_files)} changed files ({mode_desc})")
+        for file_path in sorted(analyzable_files):
+            rel_path = file_path.relative_to(Path(project_path))
+            print(f"   📄 {rel_path}")
+        print()
+        
+        # Run analysis on each file and collect results
+        all_issues = []
+        for file_path in analyzable_files:
+            issues = run_file_analysis(str(file_path), verbose=verbose, quick=quick, show_header=False)
+            if issues:
+                all_issues.extend(issues)
+        
+        # Summary
+        if all_issues:
+            critical = len([i for i in all_issues if i.get("severity") == "critical"])
+            high = len([i for i in all_issues if i.get("severity") == "high"])
+            medium = len([i for i in all_issues if i.get("severity") == "medium"])
+            
+            print(f"\n📊 Git Diff Analysis Summary:")
+            print(f"   Files analyzed: {len(analyzable_files)}")
+            print(f"   Total issues: {len(all_issues)}")
+            if critical > 0:
+                print(f"   🚨 Critical: {critical}")
+            if high > 0:
+                print(f"   ⚠️  High: {high}")
+            if medium > 0:
+                print(f"   📋 Medium: {medium}")
+        else:
+            print(f"✅ No issues found in changed files!")
+        
+        return all_issues
+        
+    except ValueError as e:
+        print(f"❌ Git Error: {e}")
+        print("   Falling back to regular analysis...")
+        return run_analysis(project_path, verbose=verbose, quick=quick)
+    except Exception as e:
+        print(f"❌ Unexpected error: {e}")
+        return []
+
+
+def run_file_analysis(file_path: str, verbose: bool = False, quick: bool = False, show_header: bool = True):
+    """Run analysis on a single file"""
+    file_path = Path(file_path).resolve()
+    
+    if not file_path.exists():
+        print(f"❌ File does not exist: {file_path}")
+        return []
+    
+    if not file_path.is_file():
+        print(f"❌ Path is not a file: {file_path}")
+        return []
+    
+    # Check if file is analyzable
+    analyzable_extensions = {
+        '.py', '.js', '.ts', '.jsx', '.tsx', '.java', '.cpp', '.c', '.h', '.hpp',
+        '.cs', '.go', '.rs', '.php', '.rb', '.scala', '.kt', '.swift', '.lua'
+    }
+    
+    if file_path.suffix.lower() not in analyzable_extensions:
+        print(f"⚠️  File type not supported: {file_path.suffix}")
+        return []
+    
+    if show_header:
+        print(f"🔍 Analyzing File: {file_path.name}")
+        print(f"📁 Path: {file_path}")
+    
+    try:
+        # Create a temporary directory containing just this file for analysis
+        import tempfile
+        import shutil
+        
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+            temp_file = temp_path / file_path.name
+            
+            # Copy the file to temp directory
+            shutil.copy2(file_path, temp_file)
+            
+            # Run analysis on the temp directory (which contains just our file)
+            results = run_analysis(
+                str(temp_path), 
+                verbose=False,  # We'll handle display ourselves
+                quick=False,    # We'll handle filtering ourselves
+                output_file=None
+            )
+            
+            # Filter issues to only those from our target file
+            file_issues = [issue for issue in results if 
+                          issue.get("file", "").endswith(file_path.name)]
+            
+            # Apply the same filtering as regular analysis
+            if quick:
+                actionable_issues = [i for i in file_issues if 
+                                   (i.get("severity") == "critical") or 
+                                   (i.get("severity") == "high" and 
+                                    i.get("type") in ["security", "vulnerability", "sql_injection", "xss", 
+                                                    "buffer_overflow", "memory_leak", "deadlock", "race_condition"])]
+                issues_to_show = actionable_issues
+                mode_desc = "Quick Mode - Critical Security Issues Only"
+            elif verbose:
+                issues_to_show = file_issues
+                mode_desc = "Verbose Mode - All Issues"
+            else:
+                issues_to_show = [i for i in file_issues if 
+                                (i.get("severity") in ["critical", "high"]) and
+                                (i.get("type") not in ["context", "legitimate_logging", "info"])]
+                mode_desc = "Standard Mode - Critical & High Priority Issues"
+            
+            if show_header:
+                print(f"✅ Found {len(file_issues)} total issues, showing {len(issues_to_show)} actionable issues")
+                print(f"📊 {mode_desc}")
+            
+            # Show issues
+            if issues_to_show:
+                if show_header:
+                    print(f"\n📝 Issues Found:")
+                display_limit = 50 if verbose else 20
+                for i, issue in enumerate(issues_to_show[:display_limit], 1):
+                    severity = issue.get("severity", "unknown").upper()
+                    issue_type = issue.get("type", "unknown")
+                    description = issue.get("description", "No description")
+                    line = issue.get("line", "?")
+                    
+                    print(f"   {i}. [{severity}] {issue_type} (Line {line})")
+                    print(f"      {description}")
+                    if i < len(issues_to_show) and i < display_limit:
+                        print()
+                
+                if len(issues_to_show) > display_limit:
+                    print(f"   ... and {len(issues_to_show) - display_limit} more issues")
+                    if not verbose:
+                        print(f"   Use --verbose to see all issues")
+            else:
+                if show_header:
+                    print(f"✅ No actionable issues found! File looks good.")
+                    if len(file_issues) > 0 and not verbose:
+                        print(f"   ({len(file_issues)} minor issues found - use --verbose to see)")
+            
+            return file_issues
+        
+    except Exception as e:
+        print(f"❌ Analysis failed: {e}")
+        if verbose:
+            import traceback
+            traceback.print_exc()
+        return []
+
+from persistent_recursive_intelligence.cognitive.persistent_recursion import run_analysis
+from persistent_recursive_intelligence.cognitive.interactive_approval import (
     InteractiveApprovalSystem, FixProposal, FixSeverity, ApprovalDecision
 )
-from cognitive.enhanced_patterns.memory_enhanced_false_positive_detector import MemoryEnhancedFalsePositiveDetector
-from cognitive.enhanced_patterns.context_analyzer import ContextAnalyzer
-from cognitive.enhanced_patterns.memory_pruning_system import MemoryPruningSystem, PruningStrategy
-from cognitive.enhanced_patterns.improvement_cycle_tracker import ImprovementCycleTracker
-from cognitive.memory.memory.engine import MemoryEngine
+from persistent_recursive_intelligence.cognitive.enhanced_patterns.memory_enhanced_false_positive_detector import MemoryEnhancedFalsePositiveDetector
+from persistent_recursive_intelligence.cognitive.enhanced_patterns.context_analyzer import ContextAnalyzer
+from persistent_recursive_intelligence.utils.git_utils import GitRepo, filter_analyzable_files, get_git_status_summary
+from persistent_recursive_intelligence.cognitive.enhanced_patterns.memory_pruning_system import MemoryPruningSystem, PruningStrategy
+from persistent_recursive_intelligence.cognitive.enhanced_patterns.improvement_cycle_tracker import ImprovementCycleTracker
+from persistent_recursive_intelligence.cognitive.memory.memory.engine import MemoryEngine
 
 def run_fixer(project_path: str, issues_file: str, dynamic_approval: bool = False, conservative_level: float = 0.95):
     """Interactively fixes issues in a project."""
@@ -1421,7 +1635,18 @@ def main():
     parser_analyze = subparsers.add_parser('analyze', help='Analyze a project and store insights.')
     parser_analyze.add_argument('project_path', type=str, help='The path to the project directory to analyze.')
     parser_analyze.add_argument('--output-file', type=str, help='Path to save the analysis results as a JSON file.')
-    parser_analyze.add_argument('--verbose', action='store_true', help='Show detailed issue descriptions in output.')
+    parser_analyze.add_argument('--verbose', action='store_true', help='Show all issues including minor ones.')
+    parser_analyze.add_argument('--quick', action='store_true', help='Quick mode: only show critical security issues.')
+    parser_analyze.add_argument('--git-diff', action='store_true', help='Only analyze files changed in git working directory.')
+    parser_analyze.add_argument('--staged-only', action='store_true', help='Only analyze git staged files.')
+    parser_analyze.add_argument('--since-commit', type=str, help='Analyze files changed since this commit (e.g., HEAD~3, main).')
+    
+    # --- Analyze File Command ---
+    parser_analyze_file = subparsers.add_parser('analyze-file', help='Analyze a specific file.')
+    parser_analyze_file.add_argument('file_path', type=str, help='The path to the file to analyze.')
+    parser_analyze_file.add_argument('--output-file', type=str, help='Path to save the analysis results as a JSON file.')
+    parser_analyze_file.add_argument('--verbose', action='store_true', help='Show all issues including minor ones.')
+    parser_analyze_file.add_argument('--quick', action='store_true', help='Quick mode: only show critical security issues.')
 
     # --- Fix Command ---
     parser_fix = subparsers.add_parser('fix', help='Interactively fix issues in a project.')
@@ -1429,6 +1654,12 @@ def main():
     parser_fix.add_argument('--issues-file', type=str, required=True, help='JSON file containing the list of issues to address.')
     parser_fix.add_argument('--dynamic-approval', action='store_true', help='Use dynamic approval based on safety scores.')
     parser_fix.add_argument('--conservative-level', type=float, default=0.7, help='Conservative level for dynamic approval (0.0-1.0).')
+
+    # --- Include Fix Command ---
+    parser_include_fix = subparsers.add_parser('include-fix', help='Interactive fixing for C++ include errors with scoring.')
+    parser_include_fix.add_argument('target_path', type=str, help='File or directory to analyze and fix include errors.')
+    parser_include_fix.add_argument('--auto', action='store_true', help='Auto-approve safe fixes.')
+    parser_include_fix.add_argument('--dry-run', action='store_true', help='Show fixes without applying them.')
 
     # --- Train Command ---
     parser_train = subparsers.add_parser('train', help='Train PRI by flagging false positives.')
@@ -1500,7 +1731,28 @@ def main():
         print()
 
     if args.command == 'analyze':
-        issues = run_analysis(args.project_path, verbose=args.verbose)
+        # Check for git-aware analysis options
+        git_mode = getattr(args, 'git_diff', False) or getattr(args, 'staged_only', False) or getattr(args, 'since_commit', None)
+        
+        if git_mode:
+            issues = run_git_aware_analysis(
+                args.project_path, 
+                git_diff=getattr(args, 'git_diff', False),
+                staged_only=getattr(args, 'staged_only', False),
+                since_commit=getattr(args, 'since_commit', None),
+                verbose=args.verbose, 
+                quick=getattr(args, 'quick', False)
+            )
+        else:
+            issues = run_analysis(args.project_path, verbose=args.verbose, quick=getattr(args, 'quick', False))
+        
+        if args.output_file:
+            with open(args.output_file, 'w') as f:
+                json.dump(issues, f, indent=4)
+            print(f"💾 Analysis results saved to {args.output_file}")
+    
+    elif args.command == 'analyze-file':
+        issues = run_file_analysis(args.file_path, verbose=args.verbose, quick=getattr(args, 'quick', False))
         if args.output_file:
             with open(args.output_file, 'w') as f:
                 json.dump(issues, f, indent=4)
@@ -1508,6 +1760,9 @@ def main():
 
     elif args.command == 'fix':
         run_fixer(args.project_path, args.issues_file, args.dynamic_approval, args.conservative_level)
+    
+    elif args.command == 'include-fix':
+        run_include_fixer(args.target_path, args.auto, args.dry_run)
 
     elif args.command == 'train':
         run_training(args.issues_file, args.interactive, args.batch_file)
@@ -1532,6 +1787,78 @@ def main():
     
     elif args.command == 'consolidate':
         run_consolidation(args.preview, args.archive)
+
+def run_include_fixer(target_path, auto_approve=False, dry_run=False):
+    """Run interactive include error fixing with scoring"""
+    try:
+        from src.cognitive.interactive_include_fixer import InteractiveIncludeFixer
+        
+        fixer = InteractiveIncludeFixer()
+        target = Path(target_path)
+        
+        if not target.exists():
+            print(f"❌ Error: {target} does not exist")
+            return
+        
+        if target.is_file() and target.suffix in ['.cpp', '.h', '.hpp', '.c', '.cc', '.cxx']:
+            print(f"🔧 Interactive include fixing for {target}")
+            if dry_run:
+                # Show proposed fixes without applying
+                proposals = fixer.analyze_and_fix_file(target, interactive=False)
+                print(f"📋 Found {len(proposals)} potential fixes:")
+                for i, proposal in enumerate(proposals):
+                    print(f"  {i+1}. {proposal.fix_type.value}: {proposal.description}")
+            else:
+                fixer.analyze_and_fix_file(target, interactive=not auto_approve)
+                
+        elif target.is_dir():
+            # Find all C++ files
+            cpp_files = []
+            for ext in ['*.cpp', '*.h', '*.hpp', '*.c', '*.cc', '*.cxx']:
+                cpp_files.extend(target.rglob(ext))
+            
+            if not cpp_files:
+                print(f"❌ No C++ files found in {target}")
+                return
+            
+            print(f"🔍 Found {len(cpp_files)} C++ files in {target}")
+            
+            if dry_run:
+                total_fixes = 0
+                for cpp_file in cpp_files:
+                    try:
+                        proposals = fixer.analyze_and_fix_file(cpp_file, interactive=False)
+                        if proposals:
+                            print(f"📁 {cpp_file}: {len(proposals)} potential fixes")
+                            total_fixes += len(proposals)
+                    except Exception as e:
+                        print(f"❌ Error analyzing {cpp_file}: {e}")
+                print(f"📊 Total potential fixes: {total_fixes}")
+            else:
+                print(f"Starting interactive fixing session...")
+                
+                for i, cpp_file in enumerate(cpp_files):
+                    print(f"\n{'='*60}")
+                    print(f"File {i+1}/{len(cpp_files)}: {cpp_file}")
+                    
+                    try:
+                        fixer.analyze_and_fix_file(cpp_file, interactive=not auto_approve)
+                    except KeyboardInterrupt:
+                        print("\n⏹️  Interrupted by user")
+                        break
+                    except Exception as e:
+                        print(f"❌ Error processing {cpp_file}: {e}")
+                        continue
+                
+                print(f"\n✅ Interactive fixing session complete!")
+        else:
+            print(f"❌ Error: {target} is not a C++ file or directory")
+            
+    except ImportError as e:
+        print(f"❌ Error: Interactive include fixer not available: {e}")
+    except Exception as e:
+        print(f"❌ Error in include fixer: {e}")
+        traceback.print_exc()
 
 def auto_prune_if_needed():
     """Automatically prune memory if thresholds are exceeded"""

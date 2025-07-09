@@ -137,7 +137,7 @@ class CompoundIntelligenceAnalyzer:
 
         logger.info(f"   📊 Files: {analysis['files_count']}")
         logger.info(f"   🗣️ Languages: {', '.join(analysis['languages'])}")
-        logger.info(f'   🔧 Frameworks: {', '.join(analysis['frameworks'])}")
+        logger.info(f"   🔧 Frameworks: {', '.join(analysis['frameworks'])}")
         logger.info(f"   🧠 Insights: {len(analysis['insights'])}")
         logger.info(f"   🏗️ Architecture Patterns: {len(analysis['architecture_patterns'])}")
 
@@ -274,7 +274,7 @@ class CompoundIntelligenceAnalyzer:
         for i, result in enumerate(self.analysis_results, 1):
             logger.info(f"\n{i}. {result['project_name']}")
             logger.info(f"   Type: {result['analysis']['project_type']}")
-            logger.info(f'   Files: {result['analysis']['files_count']}")
+            logger.info(f"   Files: {result['analysis']['files_count']}")
             logger.info(f"   Languages: {', '.join(result['analysis']['languages'])}")
             logger.info(f"   Compound Learning: {'✅' if result['compound_effects'] else '🆕'}")
 

@@ -10,7 +10,9 @@
 
 ## Overview
 
-Mesopredator PRI is a **production-ready code analysis system** that combines semantic understanding with persistent learning to provide deep insights into codebases. Unlike traditional static analysis tools, it learns patterns across projects and maintains knowledge over time.
+Mesopredator PRI is a **advanced code analysis system in active development** that combines semantic understanding with persistent learning to provide deep insights into codebases. Unlike traditional static analysis tools, it learns patterns across projects and maintains knowledge over time.
+
+**Current Status:** CLI-based tool with basic API. Enterprise features in development.
 
 ### ✅ **What It Does Exceptionally Well**
 
@@ -33,6 +35,9 @@ Mesopredator PRI is a **production-ready code analysis system** that combines se
 - **Limited Cross-Domain Orchestration**: Cannot synthesize information from logs, databases, and code simultaneously  
 - **Single-Domain Focus**: Excels within code analysis but lacks multi-modal integration
 - **No Real-Time Execution**: Static analysis only, cannot analyze runtime behavior
+- **Basic API**: Simple REST API with 8 endpoints, no authentication (enterprise features planned)
+- **CLI-Focused**: Primary interface is command-line, IDE integrations in development
+- **Individual Use**: Team collaboration features documented but not yet implemented
 
 ---
 
@@ -41,26 +46,31 @@ Mesopredator PRI is a **production-ready code analysis system** that combines se
 ### 30-Second Setup
 
 ```bash
-git clone https://github.com/your-org/persistent-recursive-intelligence
+git clone git@github.com:GusFromSpace/persistent-recursive-intelligence
 cd persistent-recursive-intelligence
 python -m venv venv && source venv/bin/activate
-pip install -r requirements.txt
-python -m src.cognitive.persistent_recursion --project .
+pip install -e .
+
+# Test on the current directory
+mesopredator analyze .
 ```
 
 ### Example Analysis
 
 ```bash
-# Analyze your Python project
-python -m src.cognitive.persistent_recursion --project /path/to/your/code
+# Analyze your project (ALWAYS specify path explicitly)
+mesopredator analyze /path/to/your/project
 
 # Output example:
-# 🔍 Scanning 156 files...
-# 🧠 Found 23 issues across 8 categories  
-# 📚 Generated educational annotations
-# 🔄 Applied 2 levels of recursive improvement
-# 💾 Stored 15 new patterns in memory
-# ✅ Analysis complete - 68% improvement potential identified
+# 🔍 Found 43 files to analyze
+# 🧠 Analyzing with persistent intelligence...
+# ✅ Found 8 total issues, showing 3 actionable issues
+# 📊 Standard Mode - Critical & High Priority Issues
+# 
+# 📝 Issues Found:
+# 1. CRITICAL (security): Potential SQL injection in auth.py:45
+# 2. HIGH (quality): Memory leak detected in processor.cpp:128
+# 3. HIGH (security): Unvalidated user input in api.py:67
 ```
 
 ---
@@ -198,18 +208,18 @@ for(int i = 0; i < items.size() - 1; i++) {  // Same logical error
 ### Standard Installation
 ```bash
 # Clone repository
-git clone https://github.com/your-org/persistent-recursive-intelligence
+git clone git@github.com:GusFromSpace/persistent-recursive-intelligence
 cd persistent-recursive-intelligence
 
 # Set up virtual environment
 python -m venv venv
 source venv/bin/activate  # Windows: venv\Scripts\activate
 
-# Install dependencies
-pip install -r requirements.txt
+# Install package (includes all dependencies)
+pip install -e .
 
 # Verify installation
-python -m src.cognitive.persistent_recursion --help
+mesopredator --help
 ```
 
 ### With GPU Support (Optional)
@@ -223,27 +233,50 @@ pip install faiss-gpu
 
 ## Basic Usage
 
-### Command Line Interface
+### Primary CLI Interface (Recommended)
+
+**IMPORTANT:** All commands require an explicit project path. The tool does NOT default to the current directory.
 
 ```bash
-# Basic analysis
-python -m src.cognitive.persistent_recursion --project /path/to/code
+# Analyze current directory
+mesopredator analyze .
 
-# Security-focused scan
-python -m src.cognitive.persistent_recursion --project /path/to/code --focus security
+# Analyze specific project
+mesopredator analyze /path/to/your/project
 
-# Enhanced recursive analysis
-python -m src.cognitive.persistent_recursion \
-  --project /path/to/code \
-  --max-depth 3 \
-  --batch-size 20 \
-  --enable-learning
+# Security-focused verbose analysis
+mesopredator analyze /path/to/project --verbose
+
+# Quick security scan (critical issues only)
+mesopredator analyze /path/to/project --quick
+
+# Interactive fix application
+mesopredator fix /path/to/project
+
+# Analyze only git changes
+mesopredator analyze /path/to/project --git-diff
+```
+
+### Analysis Scope Options
+
+```bash
+# Analyze all files in project
+mesopredator analyze /path/to/project
+
+# Analyze only staged git files
+mesopredator analyze /path/to/project --staged-only
+
+# Analyze changes since specific commit
+mesopredator analyze /path/to/project --since-commit HEAD~3
+
+# Save results to file
+mesopredator analyze /path/to/project --output-file results.json
 ```
 
 ### Python API
 
 ```python
-from src.cognitive.persistent_recursion import analyze_project
+from persistent_recursive_intelligence.cognitive.persistent_recursion import analyze_project
 
 # Analyze a project programmatically
 results = analyze_project(
@@ -257,53 +290,67 @@ for issue in results.security_issues:
     print(f"{issue.severity}: {issue.description}")
 ```
 
-### Mesopredator CLI Tools
+### Complete Command Reference
 
-The enhanced CLI provides multiple specialized tools for code analysis and improvement with defense-in-depth security:
-
+**Core Analysis Commands:**
 ```bash
-# Comprehensive project analysis
-python mesopredator_cli.py analyze /path/to/project --output-file results.json
+# Basic analysis (most common usage)
+mesopredator analyze /path/to/project
 
-# Interactive issue fixing with 4-layer security validation
-python mesopredator_cli.py fix /path/to/project --issues-file results.json
+# Single file analysis
+mesopredator analyze-file /path/to/file.py
 
-# Train the system by flagging false positives  
-python mesopredator_cli.py train --issues-file results.json --interactive
+# Interactive fixing with security validation
+mesopredator fix /path/to/project
 
-# View detection statistics and performance metrics
-python mesopredator_cli.py stats --detailed
+# C++ include fixing (specialized)
+mesopredator include-fix /path/to/cpp/project
+```
 
-# Intelligent memory pruning (conservative, pattern-preserving)
-python mesopredator_cli.py prune --strategy redundancy_based --dry-run
+**Training & Optimization:**
+```bash
+# Train on false positives
+mesopredator train /path/to/project
 
-# Track improvement cycles and manual fix patterns
-python mesopredator_cli.py cycle patterns --issues-file current.json
+# View performance statistics
+mesopredator stats
 
-# View Code Connector performance metrics
-python mesopredator_cli.py metrics --runs 10
+# Clean up memory database
+mesopredator prune
 
-# Intelligent analysis combining orchestrator and memory
-python mesopredator_cli.py intelligent /path/to/project
+# Track improvement cycles
+mesopredator cycle /path/to/project
+```
+
+**Demonstration & Testing:**
+```bash
+# Run interactive demonstrations
+mesopredator demo
+
+# Show all commands (including hidden ones)
+mesopredator --show-all
+
+# Security help
+mesopredator --help-security
 ```
 
 ### New Security & Learning Features
 
 ```bash
 # Test complete feedback loop with security validation
-python src/cognitive/enhanced_patterns/feedback_loop_cli.py run --project /path/to/project
+python -m persistent_recursive_intelligence.cognitive.enhanced_patterns.feedback_loop_cli run --project /path/to/project
 
 # Analyze learning progress and patterns
-python src/cognitive/enhanced_patterns/feedback_loop_cli.py analyze
+python -m persistent_recursive_intelligence.cognitive.enhanced_patterns.feedback_loop_cli analyze
 
 # Demonstrate security resistance to adversarial inputs
-python src/cognitive/enhanced_patterns/feedback_loop_cli.py demo-security
+python -m persistent_recursive_intelligence.cognitive.enhanced_patterns.feedback_loop_cli demo-security
 
 # Run emergency scenario security tests
-python test_emergency_scenarios.py
+python tests/test_emergency_scenarios.py
 
 # Test adversarial attack resistance
-python test_adversarial_fixer_security.py
+python tests/test_adversarial_fixer_security.py
 ```
 
 ---
@@ -338,13 +385,13 @@ The **Code Connector** transforms Mesopredator from a strategic coordinator to a
 
 ```bash
 # Analyze orphaned files and suggest connections
-python src/cognitive/enhanced_patterns/code_connector.py . \
+python -m persistent_recursive_intelligence.cognitive.enhanced_patterns.code_connector . \
     --orphaned util.py cache.py helpers.py \
     --main src/main.py src/core.py \
     --threshold 0.3 --verbose
 
 # View connection performance metrics
-python mesopredator_cli.py metrics
+mesopredator stats
 
 # Output example:
 # 📊 Code Connector Performance Metrics
@@ -484,7 +531,7 @@ python mesopredator_cli.py metrics
 
 ## Roadmap
 
-### Current Status: Production Ready with Enterprise Security
+### Current Status: Core Engine Production Ready, Enterprise Features in Development
 ✅ **Semantic code analysis** with persistent learning  
 ✅ **Defense-in-depth security** with four-layer validation architecture  
 ✅ **Intelligent fix generation** with feedback loop learning system  
@@ -496,20 +543,23 @@ python mesopredator_cli.py metrics
 ✅ **Comprehensive CLI tooling** for all analysis workflows  
 ✅ **Conservative memory management** with intelligent pruning  
 ✅ **Emergency safeguards** with comprehensive threat detection  
-✅ **Comprehensive documentation** and user guides  
+🚧 **Basic REST API** (8 endpoints, no authentication - enterprise API in development)  
+🚧 **IDE integrations** (architecture designed, implementations planned)  
+🚧 **Team collaboration** (protocols documented, features in development)  
 
 ### Short Term (3 months)
-- Enhanced language support (improved Rust, Go, PHP)
-- Performance optimizations for large codebases
-- Additional security pattern library
-- CI/CD integration templates
-- Advanced Code Connector capabilities (multi-file integration)
+- **Enterprise API**: Authentication, rate limiting, advanced endpoints
+- **VS Code Extension**: Real-time analysis and IDE integration
+- **Enhanced language support**: Improved Rust, Go, PHP analyzers
+- **Team collaboration core**: Basic multi-user memory sharing
+- **Performance optimizations**: Large codebase handling improvements
 
 ### Medium Term (6 months)  
-- Cross-domain correlation (logs + code analysis)
-- Advanced synthesis features for multi-file issues
-- Enterprise dashboard and reporting
-- IDE integrations (VS Code, IntelliJ)
+- **Full IDE Suite**: IntelliJ, Vim, Language Server Protocol
+- **Team collaboration features**: Workflows, conflict resolution, shared learning
+- **WebSocket real-time API**: Live analysis updates and notifications  
+- **Enterprise dashboard**: Team metrics and reporting
+- **Advanced Code Connector**: Multi-file integration capabilities
 
 ### Long Term (12+ months)
 - Autonomous orchestration capabilities (research phase)
@@ -533,17 +583,20 @@ We welcome contributions from the community:
 ### Development Setup
 ```bash
 # Clone repository
-git clone https://github.com/your-org/persistent-recursive-intelligence
+git clone git@github.com:GusFromSpace/persistent-recursive-intelligence
 cd persistent-recursive-intelligence
 
-# Install development dependencies
+# Install package in development mode
+pip install -e .
+
+# Install additional development dependencies (if available)
 pip install -r requirements-dev.txt
 
 # Run tests
 python -m pytest tests/
 
 # Run adversarial validation
-python -m tests.adversarial.test_suite
+python tests/run_complete_adversarial_test_suite.py
 ```
 
 ### Contribution Guidelines
@@ -557,10 +610,10 @@ python -m tests.adversarial.test_suite
 ## Support
 
 ### Getting Help
-- **📖 Documentation**: Complete guides in [`USER_MANUAL.md`](USER_MANUAL.md)
-- **🐛 Issues**: Report bugs at [GitHub Issues](https://github.com/your-org/persistent-recursive-intelligence/issues)
+- **📖 Documentation**: Complete guides in [`USER_MANUAL.md`](docs/user/USER_MANUAL.md)
+- **🐛 Issues**: Report bugs at [GitHub Issues](https://github.com/GusFromSpace/persistent-recursive-intelligence/issues)
 - **💬 Discussions**: Community Q&A in GitHub Discussions
-- **🔒 Security**: Report security issues privately to security@yourorg.com
+- **🔒 Security**: Report security issues privately to security@gus.dev
 
 ### Commercial Support
 - **Enterprise Licenses**: Contact us for commercial licensing

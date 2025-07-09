@@ -237,7 +237,7 @@ def main():
     args = parser.parse_args()
     
     if args.verbose:
-        # IMPROVED: logging.basicConfig(level=logging.DEBUG)
+        logging.basicConfig(level=logging.DEBUG)
     else:
         logging.basicConfig(level=logging.INFO)
     

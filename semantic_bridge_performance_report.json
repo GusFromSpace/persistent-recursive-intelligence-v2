@@ -1,0 +1,44 @@
+{
+  "async_performance": {
+    "total_time_ms": 7.191181182861328,
+    "per_query_ms": 0.898897647857666,
+    "total_results": 0
+  },
+  "cache_performance": {
+    "cold_time_ms": 0.0019073486328125,
+    "cached_time_ms": 0.0002384185791015625,
+    "speedup_factor": 8.0,
+    "cache_stats": {
+      "query_cache_size": 8,
+      "embedding_cache_size": 18,
+      "max_cache_size": 100
+    }
+  },
+  "comparison": {
+    "standard_avg_ms": 0.000667572021484375,
+    "optimized_avg_ms": 0.0001430511474609375,
+    "speedup_factor": 4.666666666666667,
+    "standard_times": [
+      0.0021457672119140625,
+      0.000476837158203125,
+      0.0002384185791015625,
+      0.0002384185791015625,
+      0.0002384185791015625
+    ],
+    "optimized_times": [
+      0.000476837158203125,
+      0.0002384185791015625,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "concurrent_load": {
+    "total_time_ms": 3.1540393829345703,
+    "successful_queries": 50,
+    "failed_queries": 0,
+    "avg_time_ms": 0.00047206878662109375,
+    "min_time_ms": 0.0,
+    "max_time_ms": 0.001430511474609375
+  }
+}

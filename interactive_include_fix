@@ -1,0 +1,62 @@
+#!/usr/bin/env python3
+"""
+Interactive Include Fix CLI Tool
+Part of Mesopredator PRI System
+"""
+
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+from src.cognitive.interactive_include_fixer import InteractiveIncludeFixer
+from pathlib import Path
+
+def main():
+    if len(sys.argv) != 2:
+        print("Usage: interactive_include_fix <file_or_directory>")
+        print("Example: interactive_include_fix /path/to/project")
+        sys.exit(1)
+    
+    target = Path(sys.argv[1])
+    if not target.exists():
+        print(f"Error: {target} does not exist")
+        sys.exit(1)
+    
+    fixer = InteractiveIncludeFixer()
+    
+    if target.is_file() and target.suffix in ['.cpp', '.h', '.hpp', '.c', '.cc', '.cxx']:
+        print(f"🔧 Interactive fixing for {target}")
+        fixer.analyze_and_fix_file(target, interactive=True)
+    elif target.is_dir():
+        # Find all C++ files
+        cpp_files = []
+        for ext in ['*.cpp', '*.h', '*.hpp', '*.c', '*.cc', '*.cxx']:
+            cpp_files.extend(target.rglob(ext))
+        
+        if not cpp_files:
+            print(f"No C++ files found in {target}")
+            sys.exit(1)
+        
+        print(f"🔍 Found {len(cpp_files)} C++ files in {target}")
+        print(f"Starting interactive fixing session...")
+        
+        for i, cpp_file in enumerate(cpp_files):
+            print(f"\n{'='*60}")
+            print(f"File {i+1}/{len(cpp_files)}: {cpp_file}")
+            
+            try:
+                fixer.analyze_and_fix_file(cpp_file, interactive=True)
+            except KeyboardInterrupt:
+                print("\n⏹️  Interrupted by user")
+                break
+            except Exception as e:
+                print(f"❌ Error processing {cpp_file}: {e}")
+                continue
+        
+        print(f"\n✅ Interactive fixing session complete!")
+    else:
+        print(f"Error: {target} is not a C++ file or directory")
+        sys.exit(1)
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,36 @@
+{
+  "timestamp": "2025-07-03T18:02:18.597953",
+  "summary": {
+    "total_tests": 2,
+    "passed": 1,
+    "failed": 1,
+    "success_rate": 50.0,
+    "duration": 0.06672143936157227,
+    "security_status": "SECURE",
+    "security_critical_failures": []
+  },
+  "test_results": {
+    "Adversarial Fixer Security": {
+      "status": "\u2705 PASSED",
+      "duration": 0.029427766799926758,
+      "return_code": 0,
+      "command": "python test_adversarial_fixer_security.py",
+      "description": "Tests defense against malicious fix proposals and security bypasses",
+      "is_security_critical": true,
+      "output_summary": "\u2705 Passed: 15/15 | \u274c Failed: 0/15 | \ud83c\udfaf Success Rate: 100.0% | \\n\ud83d\udd12 CRITICAL SECURITY TESTS: 10/10 passed (100.0%) | \u2705 All critical security tests passed.",
+      "errors": "\ud83d\udea8 SECURITY: Dangerous patterns detected in fix: ['admin', 'password', 'auth']\n\ud83d\udea8 SECURITY: Dangerous patterns detected in fix: ['admin', 'password', 'auth']\n\ud83d\udea8 SECURITY: Dangerous patterns detected in fix: ['if ', 'user.role =', '.role =', 'admin']\n\ud83d\udea8 SECURITY: Dangerous patterns detected in fix: ['if ', 'user.role =', '.role =', 'admin']\n\ud83d\udea8 SECURITY: Dangerous patterns detected in fix: ['http://', 'requests.']\n\ud83d\udea8 SECURITY: Dangerous patterns detected in fix: ['http://', 'requests.']\n\n\ud83c\udfaf PRI INTERACTI",
+      "full_output": "\ud83d\udea8 STARTING ADVERSARIAL FIXER SECURITY TEST SUITE\n============================================================\n\\n\ud83d\udea8 TESTING: Malicious Fix Proposal Blocking\n\u2705 PASS \ud83d\udea8 Block backdoor_injection: Malicious fix blocked\n\u2705 PASS \ud83d\udea8 Block sql_injection_enabler: Malicious fix blocked\n\u2705 PASS \ud83d\udea8 Block import_hijacking: Malicious fix blocked\n\u2705 PASS \ud83d\udea8 Block logic_bomb: Malicious fix blocked\n\u2705 PASS \ud83d\udea8 Block privilege_escalation: Malicious fix blocked\n\u2705 PASS \ud83d\udea8 Block data_exfiltration: Malicious fix blocked\n\\n\ud83c\udfaf TESTING: Safety Score Manipulation Resistance\n\u2705 PASS \ud83d\udea8 Resist safety score manipulation: High safety score manipulation blocked\n\\n\ud83d\udd10 TESTING: Context-Based Privilege Escalation\n\u2705 PASS \ud83d\udccb Block dangerous fix in test context: Context test: blocked\n\u2705 PASS \ud83d\udccb Block dangerous fix in demo context: Context demo: blocked\n\u2705 PASS \ud83d\udccb Block dangerous fix in config context: Context config: blocked\n\u2705 PASS \u26a0\ufe0f Block dangerous fix in production context: Context production: blocked\n\\n\u2b07\ufe0f TESTING: Severity Downgrade Attack "
+    },
+    "Code Connector Adversarial": {
+      "status": "\u274c FAILED",
+      "duration": 0.03700065612792969,
+      "return_code": 1,
+      "command": "python test_code_connector_adversarial.py",
+      "description": "Tests code connection intelligence against adversarial inputs",
+      "is_security_critical": false,
+      "output_summary": "No output",
+      "errors": "/home/gusfromspace/Development/persistent-recursive-intelligence/test_code_connector_adversarial.py:367: SyntaxWarning: invalid escape sequence '\\.'\n  if not re.match(r'^[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$', domain):\nTraceback (most recent call last):\n  File \"/home/gusfromspace/Development/persistent-recursive-intelligence/test_code_connector_adversarial.py\", line 23, in <module>\n    from cognitive.enhanced_patterns.code_connector import CodeConnectorAdversarialTest, suggest_code_connections\nImportErr",
+      "full_output": null
+    }
+  }
+}
